@@ -9,9 +9,9 @@ export const Login = () => {
 
     return (
         <div className="container">
-            <div className="row m-5 ">
-                <div className="col">
-                    <div className="card p-3 " style={{width: "18rem", margin: "0 auto"}}>
+            <div className="row m-5 border p-5">
+                <div className="col ">
+                    <div className="card p-3 ms-auto" style={{width: "18rem"}}>
                         <div className="card-body">
                             <h1 className="text-center">Not yet</h1>
                             <p className="mb-2 text-end fs-3">a member?</p>
@@ -21,8 +21,8 @@ export const Login = () => {
                         </div>
                     </div>
                 </div>
-                <div className="col">
-                    <div className="card p-3 border rounded" style={{width: "18rem", margin: "0 auto"}}>
+                <div className="col ">
+                    <div className="card p-3 border rounded" style={{width: "18rem"}}>
                         <div className="card-body">
                             <form>
                                 <div className="mb-1">
