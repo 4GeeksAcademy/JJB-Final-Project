@@ -9,9 +9,17 @@ export const Login = () => {
 
     return (
         <div className="container">
-            <div className="row m-5">
+            <div className="row m-5 ">
                 <div className="col">
-                    columna 1
+                    <div className="card p-3 " style={{width: "18rem", margin: "0 auto"}}>
+                        <div className="card-body">
+                            <h1 className="text-center">Not yet</h1>
+                            <p className="mb-2 text-end fs-3">a member?</p>
+                            <div className="d-grid">
+                                    <button type="submit" className="btn btn-primary d-grid " style={{margin: "0"}}>Sign In</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div className="col">
                     <div className="card p-3 border rounded" style={{width: "18rem", margin: "0 auto"}}>
