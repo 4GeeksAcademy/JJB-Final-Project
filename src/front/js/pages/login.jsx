@@ -2,26 +2,39 @@ import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/login.css";
+import { Link } from "react-router-dom";
 
 export const Login = () => {
     const { store, actions } = useContext(Context);
 
     return (
         <div className="container">
-            <dix className="row m-5">
-                <dix className="col">
+            <div className="row m-5">
+                <div className="col">
                     columna 1
-                </dix>
-                <dix className="col">
-                    <div className="card" style={{width: "18rem", margin: "0 auto"}}>
+                </div>
+                <div className="col">
+                    <div className="card p-3 border rounded" style={{width: "18rem", margin: "0 auto"}}>
                         <div className="card-body">
-                            <h5 className="card-title">Card title</h5>
-                            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a href="#" className="btn btn-primary">Go somewhere</a>
+                            <form>
+                                <div className="mb-1">
+                                    <label for="email" className="form-label">Email</label>
+                                    <input type="email" className="form-control" id="email" aria-describedby="emailHelp"/>
+                                </div>
+                                <div className="mb-1">
+                                    <label for="password" className="form-label">Password</label>
+                                    <input type="password" className="form-control" id="password"/>
+                                </div>
+                                <div className="d-grid">
+                                    <button type="submit" className="btn btn-primary d-grid " style={{margin: "0"}}>Log in</button>
+                                </div>
+
+                                {/* <Link to="" className="link-underline">Forgot Password</Link> Falta construir el link de contraserña olvidada */}
+                            </form>
                         </div>
                     </div>
-                </dix>
-            </dix>
+                </div>
+            </div>
         </div>
     );
 };
