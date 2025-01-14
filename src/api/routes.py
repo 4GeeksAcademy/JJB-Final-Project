@@ -30,10 +30,16 @@ def handle_hello():
 # create_access_token() function is used to actually generate the JWT.
 @api.route("/login", methods=["POST"])
 def login():
-    username = request.json.get("username", None)
+    email = request.json.get("email", None)
     password = request.json.get("password", None)
-    if username != "test" or password != "test":
-        return jsonify({"msg": "Bad username or password"}), 401
 
-    access_token = create_access_token(identity=username)
+    user = User.query.filter_by(email = email, password = password).first()
+
+    if user is None:
+        return jsonify({"msg": "Bad email or password"}), 401
+    
+    # if username != "test" or password != "test":
+    #     return jsonify({"msg": "Bad username or password"}), 401
+
+    access_token = create_access_token(identity= email)
     return jsonify(access_token=access_token)
