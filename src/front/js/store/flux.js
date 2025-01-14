@@ -13,7 +13,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			userToken: "",
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -47,7 +48,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			},
-			sendFormLogIn: async (email, password) => {
+			sendFormLogin: async (email, password) => {
 				console.log("-----------sendFormLogIn----------------")
 				try {
 					const resp = await fetch(`https://ominous-guide-qx6r5p4w9vj36rv-3001.app.github.dev/api/login`,{
@@ -61,54 +62,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 						  "accept": "application/json"
 						}
 					});
-					 
-					if (!resp.ok) {
-						console.error("Error en el servidor:", resp.status, resp.statusText);
-						return { error: `Error ${resp.status}: ${resp.statusText}` };
-					}
-			
-
+					
 					const data = await resp.json();
-					console.log("Datos devueltos:", data);
+					console.log("BACK Datos devueltos:", data);
+
+					if (!resp.ok) {
+						if (resp.status == 400) {
+							console.error("BACK Error en la solicitud:", data.error);
+							return { error: `${data.error}` };
+						}
+						return { error: `${data.msg}` }; 
+					}
+
 			
-					// if (data.token) {
-					// 	setStore({ userToken: data.token });
-					// 	console.log("Token guardado en el store.");
-					// }
+					if (data.access_token) {
+						setStore({ userToken: data.access_token });
+						console.log("Token guardado en el store.");
+					}
 			
 					return data;
 				} catch (error) {
 					console.error("Error en fetch:", error);
 					return { error: error.message };
 				}
-			},
-			addContact: (contact) => {
-				console.log("-----------addContact----------------")
-				console.log("contact", contact)
-				fetch(`https://playground.4geeks.com/contact/agendas/bdiaz/contacts`, {
-					method: "POST",
-					body: JSON.stringify({
-						name: contact.name,
-						phone: contact.phone,
-						email: contact.email,
-						address: contact.address
-					}),
-					headers: {
-					  "Content-Type": "application/json",
-					  "accept": "application/json"
-					}
-				  })
-				  .then(resp => {
-					  console.log(`resp.status:` , resp.status, `resp.statusText:`, resp.statusText); 
-					  console.log("Data:", resp);
-					  console.log("Contacto agregado");
-					  getActions().getAgenda()
-					  return resp;
-				  })
-				  .catch(error => {
-					  console.log(error);
-				  });
-			
 			},
 		}
 	};

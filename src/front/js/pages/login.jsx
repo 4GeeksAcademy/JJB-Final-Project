@@ -21,19 +21,23 @@ export const Login = () => {
         setPasswordChanged(true)
     }
 
-    const sendForm = async  () => {
+    const sendForm = async () => {
         console.log("Se manda formulario")
         console.log("email:", email)
         console.log("password:", password)
-        const response = await actions.sendFormLogIn(email, password);
 
-        if (response.error) {
-            console.error("Error al iniciar sesión:", response.error);
-            alert("Error: " + response.error);
-        } else {
-            console.log("Inicio de sesión exitoso:", response);
+        const response = await actions.sendFormLogin(email, password);
+
+        if (store.userToken) {
+            console.log("FRONT:", response);
+            console.log("store.userToken:", store.userToken);
             alert("Inicio de sesión exitoso");
+        } else {
+            console.error("FRONT Error al iniciar sesión:", response.error);
+            alert("Error: " + response.error);
         }
+        
+
     }
 
     const passEmailChanged = emailChanged && passwordChanged;
