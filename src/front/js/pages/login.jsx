@@ -21,9 +21,19 @@ export const Login = () => {
         setPasswordChanged(true)
     }
 
-    const sendForm = () => {
-        console.log("Se manda formaulario")
-        // actions.sendFormLogIn(email,password);
+    const sendForm = async  () => {
+        console.log("Se manda formulario")
+        console.log("email:", email)
+        console.log("password:", password)
+        const response = await actions.sendFormLogIn(email, password);
+
+        if (response.error) {
+            console.error("Error al iniciar sesión:", response.error);
+            alert("Error: " + response.error);
+        } else {
+            console.log("Inicio de sesión exitoso:", response);
+            alert("Inicio de sesión exitoso");
+        }
     }
 
     const passEmailChanged = emailChanged && passwordChanged;
@@ -47,20 +57,28 @@ export const Login = () => {
                         <div className="card-body">
                             <form>
                                 <div className="mb-1">
-                                    <label for="email" className="form-label">Email</label>
-                                    <input type="email" className="form-control" id="email" 
-                                    placeholder="name@example.com" 
+                                <label htmlFor="email" className="form-label">Email</label>
+                                <input
+                                    type="email"
+                                    className="form-control"
+                                    id="email"
+                                    placeholder="name@example.com"
                                     onChange={EmailChanged}
-                                    required/>
+                                    required
+                                />
                                 </div>
                                 <div className="mb-1">
-                                    <label for="password" className="form-label">Password</label>
-                                    <input type="password" className="form-control" id="password" 
-                                    onChange={PasswordChanged}
-                                    required/>
+                                <label htmlFor="password" className="form-label">Password</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        id="password"
+                                        onChange={PasswordChanged}
+                                        required
+                                    />
                                 </div>
                                 <div className="d-grid">
-                                    <button className="btn btn-primary"
+                                    <button className="btn btn-primary" type="button" 
                                     disabled={!passEmailChanged}
                                     onClick={sendForm}
                                     >Log in</button>
