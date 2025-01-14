@@ -46,7 +46,59 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
-			}
+			},
+			sendFormLogIn: async (email, password) => {
+				//Falta probar funcionalidad
+				console.log("-----------sendFormLogIn----------------")
+				fetch(`https://ominous-guide-qx6r5p4w9vj36rv-3001.app.github.dev/login`, {
+					method: "POST",
+					body: JSON.stringify({
+						email: email,
+						password: password,
+					}),
+					headers: {
+					  "Content-Type": "application/json",
+					  "accept": "application/json"
+					}
+				  })
+				  .then(resp => {
+					  console.log(`resp.status:` , resp.status, `resp.statusText:`, resp.statusText); 
+					  console.log("Data:", resp);
+					  console.log("login realizado ");
+					  return resp;
+				  })
+				  .catch(error => {
+					  console.log(error);
+				  });
+			},
+			addContact: (contact) => {
+				console.log("-----------addContact----------------")
+				console.log("contact", contact)
+				fetch(`https://playground.4geeks.com/contact/agendas/bdiaz/contacts`, {
+					method: "POST",
+					body: JSON.stringify({
+						name: contact.name,
+						phone: contact.phone,
+						email: contact.email,
+						address: contact.address
+					}),
+					headers: {
+					  "Content-Type": "application/json",
+					  "accept": "application/json"
+					}
+				  })
+				  .then(resp => {
+					  console.log(`resp.status:` , resp.status, `resp.statusText:`, resp.statusText); 
+					  console.log("Data:", resp);
+					  console.log("Contacto agregado");
+					  getActions().getAgenda()
+					  return resp;
+				  })
+				  .catch(error => {
+					  console.log(error);
+				  });
+			
+			},
 		}
 	};
 };

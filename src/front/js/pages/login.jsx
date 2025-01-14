@@ -6,15 +6,24 @@ import { Link } from "react-router-dom";
 
 export const Login = () => {
     const { store, actions } = useContext(Context);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [emailChanged, setEmailChanged] = useState(false);
     const [passwordChanged, setPasswordChanged] = useState(false);
 
-    const EmailChanged = () => {
+    const EmailChanged = (e) => {
+        setEmail(e.target.value);
         setEmailChanged(true)
     }
 
-    const PasswordChanged = () => {
+    const PasswordChanged = (e) => {
+        setPassword(e.target.value);
         setPasswordChanged(true)
+    }
+
+    const sendForm = () => {
+        console.log("Se manda formaulario")
+        // actions.sendFormLogIn(email,password);
     }
 
     const passEmailChanged = emailChanged && passwordChanged;
@@ -51,8 +60,10 @@ export const Login = () => {
                                     required/>
                                 </div>
                                 <div className="d-grid">
-                                    <button type="submit" className="btn btn-primary"
-                                    disabled={!passEmailChanged}>Log in</button>
+                                    <button className="btn btn-primary"
+                                    disabled={!passEmailChanged}
+                                    onClick={sendForm}
+                                    >Log in</button>
                                 </div>
                                 {/* <Link to="" className="link-underline">Forgot Password</Link> Falta construir el link de contraserña olvidada */}
                             </form>
