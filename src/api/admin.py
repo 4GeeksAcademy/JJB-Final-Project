@@ -6,6 +6,8 @@ from .models import db, Forum
 from .models import db, Comment
 from .models import db, Advertinsing
 from .models import db, Favorite
+from .models import db, Invoice
+
 
 
 
@@ -18,12 +20,14 @@ def setup_admin(app):
     admin = Admin(app, name='4Geeks Admin', template_mode='bootstrap3')
 
     
-    # Add your models here, for example this is how we add a the User model to the admin
+    
     admin.add_view(ModelView(User, db.session))
     admin.add_view(ModelView(Forum, db.session))
     admin.add_view(ModelView(Comment, db.session))
     admin.add_view(ModelView(Advertinsing, db.session))
     admin.add_view(ModelView(Favorite, db.session))
+    admin.add_view(ModelView(Invoice, db.session))
+
 
 
 
