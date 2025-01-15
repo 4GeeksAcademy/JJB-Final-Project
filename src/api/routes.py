@@ -7,7 +7,8 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
-
+import secrets
+from datetime import datetime, timedelta
 
 api = Blueprint('api', __name__)
 
@@ -109,10 +110,15 @@ def request_password_reset():
         if not user:
             return jsonify({"msg": "Si el correo existe, se enviará un enlace para restablecer la contraseña."}), 200
         
+        token, expiration = generate_reset_token()
 
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "details": str(e)}), 500
 
 
+def generate_reset_token():
+    token = secrets.token_urlsafe(32)  
+    expiration = datetime.now() + timedelta(hours=1) 
+    return token, expiration
 
