@@ -86,7 +86,7 @@
                 "sha256:8085d6757505b6f3291a2638c84d207e8f0ad0de662d1f46aa2f77e658a0c976"
             ],
             "index": "pypi",
-            "version": "==4.7.1"
+            "version": "==3.0.10"
         },
         "flask-migrate": {
             "hashes": [
