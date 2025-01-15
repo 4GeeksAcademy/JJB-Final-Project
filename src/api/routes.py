@@ -70,8 +70,11 @@ def register():
             else:
                 return jsonify({"error": "Formato de correo inválido"}), 400
         
-        if not password:
-            return jsonify({"error": "Contraseña requerida"}), 400
+        if not password or len(password) < 6:
+            if not password:
+                return jsonify({"error": "Contraseña requerida"}), 400
+            else:
+                return jsonify({"error": "La contraseña debe tener al menos 6 caracteres"}), 400
 
         if not nickname:
             return jsonify({"error": "Apodo requerido"}), 400
