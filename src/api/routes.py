@@ -52,5 +52,30 @@ def login():
     except Exception as e:
 
         return jsonify({"error": "Error interno del servidor", "details": str(e)}), 500
+    
+    
+@api.route("/register", methods=["POST"])
+def register():
+
+    try:
+        email = request.json.get("email", None)
+        password = request.json.get("password", None)
+        nickname = request.json.get("nickname", None)
+
+        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not email or not re.match(email_regex, email):
+            return jsonify({"error": "Formato de correo inválido"}), 400
+        
+        if not password:
+            return jsonify({"error": "Contraseña requerida"}), 400
+
+        if not nickname:
+            return jsonify({"error": "Apodo requerido"}), 400
+
+    
+    except Exception as e:
+
+        return jsonify({"error": "Error interno del servidor", "details": str(e)}), 500
+
 
 
