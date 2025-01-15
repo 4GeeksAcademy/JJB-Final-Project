@@ -136,23 +136,24 @@ def generate_reset_token():
     expiration = datetime.now() + timedelta(hours=1) 
     return token, expiration
 
-def send_reset_email(to_email, reset_url):
-    try:
-        msg = Message(
-            subject="Solicitud para restablecer contraseña",
-            sender="no-reply@domain.com",
-            recipients=[to_email],
-        )
-        msg.body = f"""Hola,
+#problema de implementacion de mail, investigar mas
+# def send_reset_email(to_email, reset_url):
+#     try:
+#         msg = Message(
+#             subject="Solicitud para restablecer contraseña",
+#             sender="no-reply@domain.com",
+#             recipients=[to_email],
+#         )
+#         msg.body = f"""Hola,
 
-            Recibimos una solicitud para restablecer tu contraseña. Haz clic en el enlace de abajo para continuar:
+#             Recibimos una solicitud para restablecer tu contraseña. Haz clic en el enlace de abajo para continuar:
 
-            {reset_url}
+#             {reset_url}
 
-            Si no solicitaste esto, puedes ignorar este mensaje.
+#             Si no solicitaste esto, puedes ignorar este mensaje.
 
-            Gracias
-            """
-        mail.send(msg)
-    except Exception as e:
-        print(f"Error enviando correo: {e}")
+#             Gracias
+#             """
+#         mail.send(msg)
+#     except Exception as e:
+#         print(f"Error enviando correo: {e}")
