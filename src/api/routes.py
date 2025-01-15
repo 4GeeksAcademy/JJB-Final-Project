@@ -65,7 +65,10 @@ def register():
         email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 
         if not email or not re.match(email_regex, email):
-            return jsonify({"error": "Formato de correo inválido"}), 400
+            if not email:
+                return jsonify({"error": "Correo requerido"}), 400
+            else:
+                return jsonify({"error": "Formato de correo inválido"}), 400
         
         if not password:
             return jsonify({"error": "Contraseña requerida"}), 400
