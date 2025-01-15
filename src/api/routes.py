@@ -98,4 +98,21 @@ def register():
         return jsonify({"error": "Error interno del servidor", "details": str(e)}), 500
 
 
+@api.route("/request-password-reset", methods=["POST"])
+def request_password_reset():
+    try:
+        email = request.json.get("email", None)
+        if not email:
+            return jsonify({"error": "Correo requerido"}), 400
+        
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            return jsonify({"msg": "Si el correo existe, se enviará un enlace para restablecer la contraseña."}), 200
+        
+
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "details": str(e)}), 500
+
+
 
