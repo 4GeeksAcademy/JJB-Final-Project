@@ -11,7 +11,7 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
-from flask_mail import Mail
+# from flask_mail import Mail
 	
 
 # from models import Person
@@ -39,7 +39,7 @@ jwt = JWTManager(app)
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
 
-mail = Mail(app)
+# mail = Mail(app)
 # add the admin
 setup_admin(app)
 

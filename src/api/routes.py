@@ -9,8 +9,8 @@ import re
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 import secrets
 from datetime import datetime, timedelta
-from app import mail
-from flask_mail import Message
+# from app import mail
+# from flask_mail import Message
 
 api = Blueprint('api', __name__)
 
