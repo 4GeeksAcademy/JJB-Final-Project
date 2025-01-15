@@ -63,6 +63,7 @@ def register():
         nickname = request.json.get("nickname", None)
 
         email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
         if not email or not re.match(email_regex, email):
             return jsonify({"error": "Formato de correo inválido"}), 400
         
