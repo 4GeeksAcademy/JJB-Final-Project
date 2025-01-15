@@ -140,7 +140,7 @@ def send_reset_email(to_email, reset_url):
     try:
         msg = Message(
             subject="Solicitud para restablecer contraseña",
-            sender="no-reply@yourdomain.com",
+            sender="no-reply@domain.com",
             recipients=[to_email],
         )
         msg.body = f"""Hola,
