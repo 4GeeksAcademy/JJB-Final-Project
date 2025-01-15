@@ -52,5 +52,50 @@ def login():
     except Exception as e:
 
         return jsonify({"error": "Error interno del servidor", "details": str(e)}), 500
+    
+    
+@api.route("/register", methods=["POST"])
+def register():
+
+    try:
+        email = request.json.get("email", None)
+        password = request.json.get("password", None)
+        nickname = request.json.get("nickname", None)
+
+        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
+        if not email or not re.match(email_regex, email):
+            if not email:
+                return jsonify({"error": "Correo requerido"}), 400
+            else:
+                return jsonify({"error": "Formato de correo inválido"}), 400
+        
+        if not password or len(password) < 6:
+            if not password:
+                return jsonify({"error": "Contraseña requerida"}), 400
+            else:
+                return jsonify({"error": "La contraseña debe tener al menos 6 caracteres"}), 400
+
+        if not nickname:
+            return jsonify({"error": "Apodo requerido"}), 400
+
+        user = User.query.filter_by(email = email).first()
+        if user is None:
+            user_nickname = User.query.filter_by(nickname = nickname).first()
+            if user_nickname is None:
+                new_user = User(email=email, password=password, nickname=nickname)
+                db.session.add(new_user)
+                db.session.commit()
+                return jsonify({"msg": "Usuario registrado exitosamente"}), 201 
+            else:
+                return jsonify({"msg": "Apodo ya se encuentra registrado"}), 409
+        else:
+            return jsonify({"msg": "Email ya se encuentra registrado"}), 409
+
+    
+    except Exception as e:
+
+        return jsonify({"error": "Error interno del servidor", "details": str(e)}), 500
+
 
 
