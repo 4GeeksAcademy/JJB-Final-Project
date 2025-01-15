@@ -9,6 +9,8 @@ import re
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 import secrets
 from datetime import datetime, timedelta
+from app import mail
+from flask_mail import Message
 
 api = Blueprint('api', __name__)
 
@@ -134,3 +136,23 @@ def generate_reset_token():
     expiration = datetime.now() + timedelta(hours=1) 
     return token, expiration
 
+def send_reset_email(to_email, reset_url):
+    try:
+        msg = Message(
+            subject="Solicitud para restablecer contraseña",
+            sender="no-reply@yourdomain.com",
+            recipients=[to_email],
+        )
+        msg.body = f"""Hola,
+
+            Recibimos una solicitud para restablecer tu contraseña. Haz clic en el enlace de abajo para continuar:
+
+            {reset_url}
+
+            Si no solicitaste esto, puedes ignorar este mensaje.
+
+            Gracias
+            """
+        mail.send(msg)
+    except Exception as e:
+        print(f"Error enviando correo: {e}")
