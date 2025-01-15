@@ -77,7 +77,9 @@ def register():
         if user is None:
             user_nickname = User.query.filter_by(nickname = nickname).first()
             if user_nickname is None:
-                
+                new_user = User(email=email, password=password, nickname=nickname)
+                db.session.add(new_user)
+                db.session.commit()
                 return jsonify({"msg": "Usuario registrado exitosamente"}), 201 
             else:
                 return jsonify({"msg": "Apodo ya se encuentra registrado"}), 409
