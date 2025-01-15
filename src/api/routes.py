@@ -73,6 +73,17 @@ def register():
         if not nickname:
             return jsonify({"error": "Apodo requerido"}), 400
 
+        user = User.query.filter_by(email = email).first()
+        if user is None:
+            user_nickname = User.query.filter_by(nickname = nickname).first()
+            if user_nickname is None:
+                
+                return jsonify({"msg": "Usuario registrado exitosamente"}), 201 
+            else:
+                return jsonify({"msg": "Apodo ya se encuentra registrado"}), 409
+        else:
+            return jsonify({"msg": "Email ya se encuentra registrado"}), 409
+
     
     except Exception as e:
 
