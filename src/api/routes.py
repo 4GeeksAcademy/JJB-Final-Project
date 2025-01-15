@@ -112,6 +112,18 @@ def request_password_reset():
         
         token, expiration = generate_reset_token()
 
+        
+        # Falta agregar estos campos al user
+        # user.reset_token = token
+        # user.reset_token_expiration = expiration
+        # db.session.commit()
+
+        
+        reset_url = f"https://studious-lamp-v5w4jqrxgvv3w67q-3001.app.github.dev/api/reset-password?token={token}"
+        #send_reset_email(user.email, reset_url)
+
+        return jsonify({"msg": "Se envió un correo para restablecer la contraseña"}), 200
+
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "details": str(e)}), 500
