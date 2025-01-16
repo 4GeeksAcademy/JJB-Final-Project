@@ -26,15 +26,15 @@ const getState = ({ getStore, getActions, setStore }) => {
 			registerUser: async (email, password, nickname) => {
 
 				try {
-					const resp = fetch(`${process.env.BACKEND_URL}/api/register`,{
+					const resp = await fetch(`${process.env.BACKEND_URL}api/register`,{
 						method: "POST",
 						headers: { "Content-Type": "application/json", "accept": "application/json" },
 						body: JSON.stringify({
 							email: email,
 							password: password,
 							nickname: nickname,
-						}),	
-				})
+						})
+					})
 
 				const data = await resp.json();
 				console.log("BACK Datos devueltos:", data);

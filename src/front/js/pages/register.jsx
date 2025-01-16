@@ -35,14 +35,14 @@ export const Register = () => {
 
         const response = await actions.registerUser(email, password, nickname);
 
-        if (store.userToken) {
-            console.log("FRONT:", response);
-            console.log("store.userToken:", store.userToken);
-            alert("Inicio de sesión exitoso");
-        } else {
-            console.error("FRONT Error al iniciar sesión:", response.error);
-            alert("Error: " + response.error);
-        }
+        // if (store.userToken) {
+        //     console.log("FRONT:", response);
+        //     console.log("store.userToken:", store.userToken);
+        //     alert("Inicio de sesión exitoso");
+        // } else {
+        //     console.error("FRONT Error al iniciar sesión:", response.error);
+        //     alert("Error: " + response.error);
+        // }
     }
 
     const emailPasswordNicknameChanged = emailChanged && passwordChanged && nicknameChanged;
@@ -82,7 +82,7 @@ export const Register = () => {
                                             placeholder="Ingresar un nickname" onChange={NicknameChanged}/>
                                     </div>
                                     
-                                    <button class="w-100 btn btn-lg btn-dark" type="submit" disabled={!emailPasswordNicknameChanged}
+                                    <button class="w-100 btn btn-lg btn-dark" type="button" disabled={!emailPasswordNicknameChanged}
                                     onClick={sendForm}>Registrarse</button>
                                 </form>
 
