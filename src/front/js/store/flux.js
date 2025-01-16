@@ -102,9 +102,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (!resp.ok) {
 						if (resp.status == 400) {
 							console.error("BACK Error en la solicitud:", data.error);
-							return { error: `${data.error}` };
+							return { error: `${data.error}`, status: `${resp.status}` };
 						}
-						return { error: `${data.msg}` }; 
+						return { error: `${data.msg}`, status: `${resp.status}` }; 
 					}
 
 			

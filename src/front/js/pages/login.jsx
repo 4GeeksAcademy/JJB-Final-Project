@@ -10,6 +10,8 @@ export const Login = () => {
     const [password, setPassword] = useState('');
     const [emailChanged, setEmailChanged] = useState(false);
     const [passwordChanged, setPasswordChanged] = useState(false);
+    const [failedAttempts, setFailedAttempts] = useState(0); 
+    const [showModal, setShowModal] = useState(false); 
 
     const EmailChanged = (e) => {
         setEmail(e.target.value);
@@ -34,6 +36,16 @@ export const Login = () => {
             alert("Inicio de sesión exitoso");
         } else {
             console.error("FRONT Error al iniciar sesión:", response.error);
+            if (response.status == 404) {
+
+                setFailedAttempts((prev) => prev + 1);    
+                 
+                if (failedAttempts >= 3) {
+                    setShowModal(true);
+                } else {
+                    alert("Error: " + response.error);
+                }
+            }
             alert("Error: " + response.error);
         }
         
