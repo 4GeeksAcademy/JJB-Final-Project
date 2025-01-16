@@ -10,6 +10,7 @@ from api.models import db
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_jwt_extended import JWTManager
 
 # from models import Person
 
@@ -28,6 +29,11 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Setup the Flask-JWT-Extended extension
+app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+jwt = JWTManager(app)
+
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
 
@@ -64,6 +70,17 @@ def serve_any_other_file(path):
     response = send_from_directory(static_file_dir, path)
     response.cache_control.max_age = 0  # avoid cache memory
     return response
+
+@app.route('/register', methods=['POST'])
+def add_user():
+    try:
+        member = request.json
+        if not member:
+            return jsonify({"msg": "invalid data"}), 400
+        new_member = jackson_family.add_member(member)
+        return jsonify(new_member), 200
+    except Exception as error:
+        return jsonify({"Error": str(error)}), 500
 
 
 # this only runs if `$ python src/main.py` is executed
