@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import "../../styles/login.css";
 import { Link } from "react-router-dom";
 
-export const Login = () => {
+export const Profile = () => {
     const { store, actions } = useContext(Context);
 
     return (

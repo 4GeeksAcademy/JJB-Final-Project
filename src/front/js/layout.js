@@ -4,6 +4,7 @@ import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
 import { Register } from "./pages/register.jsx";
+import { Profile } from "./pages/profile.jsx";
 import { Login } from "./pages/login.jsx";
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
@@ -28,6 +29,7 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Login />} path="/login" />
+                        <Route element={<Profile />} path="/profile" />
                         <Route element={<Register />} path="/register" />
                         <Route element={<Home />} path="/" /> 
                         <Route element={<Demo />} path="/demo" />
