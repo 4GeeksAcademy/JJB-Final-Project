@@ -44,35 +44,37 @@ export const Login = () => {
 
     return (
         <div className="container">
-            <div className="row m-5 border p-5">
-                <div className="col ">
-                    <div className="card p-3 ms-auto" style={{width: "18rem"}}>
+            <div className="row m-5 border p-md-5">
+                <div className="col-12 col-md-6 d-flex justify-content-md-end justify-content-center mb-3">
+                    <div className="card p-md-3" style={{ width: "18rem" }}>
                         <div className="card-body">
                             <h1 className="text-center">Not yet</h1>
                             <p className="mb-5 text-end fs-3">a member?</p>
                             <div className="d-grid">
-                                <button type="submit" className="btn btn-primary d-grid " style={{margin: "0"}}>Sign In</button>
+                                <button type="submit" className="btn btn-primary d-grid" style={{ margin: "0" }}>
+                                    Sign In
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="col ">
-                    <div className="card p-3 border rounded" style={{width: "18rem"}}>
+                <div className="col-12 col-md-6 d-flex justify-content-md-start justify-content-center">
+                    <div className="card p-md-3 border rounded" style={{ width: "18rem" }}>
                         <div className="card-body">
                             <form>
                                 <div className="mb-1">
-                                <label htmlFor="email" className="form-label">Email</label>
-                                <input
-                                    type="email"
-                                    className="form-control"
-                                    id="email"
-                                    placeholder="name@example.com"
-                                    onChange={EmailChanged}
-                                    required
-                                />
+                                    <label htmlFor="email" className="form-label">Email</label>
+                                    <input
+                                        type="email"
+                                        className="form-control"
+                                        id="email"
+                                        placeholder="name@example.com"
+                                        onChange={EmailChanged}
+                                        required
+                                    />
                                 </div>
                                 <div className="mb-1">
-                                <label htmlFor="password" className="form-label">Password</label>
+                                    <label htmlFor="password" className="form-label">Password</label>
                                     <input
                                         type="password"
                                         className="form-control"
@@ -82,17 +84,22 @@ export const Login = () => {
                                     />
                                 </div>
                                 <div className="d-grid">
-                                    <button className="btn btn-primary" type="button" 
-                                    disabled={!passEmailChanged}
-                                    onClick={sendForm}
-                                    >Log in</button>
+                                    <button
+                                        className="btn btn-primary"
+                                        type="button"
+                                        disabled={!passEmailChanged}
+                                        onClick={sendForm}
+                                    >
+                                        Log in
+                                    </button>
                                 </div>
-                                {/* <Link to="" className="link-underline">Forgot Password</Link> Falta construir el link de contraserña olvidada */}
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
     );
 };
