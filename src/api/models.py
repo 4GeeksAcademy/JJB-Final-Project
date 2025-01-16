@@ -16,11 +16,11 @@ class User(db.Model):
     is_active = db.Column(db.Boolean, nullable=False, default=True)
 
     
-    forums = db.relationship('Forum', backref='user', lazy=True, cascade="all, delete-orphan")
+    forums = db.relationship('Forum', back_populates='user', lazy=True, cascade="all, delete-orphan")
     comments = db.relationship('Comment', backref='user', lazy=True, cascade="all, delete-orphan")
     advertisings = db.relationship('Advertinsing', backref='user', lazy=True, cascade="all, delete-orphan")
     favorites = db.relationship('Favorite', backref='user', lazy=True, cascade="all, delete-orphan")
-    invoices = db.relationship('Invoice', backref='user', lazy=True, cascade="all, delete-orphan")  # Relación con Invoice
+    invoices = db.relationship('Invoice', backref='user', lazy=True, cascade="all, delete-orphan") 
 
     def __repr__(self):
         return f'<User {self.email}>'
@@ -45,6 +45,7 @@ class Forum(db.Model):
     content = db.Column(db.String(255), nullable=False)
     creation_date = db.Column(db.Date, nullable=False)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)  
+    user = db.relationship("User")
 
     comments = db.relationship('Comment', backref='forum', lazy=True, cascade="all, delete-orphan")
     favorites = db.relationship('Favorite', backref='forum', lazy=True, cascade="all, delete-orphan")
@@ -122,7 +123,7 @@ class Invoice(db.Model):
     id_invoce = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     amount = db.Column(db.Integer, nullable=True)
     concept = db.Column(db.String(255), nullable=True)  
-    status = db.Column(db.String(50), nullable=False)  
+    status = db.Column(db.String(50), nullable=True)  
     payment_date = db.Column(db.Date, nullable=False)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)  
 
