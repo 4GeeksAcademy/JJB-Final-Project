@@ -37,9 +37,8 @@ export const Login = () => {
         } else {
             console.error("FRONT Error al iniciar sesión:", response.error);
             if (response.status == 404) {
-
+                console.log("response.status:", response.status);
                 setFailedAttempts((prev) => prev + 1);    
-                 
                 if (failedAttempts >= 3) {
                     setShowModal(true);
                 } else {
@@ -55,6 +54,7 @@ export const Login = () => {
     const passEmailChanged = emailChanged && passwordChanged;
 
     return (
+        <>
         <div className="container">
             <div className="row m-5 border p-md-5">
                 <div className="col-12 col-md-6 d-flex justify-content-md-end justify-content-center mb-3">
@@ -111,7 +111,25 @@ export const Login = () => {
                 </div>
             </div>
         </div>
-
+        
+        <div className="modal fade" id="modal" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                <div className="modal-header">
+                    <h1 className="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                <div className="modal-body">
+                    ...
+                </div>
+                <div className="modal-footer">
+                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" className="btn btn-primary">Save changes</button>
+                </div>
+                </div>
+            </div>
+        </div>
+        </>
 
     );
 };
