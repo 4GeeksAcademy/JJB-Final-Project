@@ -16,10 +16,43 @@ const getState = ({ getStore, getActions, setStore }) => {
 			],
 			userToken: "",
 		},
+
 		actions: {
 			// Use getActions to call a function within a fuction
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
+			},
+
+			registerUser: async (email, password, nickname) => {
+
+				try {
+					const resp = fetch(`${process.env.BACKEND_URL}/api/register`,{
+						method: "POST",
+						headers: { "Content-Type": "application/json", "accept": "application/json" },
+						body: JSON.stringify({
+							email: email,
+							password: password,
+							nickname: nickname,
+						}),	
+				})
+
+				const data = await resp.json();
+				console.log("BACK Datos devueltos:", data);
+
+				if (!resp.ok) {
+					if (resp.status == 400) {
+						console.error("BACK Error en la solicitud:", data.error);
+						return { error: `${data.error}` };
+					}
+					return { error: `${data.msg}` }; 
+				}
+
+				return data;
+					
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				} 
 			},
 
 			getMessage: async () => {

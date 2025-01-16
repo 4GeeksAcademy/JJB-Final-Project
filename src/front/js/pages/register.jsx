@@ -4,6 +4,48 @@ import { Context } from "../store/appContext";
 import "../../styles/login.css";
 
 export const Register = () => {
+    const { actions } = useContext(Context);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [nickname, setNickname] = useState('');
+    const [emailChanged, setEmailChanged] = useState(false);
+    const [passwordChanged, setPasswordChanged] = useState(false);
+    const [nicknameChanged, setNicknameChanged] = useState(false);
+
+    const EmailChanged = (e) => {
+        setEmail(e.target.value);
+        setEmailChanged(true)
+    }
+
+    const PasswordChanged = (e) => {
+        setPassword(e.target.value);
+        setPasswordChanged(true)
+    }
+
+    const NicknameChanged = (e) => {
+        setNickname(e.target.value);
+        setNicknameChanged(true)
+    }
+
+    const sendForm = async () => {
+        console.log("Se manda formulario")
+        console.log("email:", email)
+        console.log("password:", password)
+        console.log("nickname:", nickname)
+
+        const response = await actions.registerUser(email, password, nickname);
+
+        if (store.userToken) {
+            console.log("FRONT:", response);
+            console.log("store.userToken:", store.userToken);
+            alert("Inicio de sesión exitoso");
+        } else {
+            console.error("FRONT Error al iniciar sesión:", response.error);
+            alert("Error: " + response.error);
+        }
+    }
+
+    const emailPasswordNicknameChanged = emailChanged && passwordChanged && nicknameChanged;
 
     return (
         <>
@@ -25,22 +67,23 @@ export const Register = () => {
                                             height="80"/>
                                     </div>
                                     <div class="form mb-3 fs-5">
-                                        <label for="user">Email</label>
-                                        <input type="text" class="form-control fs-5" id="user" name="user"
-                                            placeholder="Ingresar email"/>
+                                        <label for="email">Email</label>
+                                        <input type="text" class="form-control fs-5" id="email" name="email"
+                                            placeholder="Ingresar email" onChange={EmailChanged}/>
                                     </div>
                                     <div class="form mb-3 fs-5">
                                         <label for="pass">Contraseña</label>
                                         <input type="password" class="form-control fs-5" id="pass" name="pass"
-                                            placeholder="Ingresar contraseña"/>
+                                            placeholder="Ingresar contraseña" onChange={PasswordChanged}/>
                                     </div>
                                     <div class="form mb-5 fs-5">
                                         <label for="nickname">Nickname</label>
                                         <input type="text" class="form-control fs-5" id="nickname" name="nickname"
-                                            placeholder="Ingresar un nickname"/>
+                                            placeholder="Ingresar un nickname" onChange={NicknameChanged}/>
                                     </div>
                                     
-                                    <button class="w-100 btn btn-lg btn-dark" type="submit">Registrarse</button>
+                                    <button class="w-100 btn btn-lg btn-dark" type="submit" disabled={!emailPasswordNicknameChanged}
+                                    onClick={sendForm}>Registrarse</button>
                                 </form>
 
                             </div>
