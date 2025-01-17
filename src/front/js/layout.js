@@ -4,6 +4,7 @@ import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
 import { Register } from "./pages/register.jsx";
+import { Profile } from "./pages/profile.jsx";
 import { Login } from "./pages/login.jsx";
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
@@ -27,9 +28,10 @@ const Layout = () => {
                 <ScrollToTop>
                     <Navbar />
                     <Routes>
-                        <Route element={<Login />} path="/login" />
+                        {/* <Route element={<Login />} path="/login" /> */}
+                        <Route element={<Profile />} path="/profile" />
                         <Route element={<Register />} path="/register" />
-                        <Route element={<Home />} path="/" /> 
+                        <Route element={<Login />} path="/" /> 
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<h1>Not found!</h1>} />

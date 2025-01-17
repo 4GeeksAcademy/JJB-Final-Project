@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect} from "react";
 import { Context } from "../store/appContext";
 import "../../styles/login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 
 export const Login = () => {
     const { store, actions } = useContext(Context);
@@ -9,8 +9,12 @@ export const Login = () => {
     const [password, setPassword] = useState('');
     const [emailChanged, setEmailChanged] = useState(false);
     const [passwordChanged, setPasswordChanged] = useState(false);
+<<<<<<< HEAD
     const [failedAttempts, setFailedAttempts] = useState(0); 
     const [showModal, setShowModal] = useState(false); 
+=======
+    const navigate = useNavigate();
+>>>>>>> 0ea41d041e1a215436a291c7847767eb09a8fdfe
 
     const EmailChanged = (e) => {
         setEmail(e.target.value);
@@ -34,6 +38,8 @@ export const Login = () => {
             console.log("FRONT:", response);
             console.log("store.userToken:", store.userToken);
             alert("Inicio de sesión exitoso");
+            navigate("/profile");
+
         } else {
             console.error("FRONT Error al iniciar sesión:", response.error);
             if (response.status == 404) {
@@ -65,9 +71,9 @@ export const Login = () => {
                             <h1 className="text-center">Not yet</h1>
                             <p className="mb-5 text-end fs-3">a member?</p>
                             <div className="d-grid">
-                                <button type="submit" className="btn btn-primary d-grid" style={{ margin: "0" }}>
+                                <Link to={"/register"} className="btn btn-primary d-grid" style={{ margin: "0" }}>
                                     Sign In
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>

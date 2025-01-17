@@ -14,14 +14,36 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
+			profile:{
+				name: "Jordan",
+				lastname: "Campos",
+				email: "Jordan@campos.com",
+				nickname: "Jor69",
+				birthdate: "06/09/1991",
+				role: "user",
+				membership: "free"
+			}
+
+			,
 			userToken: "",
+			profile: {},
 		},
 
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
+
+			loadProfile: async (email) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}api/profile/${email}`);
+					const data = await response.json();
+					console.log(data);
+					setStore({ profile: data});
+					return data.profile;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
 			},
+			
 
 			registerUser: async (email, password, nickname) => {
 
@@ -47,13 +69,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: `${data.msg}` }; 
 				}
 
-				return data;
+				return { data: `${data}`,status:`${resp.ok}` }; 
 					
 				} catch (error) {
 					console.error("Error en fetch:", error);
 					return { error: error.message };
 				} 
 			},
+
+
+
+			
 
 			getMessage: async () => {
 				try{
@@ -109,7 +135,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			
 					if (data.access_token) {
-						setStore({ userToken: data.access_token });
+						setStore({ userToken: data.access_token, profile: {email: email}});
 						console.log("Token guardado en el store.");
 					}
 			
