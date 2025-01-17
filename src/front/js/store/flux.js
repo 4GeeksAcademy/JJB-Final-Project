@@ -14,7 +14,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-			profile:[],
+			profile:{
+				name: "Jordan",
+				lastname: "Campos",
+				email: "Jordan@campos.com",
+				nickname: "Jor69",
+				birthdate: "06/09/1991",
+				role: "user",
+				membership: "free"
+			}
+
+			,
 			userToken: "",
 		},
 
@@ -22,7 +32,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			loadProfile: async () => {
 				try {
-					const resp = await fetch(`${process.env.BACKEND_URL}api/profile`)
+					const resp = await fetch(`${process.env.BACKEND_URL}api/profile/`)
 					.then(response => response.json())
 					.then(data => setStore({ profile: data.profile }))
 					.catch(error => console.log(error))	

@@ -1,11 +1,10 @@
 import React, { useContext, useState, useEffect} from "react";
 import { Context } from "../store/appContext";
 import "../../styles/profile.css";
-import { Link, useParams } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 export const Profile = (props) => {
     const { store, actions } = useContext(Context);
-    const params = useParams();
 	  console.log(store.profile);
 
     return (
@@ -17,8 +16,8 @@ export const Profile = (props) => {
                 <div className="profile-icon">
                   <span className="icon-initial">A</span>
                 </div>
-                <p className="nickname">Nickname</p>
-                <p className="email">Email</p>
+                <p className="nickname">{store.profile.nickname}</p>
+                <p className="email">{store.profile.email}</p>
               </div>
               <ul className="menu-list">
                 <li>Favorites</li>
@@ -55,31 +54,31 @@ export const Profile = (props) => {
                     <div className="row mb-3">
                       <div className="col-6">
                         <h6>Full Name</h6>
-                        <p>{store.profile[params.theid].name}+{store.profile[params.theid].lastname}</p>
+                        <p>{store.profile.name + " " + store.profile.lastname}</p>
                       </div>
                       <div className="col-6">
                         <h6>Birthdate</h6>
-                        <p>{store.profile[params.theid].birthdate}</p>
+                        <p>{store.profile.birthdate}</p>
                       </div>
                     </div>
                     <div className="row mb-3">
                       <div className="col-6">
                         <h6>Email</h6>
-                        <p>{store.profile[params.theid].email}</p>
+                        <p>{store.profile.email}</p>
                       </div>
                       <div className="col-6">
                         <h6>Role</h6>
-                        <p>{store.profile[params.theid].role}</p>
+                        <p>{store.profile.role}</p>
                       </div>
                     </div>
                     <div className="row mb-3">
                       <div className="col-6">
                         <h6>Nickname</h6>
-                        <p>{store.profile[params.theid].nickname}</p>
+                        <p>{store.profile.nickname}</p>
                       </div>
                       <div className="col-6">
                         <h6>Membership</h6>
-                        <p>{store.profile[params.theid].membership}</p>
+                        <p>{store.profile.membership}</p>
                       </div>
                     </div>
                   </div>
