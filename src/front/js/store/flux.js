@@ -33,7 +33,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			loadProfile: async () => {
 				try {
-					const resp = await fetch(`${process.env.BACKEND_URL}api/profile/`)
+					const resp = await fetch(`${process.env.BACKEND_URL}api/profile/${getstore().profile.email}`)
 					.then(response => response.json())
 					.then(data => setStore({ profile: data.profile }))
 					.catch(error => console.log(error))	
