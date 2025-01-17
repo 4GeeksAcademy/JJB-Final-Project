@@ -1,8 +1,7 @@
 import React, { useContext, useState, useEffect} from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate  } from "react-router-dom";
 
 export const Login = () => {
     const { store, actions } = useContext(Context);
@@ -10,6 +9,7 @@ export const Login = () => {
     const [password, setPassword] = useState('');
     const [emailChanged, setEmailChanged] = useState(false);
     const [passwordChanged, setPasswordChanged] = useState(false);
+    const navigate = useNavigate();
 
     const EmailChanged = (e) => {
         setEmail(e.target.value);
@@ -32,6 +32,8 @@ export const Login = () => {
             console.log("FRONT:", response);
             console.log("store.userToken:", store.userToken);
             alert("Inicio de sesión exitoso");
+            navigate("/profile");
+
         } else {
             console.error("FRONT Error al iniciar sesión:", response.error);
             alert("Error: " + response.error);
@@ -51,9 +53,9 @@ export const Login = () => {
                             <h1 className="text-center">Not yet</h1>
                             <p className="mb-5 text-end fs-3">a member?</p>
                             <div className="d-grid">
-                                <button type="submit" className="btn btn-primary d-grid" style={{ margin: "0" }}>
+                                <Link to={"/register"} className="btn btn-primary d-grid" style={{ margin: "0" }}>
                                     Sign In
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>

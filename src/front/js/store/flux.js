@@ -15,6 +15,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			userToken: "",
+			profile: {},
 		},
 
 		actions: {
@@ -109,7 +110,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			
 					if (data.access_token) {
-						setStore({ userToken: data.access_token });
+						setStore({ userToken: data.access_token, profile: {email: email}});
 						console.log("Token guardado en el store.");
 					}
 			
