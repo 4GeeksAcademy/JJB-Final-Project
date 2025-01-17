@@ -14,13 +14,72 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
+			profile:{
+				name: "Jordan",
+				lastname: "Campos",
+				email: "Jordan@campos.com",
+				nickname: "Jor69",
+				birthdate: "06/09/1991",
+				role: "user",
+				membership: "free"
+			}
+
+			,
 			userToken: "",
+			profile: {},
 		},
+
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
+
+			loadProfile: async (email) => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}api/profile/${email}`);
+					const data = await response.json();
+					console.log(data);
+					setStore({ profile: data});
+					return data.profile;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
 			},
+			
+
+			registerUser: async (email, password, nickname) => {
+
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}api/register`,{
+						method: "POST",
+						headers: { "Content-Type": "application/json", "accept": "application/json" },
+						body: JSON.stringify({
+							email: email,
+							password: password,
+							nickname: nickname,
+						})
+					})
+
+				const data = await resp.json();
+				console.log("BACK Datos devueltos:", data);
+
+				if (!resp.ok) {
+					if (resp.status == 400) {
+						console.error("BACK Error en la solicitud:", data.error);
+						return { error: `${data.error}` };
+					}
+					return { error: `${data.msg}` }; 
+				}
+
+				return { data: `${data}`,status:`${resp.ok}` }; 
+					
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				} 
+			},
+
+
+
+			
 
 			getMessage: async () => {
 				try{
@@ -51,7 +110,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			sendFormLogin: async (email, password) => {
 				console.log("-----------sendFormLogIn----------------")
 				try {
-					const resp = await fetch(`https://ominous-guide-qx6r5p4w9vj36rv-3001.app.github.dev/api/login`,{
+					const resp = await fetch(`${process.env.BACKEND_URL}api/login`,{
 						method: "POST",
 						body: JSON.stringify({
 							email: email,
@@ -76,7 +135,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			
 					if (data.access_token) {
-						setStore({ userToken: data.access_token });
+						setStore({ userToken: data.access_token, profile: {email: email}});
 						console.log("Token guardado en el store.");
 					}
 			

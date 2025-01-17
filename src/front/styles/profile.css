@@ -1,0 +1,84 @@
+  /* Estilos generales */
+.container-fluid {
+    padding: 0;
+  }
+  
+  .row {
+    margin: 0;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    background-color: #f8dada; /* Rosa claro */
+    padding: 20px;
+    min-height: 100vh;
+  }
+  
+  .profile-icon {
+    background-color: #ffe6e6;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    color: #000;
+    font-weight: bold;
+  }
+  
+  .nickname {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .email {
+    font-size: 14px;
+    color: #6c757d; /* Gris */
+  }
+  
+  .menu-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+  }
+  
+  .menu-list li {
+    font-size: 16px;
+    padding: 10px 0;
+    cursor: pointer;
+    color: #000;
+  }
+  
+  .menu-list li:hover {
+    background-color: #f5c6cb;
+    color: #ff6f61;
+  }
+  
+  /* Main Content */
+  .main-content {
+    padding: 30px;
+  }
+  
+  .profile-image {
+    width: 200px;
+    height: 200px;
+    background-color: #ffe6e6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    margin: 0 auto;
+  }
+  
+  .profile-info h6 {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .profile-info p {
+    margin: 0;
+    color: #6c757d; /* Gris */
+  }
+  

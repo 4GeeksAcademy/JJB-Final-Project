@@ -74,18 +74,6 @@ def serve_any_other_file(path):
     response.cache_control.max_age = 0  # avoid cache memory
     return response
 
-@app.route('/register', methods=['POST'])
-def add_user():
-    try:
-        member = request.json
-        if not member:
-            return jsonify({"msg": "invalid data"}), 400
-        new_member = jackson_family.add_member(member)
-        return jsonify(new_member), 200
-    except Exception as error:
-        return jsonify({"Error": str(error)}), 500
-
-
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3001))

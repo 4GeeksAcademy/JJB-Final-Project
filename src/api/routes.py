@@ -99,6 +99,32 @@ def register():
     except Exception as e:
 
         return jsonify({"error": "Error interno del servidor", "details": str(e)}), 500
+    
+
+
+
+#Jessica
+@api.route('/profile/<string:email>', methods=['GET'])
+def get_profile(email):
+
+    try:
+        print(email)
+        print("Email del usuario")  
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            print("Usuario no encontrado")  
+            return jsonify({"error": "Usuario no encontrado"}), 404
+
+        
+        print("Datos del perfil:", user.serialize()) 
+        return jsonify(user.serialize()), 200
+
+    except Exception as e:
+        print("Error:", str(e))
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+
+
 
 
 @api.route("/request-password-reset", methods=["POST"])
