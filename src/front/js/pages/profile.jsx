@@ -7,6 +7,10 @@ export const Profile = (props) => {
     const { store, actions } = useContext(Context);
 	  console.log(store.profile);
 
+    useEffect(() => {
+      actions.loadProfile(store.profile.email);
+    }, []);
+
     return (
         <div className="container-fluid">
           <div className="row">

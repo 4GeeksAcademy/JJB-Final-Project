@@ -31,20 +31,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 		actions: {
 
-			loadProfile: async () => {
+			loadProfile: async (email) => {
 				try {
-					const resp = await fetch(`${process.env.BACKEND_URL}api/profile/${getstore().profile.email}`)
-					.then(response => response.json())
-					.then(data => setStore({ profile: data.profile }))
-					.catch(error => console.log(error))	
-					return resp;
-
+					const response = await fetch(`${process.env.BACKEND_URL}api/profile/${email}`);
+					const data = await response.json();
+					console.log(data);
+					setStore({ profile: data});
+					return data.profile;
 				} catch (error) {
 					console.error("Error en fetch:", error);
 					return { error: error.message };
-					
 				}
 			},
+			
 
 			registerUser: async (email, password, nickname) => {
 
@@ -70,7 +69,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: `${data.msg}` }; 
 				}
 
-				return data;
+				return { data: `${data}`,status:`${resp.ok}` }; 
 					
 				} catch (error) {
 					console.error("Error en fetch:", error);

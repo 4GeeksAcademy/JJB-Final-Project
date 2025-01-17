@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
+import { Link, useNavigate  } from "react-router-dom";
 
 import "../../styles/login.css";
 
@@ -11,6 +12,7 @@ export const Register = () => {
     const [emailChanged, setEmailChanged] = useState(false);
     const [passwordChanged, setPasswordChanged] = useState(false);
     const [nicknameChanged, setNicknameChanged] = useState(false);
+    const navigate = useNavigate();
 
     const EmailChanged = (e) => {
         setEmail(e.target.value);
@@ -35,14 +37,12 @@ export const Register = () => {
 
         const response = await actions.registerUser(email, password, nickname);
 
-        // if (store.userToken) {
-        //     console.log("FRONT:", response);
-        //     console.log("store.userToken:", store.userToken);
-        //     alert("Inicio de sesión exitoso");
-        // } else {
-        //     console.error("FRONT Error al iniciar sesión:", response.error);
-        //     alert("Error: " + response.error);
-        // }
+        if (response.status) {
+            navigate("/");
+        } else {
+            console.error("FRONT Error al registrar usuario:", response.error);
+            alert("Error: " + response.error);
+        }
     }
 
     const emailPasswordNicknameChanged = emailChanged && passwordChanged && nicknameChanged;
