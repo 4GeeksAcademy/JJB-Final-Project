@@ -53,9 +53,9 @@ export const Login = () => {
                             <h1 className="text-center">Not yet</h1>
                             <p className="mb-5 text-end fs-3">a member?</p>
                             <div className="d-grid">
-                                <button type="submit" className="btn btn-primary d-grid" style={{ margin: "0" }}>
+                                <Link to={"/register"} className="btn btn-primary d-grid" style={{ margin: "0" }}>
                                     Sign In
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     </div>
