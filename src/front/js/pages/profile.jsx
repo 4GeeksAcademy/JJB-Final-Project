@@ -1,10 +1,12 @@
 import React, { useContext, useState, useEffect} from "react";
 import { Context } from "../store/appContext";
 import "../../styles/profile.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-export const Profile = () => {
+export const Profile = (props) => {
     const { store, actions } = useContext(Context);
+    const params = useParams();
+	  console.log(store.profile);
 
     return (
         <div className="container-fluid">
@@ -53,31 +55,31 @@ export const Profile = () => {
                     <div className="row mb-3">
                       <div className="col-6">
                         <h6>Full Name</h6>
-                        <p>Name and lastname</p>
+                        <p>{store.profile[params.theid].name}+{store.profile[params.theid].lastname}</p>
                       </div>
                       <div className="col-6">
                         <h6>Birthdate</h6>
-                        <p>01/01/2000</p>
+                        <p>{store.profile[params.theid].birthdate}</p>
                       </div>
                     </div>
                     <div className="row mb-3">
                       <div className="col-6">
                         <h6>Email</h6>
-                        <p>test@gmail.com</p>
+                        <p>{store.profile[params.theid].email}</p>
                       </div>
                       <div className="col-6">
                         <h6>Role</h6>
-                        <p>Usuario</p>
+                        <p>{store.profile[params.theid].role}</p>
                       </div>
                     </div>
                     <div className="row mb-3">
                       <div className="col-6">
                         <h6>Nickname</h6>
-                        <p>testing</p>
+                        <p>{store.profile[params.theid].nickname}</p>
                       </div>
                       <div className="col-6">
                         <h6>Membership</h6>
-                        <p>Free</p>
+                        <p>{store.profile[params.theid].membership}</p>
                       </div>
                     </div>
                   </div>

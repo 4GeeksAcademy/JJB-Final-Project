@@ -14,13 +14,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
+			profile:[],
 			userToken: "",
 		},
 
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
+
+			loadProfile: async () => {
+				try {
+					const resp = await fetch(`${process.env.BACKEND_URL}api/profile`)
+					.then(response => response.json())
+					.then(data => setStore({ profile: data.profile }))
+					.catch(error => console.log(error))	
+					return resp;
+
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+					
+				}
 			},
 
 			registerUser: async (email, password, nickname) => {
@@ -54,6 +66,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				} 
 			},
+
+
+
+			
 
 			getMessage: async () => {
 				try{
