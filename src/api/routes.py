@@ -101,34 +101,23 @@ def register():
 
 
 #Jessica
-@api.route('/profile', methods=['POST'])
-def get_profile_without_jwt():
+@api.route('/profile/<string:email>', methods=['GET'])
+def get_profile(email):
+
     try:
-        # Obtener el correo electrónico del cuerpo de la solicitud
-        email = request.json.get("email", None)
-
-        if not email:
-            return jsonify({"error": "Correo electrónico es requerido"}), 400
-
-        # Buscar al usuario en la base de datos
+        print(email)
+        print("Email del usuario")  
         user = User.query.filter_by(email=email).first()
-
         if not user:
+            print("Usuario no encontrado")  
             return jsonify({"error": "Usuario no encontrado"}), 404
 
-        # Serializar y devolver los datos del perfil del usuario
-        profile_data = {
-            "name": user.name or "No especificado",
-            "lastname": user.lastname or "No especificado",
-            "email": user.email,
-            "nickname": user.nickname or "No especificado",
-            "birthday": user.birthday.isoformat() if user.birthday else None,
-            "role": user.role or "No especificado",
-            "membership": user.membership or "No especificado",
-        }
-        return jsonify(profile_data), 200
+        
+        print("Datos del perfil:", user.serialize()) 
+        return jsonify(user.serialize()), 200
 
     except Exception as e:
+        print("Error:", str(e))
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
