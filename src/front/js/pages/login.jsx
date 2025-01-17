@@ -9,12 +9,9 @@ export const Login = () => {
     const [password, setPassword] = useState('');
     const [emailChanged, setEmailChanged] = useState(false);
     const [passwordChanged, setPasswordChanged] = useState(false);
-<<<<<<< HEAD
     const [failedAttempts, setFailedAttempts] = useState(0); 
     const [showModal, setShowModal] = useState(false); 
-=======
     const navigate = useNavigate();
->>>>>>> 0ea41d041e1a215436a291c7847767eb09a8fdfe
 
     const EmailChanged = (e) => {
         setEmail(e.target.value);
@@ -136,8 +133,7 @@ export const Login = () => {
                     </div>
                     <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => setShowModal(false)}>Cancel</button>
-                        {/* Falta link de restablecer contraseña*/}
-                        <Link to="/" type="button" className="btn btn-primary" onClick={handleResetPassword}>Reestablecer contrasña</Link>
+                        <Link to="/reset-password" type="button" className="btn btn-primary" onClick={handleResetPassword}>Reestablecer contrasña</Link>
                     </div>
                 </div>
             </div>
