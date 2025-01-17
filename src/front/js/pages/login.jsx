@@ -9,6 +9,8 @@ export const Login = () => {
     const [password, setPassword] = useState('');
     const [emailChanged, setEmailChanged] = useState(false);
     const [passwordChanged, setPasswordChanged] = useState(false);
+    const [failedAttempts, setFailedAttempts] = useState(0); 
+    const [showModal, setShowModal] = useState(false); 
     const navigate = useNavigate();
 
     const EmailChanged = (e) => {
@@ -25,6 +27,7 @@ export const Login = () => {
         console.log("Se manda formulario")
         console.log("email:", email)
         console.log("password:", password)
+        console.log("failedAttempts:", failedAttempts)
 
         const response = await actions.sendFormLogin(email, password);
 
@@ -36,15 +39,27 @@ export const Login = () => {
 
         } else {
             console.error("FRONT Error al iniciar sesión:", response.error);
+            if (response.status == 404) {
+                console.log("response.status:", response.status);
+                setFailedAttempts((prev) => prev + 1);    
+                if (failedAttempts + 1>= 3) {
+                    setShowModal(true);
+                } 
+            }
             alert("Error: " + response.error);
         }
         
-
     }
+
+    const handleResetPassword = () => {
+        alert("Redirigiendo a restablecer contraseña");
+        setShowModal(false); 
+    };
 
     const passEmailChanged = emailChanged && passwordChanged;
 
     return (
+        <>
         <div className="container">
             <div className="row m-5 border p-md-5">
                 <div className="col-12 col-md-6 d-flex justify-content-md-end justify-content-center mb-3">
@@ -101,7 +116,29 @@ export const Login = () => {
                 </div>
             </div>
         </div>
-
+        
+        {showModal && 
+        <div className={`modal fade ${showModal ? "show" : ""}`} 
+            id="modal" aria-hidden={!showModal}  
+            style={{ display: showModal ? "block" : "none" }}>
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h1 className="modal-title fs-5" id="exampleModalLabel">Intentos fallidos</h1>
+                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setShowModal(false)}></button>
+                        </div>
+                    <div className="modal-body">
+                        Has alcanzado el número máximo de intentos fallidos para iniciar sesión.
+                        ¿Deseas restablecer tu contraseña?
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => setShowModal(false)}>Cancel</button>
+                        <Link to="/reset-password" type="button" className="btn btn-primary" onClick={handleResetPassword}>Reestablecer contrasña</Link>
+                    </div>
+                </div>
+            </div>
+        </div>}
+        </>
 
     );
 };
