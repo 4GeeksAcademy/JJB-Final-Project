@@ -122,20 +122,20 @@ def get_profile(email):
     
 #Jessica
 
-@api.route('/profile/<string:email>/foro/<string:title_foro>', methods=['GET'])
-def get_forum(email, title_foro):
+@api.route('/profile/<string:email>/forum/<string:title>', methods=['GET'])
+def get_forum(email, title):
     try:
         user = User.query.filter_by(email=email).first()
         if not user:
             return jsonify({"error": "Usuario no encontrado"}), 404
 
     
-        forum = Forum.query.filter_by(title_foro=title_foro).first()
+        forum = Forum.query.filter_by(title=title).first()
         if not forum:
             return jsonify({"error": "Foro no encontrado"}), 404
         
         
-        return jsonify(user.forum.serialize()), 200
+        return jsonify(forum.serialize()), 200
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
