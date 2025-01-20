@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User,Forum
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re
@@ -119,6 +119,27 @@ def get_profile(email):
     except Exception as e:
         print("Error:", str(e))
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+    
+#Jessica
+
+@api.route('/profile/<string:email>/foro/<string:title_foro>', methods=['GET'])
+def get_forum(email, title_foro):
+    try:
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            return jsonify({"error": "Usuario no encontrado"}), 404
+
+    
+        forum = Forum.query.filter_by(title_foro=title_foro).first()
+        if not forum:
+            return jsonify({"error": "Foro no encontrado"}), 404
+        
+        
+        return jsonify(user.forum.serialize()), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
 
 
 
