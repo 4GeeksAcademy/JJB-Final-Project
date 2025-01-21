@@ -12,7 +12,8 @@ export const Forums = () => {
     
     return (
         <>
-            {store.forums.lengh > 0 ? <ForumCard/> : <h1> No se encontraron Forums </h1>}
+            {store.forums.length > 0 ? <ForumCard/> : <h1> No se encontraron Forums </h1>}
+
         </>
 
     );
