@@ -7,6 +7,11 @@ import "../../styles/colors.css";
 export const Forums = () => {
     const { store, actions } = useContext(Context);
     const [modalShows, setModalShows] = useState(false);
+    // variables del form para crear un foro
+    const [forumName, setForumName] = useState('');
+    const [forumContent, setForumContent] = useState('');
+    const [forumNameChanged, setForumNameChanged] = useState(false);
+    const [forumContentChanged, setForumContentChanged] = useState(false);
 
     useEffect(() => {
         actions.loadForums();
@@ -15,7 +20,44 @@ export const Forums = () => {
     const toggleModal = () => {
         setModalShows(!modalShows)
     }
+
+    const ForumNameChanged = (e) => {
+        setForumName(e.target.value);
+        setForumNameChanged(true)
+    }
+
+    const ForumContentChanged = (e) => {
+        setForumContent(e.target.value);
+        setForumContentChanged(true)
+    }
     
+    const sendFormForum = async () => {
+        console.log("Se manda formulario creacion foro")
+        console.log("forumName:", forumName)
+        console.log("forumContent:", forumContent)
+
+        const response = await actions.sendFormForum(forumName, forumContent);
+
+        // if (store.userToken) {
+        //     console.log("FRONT:", response);
+        //     console.log("store.userToken:", store.userToken);
+        //     alert("Inicio de sesión exitoso");
+        //     navigate("/profile");
+
+        // } else {
+        //     console.error("FRONT Error al iniciar sesión:", response.error);
+        //     if (response.status == 404) {
+        //         console.log("response.status:", response.status);
+        //         setFailedAttempts((prev) => prev + 1);    
+        //         if (failedAttempts + 1>= 3) {
+        //             setShowModal(true);
+        //         } 
+        //     }
+        //     alert("Error: " + response.error);
+        // }
+    }
+        
+    const forumFormChanged = forumNameChanged && forumContentChanged;
     
     return (
         <>
@@ -38,14 +80,21 @@ export const Forums = () => {
                         <form className="p-3">
                             <div className="mb-3">
                                 <label htmlFor="nameForum" className="form-label">Nombre del Foro</label>
-                                <input type="text" className="form-control" id="nameForum" />
+                                <input type="text" className="form-control" id="nameForum" onChange={ForumNameChanged}/>
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="contentForum" className="form-label">Descripción</label>
-                                <textarea type="text" className="form-control" id="contentForum"/>
+                                <textarea type="text" className="form-control" id="contentForum" onChange={ForumContentChanged}/>
                             </div> 
                             <div className="d-grid">
-                                <button type="button" className="btn btn-primary btn-block">Crear Foro</button>
+                                <button type="button" 
+                                    style={{background: 'var( --primary-color)', color: 'var(--text-color)'}}
+                                    className="btn btn-primary btn-block"
+                                    disabled={!forumFormChanged}
+                                    onClick={sendFormForum}
+                                >
+                                    Crear Foro
+                                </button>
                             </div>                           
                         </form>
                     </div>
