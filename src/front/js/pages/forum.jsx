@@ -46,6 +46,10 @@ export const Forums = () => {
     const toggleModal = () => {
         console.log("toggleModal:", modalShows)
         setModalShows(!modalShows)
+        setForumName(""); 
+        setForumContent(""); 
+        setForumNameChanged(false); 
+        setForumContentChanged(false);
     }
 
     const ForumNameChanged = (e) => {
