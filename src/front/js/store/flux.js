@@ -10,6 +10,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		actions: {
 
 			loadProfile: async (email) => {
+				console.log("-----------loadProfile----------------")
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}api/profile/${email}`);
 					const data = await response.json();
