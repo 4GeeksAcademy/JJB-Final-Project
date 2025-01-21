@@ -1,0 +1,24 @@
+nav {
+    background-color: var(--secondary-color);
+}
+
+.navbar {
+    color: var(--text-color); 
+  }
+
+  .navbar-brand {
+    color: var(--text-color); 
+  }
+  
+  .navbar .nav-link {
+    color: var(--text-color);
+  }
+  
+  .navbar .nav-link.active {
+    font-weight: bold; 
+  }
+  
+  .navbar .nav-link.btn {
+    background-color: var(--primary-color);;
+    color: var(--text-color);
+  }
