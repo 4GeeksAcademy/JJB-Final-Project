@@ -32,6 +32,7 @@ nav {
   .navbar .nav-link.btn:hover {
     background-color: var(--secondary-color);;
     color: var(--primary-color);
+    font-weight: bold; 
   }
 
   .navbar .nav-link.active {

@@ -18,7 +18,7 @@ export const Navbar = () => {
 
 	return (
 		<nav className="navbar navbar-expand-lg bg-body-tertiary" >
-			<div className="container-fluid">
+			<div className="container-fluid px-5">
 				<Link className="navbar-brand" to={"/"} >
 					<img 
 						src={logoNav}
