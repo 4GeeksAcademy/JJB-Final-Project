@@ -2,31 +2,38 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			],
-			profile:{
-				name: "Jordan",
-				lastname: "Campos",
-				email: "Jordan@campos.com",
-				nickname: "Jor69",
-				birthdate: "06/09/1991",
-				role: "user",
-				membership: "free"
-			}
-
-			,
 			userToken: "",
-			profile: {},
+			profile: {}, 
+			forums : [
+				{ 
+				  id_forum: "1",
+				  title: "belleza",
+				  content: "This is the body of Forum 1. Here you can add main takeaway points, quotes, anecdotes, or even a very short story. The content is detailed and hardcoded for this example.",
+				  creation_date: "12/02/2024",
+				  id_user:"1"
+				},
+				{ 
+					id_forum: "2",
+					title: "salud",
+					content: "This is the body of Forum 1. Here you can add main takeaway points, quotes, anecdotes, or even a very short story. The content is detailed and hardcoded for this example.",
+					creation_date: "12/02/2024",
+					id_user:"1"
+				},
+				{ 
+					id_forum: "3",
+					title: "Hijos",
+					content: "This is the body of Forum 1. Here you can add main takeaway points, quotes, anecdotes, or even a very short story. The content is detailed and hardcoded for this example.",
+					creation_date: "12/02/2024",
+					id_user:"2"
+				},
+				{ 
+					id_forum: "4",
+					title: "Restaurantes",
+					content: "This is the body of Forum 1. Here you can add main takeaway points, quotes, anecdotes, or even a very short story. The content is detailed and hardcoded for this example.",
+					creation_date: "12/02/2024",
+					id_user:"5"
+				}
+			  ]
 		},
 
 		actions: {
@@ -38,6 +45,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(data);
 					setStore({ profile: data});
 					return data.profile;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+
+			loadForums: async () => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}api/forums`);
+					const data = await response.json();
+					console.log(data);
+					setStore({ forums: data});
+					return data.forums;
 				} catch (error) {
 					console.error("Error en fetch:", error);
 					return { error: error.message };
