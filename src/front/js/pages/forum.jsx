@@ -12,6 +12,7 @@ export const Forums = () => {
     const [forumContent, setForumContent] = useState('');
     const [forumNameChanged, setForumNameChanged] = useState(false);
     const [forumContentChanged, setForumContentChanged] = useState(false);
+    const [key, setKey] = useState(0);
 
     useEffect(() => {
         actions.loadForums();
@@ -38,30 +39,30 @@ export const Forums = () => {
 
         const response = await actions.sendFormForum(forumName, forumContent);
 
-        // if (store.userToken) {
-        //     console.log("FRONT:", response);
-        //     console.log("store.userToken:", store.userToken);
-        //     alert("Inicio de sesión exitoso");
-        //     navigate("/profile");
+        if (response.error) {
+            console.error("FRONT Error al crear un foro:", response.error);
+            alert("Error: " + response.error);
 
-        // } else {
-        //     console.error("FRONT Error al iniciar sesión:", response.error);
-        //     if (response.status == 404) {
-        //         console.log("response.status:", response.status);
-        //         setFailedAttempts((prev) => prev + 1);    
-        //         if (failedAttempts + 1>= 3) {
-        //             setShowModal(true);
-        //         } 
-        //     }
-        //     alert("Error: " + response.error);
-        // }
+        } else {
+            console.log("FRONT:", response);
+            alert("Foro creado exitosamente");
+            setForumName(""); 
+            setForumContent(""); 
+            setForumNameChanged(false); 
+            setForumContentChanged(false);
+            resetForumCard(); 
+        }
     }
+
+    const resetForumCard = () => {
+        setKey(prevKey => prevKey + 1);
+    };
         
     const forumFormChanged = forumNameChanged && forumContentChanged;
     
     return (
         <>
-            {store.forums.length > 0 ? <ForumCard/> : <h1> No se encontraron Forums </h1>}
+            {store.forums.length > 0 ? <ForumCard key={key}/> : <h1> No se encontraron Forums </h1>}
             <div className="container">
                 <div className="row">
                     <div className="col d-flex justify-content-center" >
@@ -80,11 +81,21 @@ export const Forums = () => {
                         <form className="p-3">
                             <div className="mb-3">
                                 <label htmlFor="nameForum" className="form-label">Nombre del Foro</label>
-                                <input type="text" className="form-control" id="nameForum" onChange={ForumNameChanged}/>
+                                <input type="text" 
+                                    className="form-control" 
+                                    id="nameForum" 
+                                    onChange={ForumNameChanged}
+                                    value={forumName}
+                                />
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="contentForum" className="form-label">Descripción</label>
-                                <textarea type="text" className="form-control" id="contentForum" onChange={ForumContentChanged}/>
+                                <textarea type="text" 
+                                    className="form-control" 
+                                    id="contentForum" 
+                                    onChange={ForumContentChanged}
+                                    value={forumContent}
+                                    />
                             </div> 
                             <div className="d-grid">
                                 <button type="button" 

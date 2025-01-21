@@ -144,38 +144,27 @@ const getState = ({ getStore, getActions, setStore }) => {
 			sendFormForum: async (forumName, forumContent) => {
 				console.log("-----------sendFormForum----------------")
 				try {
-					console.log("profile", getStore().profile)
-					// const resp = await fetch(`${process.env.BACKEND_URL}api/forum`,{
-					// 	method: "POST",
-					// 	body: JSON.stringify({
-					// 		title: forumName,
-					// 		content: forumContent,
-					// 		id_user: 
-					// 	}),
-					// 	headers: {
-					// 	  "Content-Type": "application/json",
-					// 	  "accept": "application/json"
-					// 	}
-					// });
+					console.log("id_user", getStore().profile.id_user)
+					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`,{
+						method: "POST",
+						body: JSON.stringify({
+							title: forumName,
+							content: forumContent,
+							id_user: getStore().profile.id_user
+						}),
+						headers: {
+						  "Content-Type": "application/json",
+						  "accept": "application/json"
+						}
+					});
 					
-					// const data = await resp.json();
-					// console.log("BACK Datos devueltos:", data);
-
-					// if (!resp.ok) {
-					// 	if (resp.status == 400) {
-					// 		console.error("BACK Error en la solicitud:", data.error);
-					// 		return { error: `${data.error}`, status: `${resp.status}` };
-					// 	}
-					// 	return { error: `${data.msg}`, status: `${resp.status}` }; 
-					// }
-
-			
-					// if (data.access_token) {
-					// 	setStore({ userToken: data.access_token, profile: {email: email}});
-					// 	console.log("Token guardado en el store.");
-					// }
-			
-					// return data;
+					if (!resp.ok) {
+						return { error: `${data.error}`}; 
+					}
+					const data = await resp.json();
+					console.log("BACK Datos devueltos:", data);
+					setStore({ forums: [...getStore().forums, data.forum]});
+					return data;
 				} catch (error) {
 					console.error("Error en fetch:", error);
 					return { error: error.message };
