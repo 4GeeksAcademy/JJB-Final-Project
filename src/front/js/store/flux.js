@@ -24,11 +24,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			loadForums: async () => {
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}api/forums`);
+					const response = await fetch(`${process.env.BACKEND_URL}api/forum`);
 					const data = await response.json();
 					console.log(data);
 					setStore({ forums: data});
-					return data.forums;
+					return data;
 				} catch (error) {
 					console.error("Error en fetch:", error);
 					return { error: error.message };
