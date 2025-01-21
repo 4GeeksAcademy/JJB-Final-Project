@@ -2,31 +2,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			],
-			profile:{
-				name: "Jordan",
-				lastname: "Campos",
-				email: "Jordan@campos.com",
-				nickname: "Jor69",
-				birthdate: "06/09/1991",
-				role: "user",
-				membership: "free"
-			}
-
-			,
 			userToken: "",
-			profile: {},
+			profile: {}, 
+			forums : []
 		},
 
 		actions: {
@@ -38,6 +16,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(data);
 					setStore({ profile: data});
 					return data.profile;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+
+			loadForums: async () => {
+				try {
+					const response = await fetch(`${process.env.BACKEND_URL}api/forums`);
+					const data = await response.json();
+					console.log(data);
+					setStore({ forums: data});
+					return data.forums;
 				} catch (error) {
 					console.error("Error en fetch:", error);
 					return { error: error.message };
