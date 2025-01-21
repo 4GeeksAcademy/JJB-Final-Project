@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User,Forum
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-import datetime
+import re , datetime
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 
 
@@ -142,26 +142,23 @@ def get_forum():
 @api.route('/forum', methods=['POST'])
 def create_forum():
     try:
-        # Obtener los datos enviados en la solicitud
+        
         data = request.get_json()
-
-        # Validar que los datos obligatorios estén presentes
+        print(data)
         title = data.get("title")
         content = data.get("content")
-        id_user = data.get("id_user")  # Este será el ID del usuario que crea el foro
+        id_user = data.get("id_user") 
 
         if not title or not content or not id_user:
             return jsonify({"error": "Faltan datos obligatorios (title, content, id_user)"}), 400
 
-        # Crear una nueva instancia de Forum
         new_forum = Forum(
             title=title,
             content=content,
-            creation_date=datetime.date.today(), 
+            creation_date=datetime.date.today(),
             id_user=id_user
         )
 
-        # Guardar el foro en la base de datos
         db.session.add(new_forum)
         db.session.commit()
 
