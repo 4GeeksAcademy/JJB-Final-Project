@@ -14,11 +14,24 @@ export const Forums = () => {
     const [forumContentChanged, setForumContentChanged] = useState(false);
     const [key, setKey] = useState(0);
 
+    
     useEffect(() => {
         actions.loadForums();
     }, []);
 
+    useEffect(() => {
+        const modalElement = document.getElementById("myModal");
+        if (modalShows) {
+            modalElement.classList.add("show", "d-block");
+            modalElement.setAttribute("aria-hidden", "false");
+        } else {
+            modalElement.classList.remove("show", "d-block");
+            modalElement.setAttribute("aria-hidden", "true");
+        }
+    }, [modalShows]);
+
     const toggleModal = () => {
+        console.log("toggleModal:", modalShows)
         setModalShows(!modalShows)
     }
 
@@ -51,6 +64,7 @@ export const Forums = () => {
             setForumNameChanged(false); 
             setForumContentChanged(false);
             resetForumCard(); 
+            setModalShows(false);
         }
     }
 
@@ -68,16 +82,27 @@ export const Forums = () => {
                     <div className="col d-flex justify-content-center" >
                         <div className="btn" 
                             style={{background: 'var( --primary-color)', color: 'var(--text-color)'}}
-                            // onClick={toggleModal}
-                            data-bs-toggle="modal" data-bs-target="#myModal">
+                            onClick={toggleModal}
+                            >
                             Crear Foro
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="modal fade mt-5" id="myModal" tabIndex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div className="modal fade mt-5" 
+                id="myModal" 
+                tabIndex="-1" 
+                aria-labelledby="myModalLabel" 
+                aria-hidden="true"  
+                role="dialog">
                 <div className="modal-dialog">
                     <div className="modal-content">
+                        <div className="modal-header">
+                            <button type="button"
+                                className="btn-close" 
+                                onClick={toggleModal}
+                            ></button>
+                        </div>
                         <form className="p-3">
                             <div className="mb-3">
                                 <label htmlFor="nameForum" className="form-label">Nombre del Foro</label>
@@ -111,6 +136,7 @@ export const Forums = () => {
                     </div>
                 </div>
             </div>
+
         </>
 
     );
