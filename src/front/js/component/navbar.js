@@ -13,20 +13,34 @@ export const Navbar = () => {
 						alt="Logo" 
 						width="30" 
 						height="30" 
-						className="d-inline-block align-text-top" 
+						className="d-inline-block align-text-top me-2" 
 					/>
 					SheSpace
 				</Link>
-				<div className="collapse navbar-collapse" id="navbarNavDropdown">
+				<button
+				className="navbar-toggler"
+				type="button"
+				data-bs-toggle="collapse"
+				data-bs-target="#navbarNavDropdown"
+				aria-controls="navbarNavDropdown"
+				aria-expanded="false"
+				aria-label="Toggle navigation"
+				>
+					<span className="navbar-toggler-icon"></span>
+				</button>
+				<div className="collapse navbar-collapse d-flex justify-content-end" id="navbarNavDropdown">
 					<ul className="navbar-nav">
 						<li className="nav-item">
-							<a className="nav-link active" aria-current="page" href="#">Home</a>
+							<Link className="nav-link active" aria-current="page" to={"/profile"}>Perfil</Link>
 						</li>
 						<li className="nav-item">
-							<a className="nav-link" href="#">Features</a>
+							<Link className="nav-link" to={"/forums"}>Foros</Link>
 						</li>
 						<li className="nav-item">
-							<a className="nav-link" href="#">Pricing</a>
+							<Link className="nav-link" to={"/"}>Publicidad</Link>
+						</li>
+						<li className="nav-item">
+							<Link className="nav-link btn btn-danger" to={"/"}>Cerrar sesion</Link>
 						</li>
 					</ul>
 				</div>
