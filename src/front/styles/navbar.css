@@ -21,12 +21,28 @@ nav {
   .navbar .nav-link.btn {
     background-color: var(--primary-color);;
     color: var(--text-color);
+    padding: 2px;
+    margin-top: 5px;
+    border-radius: 10%;
   }
 
   .navbar-toggler {
-    border: none; /* Sin bordes en el botón */
+    border: none; 
+  }
+  
+
+.collapse {
+    display: none !important;
+  }
+  
+  .collapse.show {
+    display: block !important;
   }
   
   .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='var(--text-color)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    transition: transform 0.3s ease;
+  }
+
+  .fa-solid {
+    color: var(--text-color);
   }

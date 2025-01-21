@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect}from "react";
 import logoNav from "../../img/logo_shespace_navbar.png";
 import "../../styles/colors.css";
 import "../../styles/navbar.css";
@@ -6,8 +6,13 @@ import { Link, useLocation   } from "react-router-dom";
 
 
 export const Navbar = () => {
-
+	const [MenuOpen, setMenuOpen] = useState(false);
 	const location = useLocation();
+
+	const handleToggle = () => {
+		setMenuOpen(!MenuOpen);
+	}
+
 
 	return (
 		<nav className="navbar navbar-expand-lg bg-body-tertiary" >
@@ -25,18 +30,21 @@ export const Navbar = () => {
 				<button
 				className="navbar-toggler"
 				type="button"
-				data-bs-toggle="collapse"
-				data-bs-target="#navbarNavDropdown"
-				aria-controls="navbarNavDropdown"
-				aria-expanded="false"
+				aria-expanded={MenuOpen} 
+				onClick={handleToggle} 
 				aria-label="Toggle navigation"
+				data-bs-toggle="collapse"
+				data-bs-target="#navbarNavDropdown" 
 				>
-					<span className="navbar-toggler-icon"></span>
+					<span className="navbar-toggler-icon"><i className="fa-solid fa-bars"></i></span>
 				</button>
-				<div className="collapse navbar-collapse d-flex justify-content-md-end " id="navbarNavDropdown">
+				<div
+				className={`collapse navbar-collapse d-flex justify-content-md-end ${MenuOpen ? 'show' : ''}`}
+				id="navbarNavDropdown" 
+				>
 					<ul className="navbar-nav">
 						<li className="nav-item">
-							<Link className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`} to={"/profile"}>Perfil</Link>
+							<Link className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}  to={"/profile"}>Perfil</Link>
 						</li>
 						<li className="nav-item">
 							<Link className={`nav-link ${location.pathname === '/forums' ? 'active' : ''}`} to={"/forums"}>Foros</Link>
@@ -45,7 +53,7 @@ export const Navbar = () => {
 							<Link className={`nav-link ${location.pathname === '/' ? 'active' : ''}`} to={"/"}>Publicidad</Link>
 						</li>
 						<li className="nav-item">
-							<Link className={`nav-link ${location.pathname === '/' ? 'active': ''}`} to={"/"}>Cerrar sesion</Link>
+							<Link className={`nav-link btn ${location.pathname === '/' ? 'active': ''}`} to={"/"}>Cerrar sesion</Link>
 						</li>
 					</ul>
 				</div>
