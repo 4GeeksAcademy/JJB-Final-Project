@@ -21,12 +21,25 @@ export const Forums = () => {
 
     useEffect(() => {
         const modalElement = document.getElementById("myModal");
+        const backdrop = document.createElement("div");
+
+        backdrop.className = "modal-backdrop fade"; 
+
         if (modalShows) {
             modalElement.classList.add("show", "d-block");
             modalElement.setAttribute("aria-hidden", "false");
+
+            document.body.appendChild(backdrop);
+            setTimeout(() => backdrop.classList.add("show"), 10);
         } else {
             modalElement.classList.remove("show", "d-block");
             modalElement.setAttribute("aria-hidden", "true");
+
+            const existingBackdrop = document.querySelector(".modal-backdrop");
+            if (existingBackdrop) {
+                existingBackdrop.classList.remove("show");
+                setTimeout(() => existingBackdrop.remove(), 150); 
+            }
         }
     }, [modalShows]);
 

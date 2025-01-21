@@ -157,11 +157,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						  "accept": "application/json"
 						}
 					});
-					
+					const data = await resp.json();
 					if (!resp.ok) {
 						return { error: `${data.error}`}; 
 					}
-					const data = await resp.json();
 					console.log("BACK Datos devueltos:", data);
 					setStore({ forums: [...getStore().forums, data.forum]});
 					return data;
