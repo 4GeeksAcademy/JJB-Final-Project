@@ -9,7 +9,7 @@ nav {
   .navbar-brand {
     color: var(--text-color); 
   }
-  
+
   .navbar .nav-link {
     color: var(--text-color);
   }
@@ -21,4 +21,12 @@ nav {
   .navbar .nav-link.btn {
     background-color: var(--primary-color);;
     color: var(--text-color);
+  }
+
+  .navbar-toggler {
+    border: none; /* Sin bordes en el botón */
+  }
+  
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='var(--text-color)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
   }
