@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User,Forum
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-import re
+import re , datetime
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 
 
@@ -135,6 +135,38 @@ def get_forum():
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+    
+
+    #Jessica
+
+@api.route('/forum', methods=['POST'])
+def create_forum():
+    try:
+        
+        data = request.get_json()
+        print(data)
+        title = data.get("title")
+        content = data.get("content")
+        id_user = data.get("id_user") 
+
+        if not title or not content or not id_user:
+            return jsonify({"error": "Faltan datos obligatorios (title, content, id_user)"}), 400
+
+        new_forum = Forum(
+            title=title,
+            content=content,
+            creation_date=datetime.date.today(),
+            id_user=id_user
+        )
+
+        db.session.add(new_forum)
+        db.session.commit()
+
+        return jsonify({"msg": "Foro creado exitosamente", "forum": new_forum.serialize()}), 201
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
 
 
 
