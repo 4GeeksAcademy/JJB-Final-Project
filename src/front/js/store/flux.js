@@ -24,9 +24,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			loadForums: async () => {
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}api/forum`);
-					const data = await response.json();
+					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`);
+					const data = await resp.json();
 					console.log(data);
+					if (!resp.ok) {
+						return { error: `${data.error}` }; 
+					}
 					setStore({ forums: data});
 					return data;
 				} catch (error) {
