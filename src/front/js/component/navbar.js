@@ -53,7 +53,7 @@ export const Navbar = () => {
 							<Link className={`nav-link ${location.pathname === '/' ? 'active' : ''}`} to={"/"}>Publicidad</Link>
 						</li>
 						<li className="nav-item">
-							<Link className={`nav-link btn ${location.pathname === '/' ? 'active': ''}`} to={"/"}>Cerrar sesion</Link>
+							<Link className="nav-link btn rounded" to={"/"}>Cerrar sesion</Link>
 						</li>
 					</ul>
 				</div>
