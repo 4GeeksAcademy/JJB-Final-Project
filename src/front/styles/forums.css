@@ -1,0 +1,17 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .card-body {
+    font-size: 0.9rem;
+  }
