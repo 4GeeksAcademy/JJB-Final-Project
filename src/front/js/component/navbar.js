@@ -12,7 +12,9 @@ export const Navbar = () => {
 	const handleToggle = () => {
 		setMenuOpen(!MenuOpen);
 	}
-
+	if (location.pathname === "/" || location.pathname === "/register" || location.pathname === "/login") {
+		return null; 
+	}
 
 	return (
 		<nav className="navbar navbar-expand-lg bg-body-tertiary" >
