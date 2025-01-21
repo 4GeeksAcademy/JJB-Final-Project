@@ -58,7 +58,7 @@ class Forum(db.Model):
             "id_forum": self.id_forum,
             "title": self.title,
             "content": self.content,
-            "creation_date": self.creation_date,
+            "creation_date": str(self.creation_date),
             "id_user": self.id_user,
         }
 
