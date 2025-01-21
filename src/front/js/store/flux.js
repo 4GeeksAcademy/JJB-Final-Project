@@ -4,36 +4,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			message: null,
 			userToken: "",
 			profile: {}, 
-			forums : [
-				{ 
-				  id_forum: "1",
-				  title: "belleza",
-				  content: "This is the body of Forum 1. Here you can add main takeaway points, quotes, anecdotes, or even a very short story. The content is detailed and hardcoded for this example.",
-				  creation_date: "12/02/2024",
-				  id_user:"1"
-				},
-				{ 
-					id_forum: "2",
-					title: "salud",
-					content: "This is the body of Forum 1. Here you can add main takeaway points, quotes, anecdotes, or even a very short story. The content is detailed and hardcoded for this example.",
-					creation_date: "12/02/2024",
-					id_user:"1"
-				},
-				{ 
-					id_forum: "3",
-					title: "Hijos",
-					content: "This is the body of Forum 1. Here you can add main takeaway points, quotes, anecdotes, or even a very short story. The content is detailed and hardcoded for this example.",
-					creation_date: "12/02/2024",
-					id_user:"2"
-				},
-				{ 
-					id_forum: "4",
-					title: "Restaurantes",
-					content: "This is the body of Forum 1. Here you can add main takeaway points, quotes, anecdotes, or even a very short story. The content is detailed and hardcoded for this example.",
-					creation_date: "12/02/2024",
-					id_user:"5"
-				}
-			  ]
+			forums : []
 		},
 
 		actions: {
