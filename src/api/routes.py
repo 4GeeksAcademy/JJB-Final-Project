@@ -1,7 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, Blueprint, current_app
 from api.models import db, User,Forum,Comment
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
@@ -83,7 +83,11 @@ def register():
         if user is None:
             user_nickname = User.query.filter_by(nickname = nickname).first()
             if user_nickname is None:
-                new_user = User(email=email, password=password, nickname=nickname)
+                new_user = User(
+                    email=email, 
+                    password=password, 
+                    nickname=nickname
+                )
                 db.session.add(new_user)
                 db.session.commit()
                 return jsonify({"msg": "Usuario registrado exitosamente"}), 201 
