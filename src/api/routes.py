@@ -109,27 +109,24 @@ def register():
 
 
 #Jessica
-@api.route('/profile/<string:email>', methods=['GET'])
-def get_profile(email):
+@api.route('/profile', methods=['GET'])
+@jwt_required()
+def get_profile():
 
     try:
-        print(email)
-        print("Email del usuario")  
+        email = get_jwt_identity()
+        print(f"Usuario autenticado: {email}")  
         user = User.query.filter_by(email=email).first()
-        if not user:
-            print("Usuario no encontrado")  
+        if not user: 
             return jsonify({"error": "Usuario no encontrado"}), 404
 
-        
-        print("Datos del perfil:", user.serialize()) 
         return jsonify(user.serialize()), 200
 
     except Exception as e:
-        print("Error:", str(e))
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
     
+    
 #Jessica
-
 @api.route('/forum', methods=['GET'])
 def get_forum():
     try:
