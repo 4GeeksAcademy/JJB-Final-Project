@@ -6,10 +6,6 @@ import "../../styles/forum.css";
 export const ForumCard = () => {
     const { store, actions } = useContext(Context);
 
-    useEffect(() => {
-        actions.loadForums();
-    }, []);
-
     return (
         <div className="container my-5">
             <div className="row g-4">
