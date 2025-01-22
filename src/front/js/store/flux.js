@@ -10,6 +10,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		actions: {
 
 			loadProfile: async (email) => {
+				console.log("-----------loadProfile----------------")
 				try {
 					const response = await fetch(`${process.env.BACKEND_URL}api/profile/${email}`);
 					const data = await response.json();
@@ -24,9 +25,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			loadForums: async () => {
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}api/forum`);
-					const data = await response.json();
+					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`);
+					const data = await resp.json();
 					console.log(data);
+					if (!resp.ok) {
+						return { error: `${data.error}` }; 
+					}
 					setStore({ forums: data});
 					return data;
 				} catch (error) {
@@ -126,10 +130,39 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			
 					if (data.access_token) {
-						setStore({ userToken: data.access_token, profile: {email: email}});
+						setStore({ userToken: data.access_token});
+						getActions().loadProfile(email);
 						console.log("Token guardado en el store.");
 					}
 			
+					return data;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+			sendFormForum: async (forumName, forumContent) => {
+				console.log("-----------sendFormForum----------------")
+				try {
+					console.log("id_user", getStore().profile.id_user)
+					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`,{
+						method: "POST",
+						body: JSON.stringify({
+							title: forumName,
+							content: forumContent,
+							id_user: getStore().profile.id_user
+						}),
+						headers: {
+						  "Content-Type": "application/json",
+						  "accept": "application/json"
+						}
+					});
+					const data = await resp.json();
+					if (!resp.ok) {
+						return { error: `${data.error}`}; 
+					}
+					console.log("BACK Datos devueltos:", data);
+					setStore({ forums: [...getStore().forums, data.forum]});
 					return data;
 				} catch (error) {
 					console.error("Error en fetch:", error);
