@@ -128,9 +128,11 @@ def get_profile():
     
 #Jessica
 @api.route('/forum', methods=['GET'])
+@jwt_required()
 def get_forum():
     try:
-    
+        email = get_jwt_identity()
+        print(f"Usuario autenticado oara foros: {email}")  
         forums = Forum.query.all()
         if not forums:
             return jsonify({"error": "No se encontraron foros"}), 404
