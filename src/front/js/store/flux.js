@@ -177,6 +177,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
+			logOut: () => {
+				console.log("-----------logOut----------------")
+				sessionStorage.removeItem('accessToken');
+				console.log("Token eliminado del almacenamiento local");
+			},
 		}
 	};
 };
