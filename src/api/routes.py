@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User,Forum
+from api.models import db, User,Forum,Comment
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re , datetime
@@ -182,7 +182,32 @@ def create_forum():
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
+@api.route('/comment', methods=['POST'])
+def create_comment():
+    try:
+        
+        data = request.get_json()
+        print(data)
+        content = data.get("content")
+        id_forum = data.get("id_forum")
+        id_user = data.get("id_user") 
 
+        if not content or not id_forum or not id_user:
+            return jsonify({"error": "Faltan datos obligatorios (content, id_forum, id_user)"}), 400
+
+        new_comment = Comment(
+            content = content,
+            id_forum = id_forum,
+            id_user = id_user
+        )
+
+        db.session.add(new_comment)
+        db.session.commit()
+
+        return jsonify({"msg": "comentario creado exitosamente", "comentario": new_comment.serialize()}), 201
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
 
