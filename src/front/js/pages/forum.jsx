@@ -7,6 +7,7 @@ import "../../styles/colors.css";
 export const Forums = () => {
     const { store, actions } = useContext(Context);
     const [modalShows, setModalShows] = useState(false);
+    const navigate = useNavigate();
     // variables del form para crear un foro
     const [forumName, setForumName] = useState('');
     const [forumContent, setForumContent] = useState('');
@@ -15,8 +16,16 @@ export const Forums = () => {
     const [key, setKey] = useState(0);
 
     
-    useEffect(() => {
-        actions.loadForums();
+    useEffect( () => {
+        const loadForums = async () => {
+            const resp = await actions.loadForums();
+            console.log("resp:", resp);
+            if (resp.error) {
+                navigate('/');
+            }
+        };
+        loadForums();
+
     }, []);
 
     useEffect(() => {
@@ -153,7 +162,6 @@ export const Forums = () => {
                     </div>
                 </div>
             </div>
-
         </>
 
     );
