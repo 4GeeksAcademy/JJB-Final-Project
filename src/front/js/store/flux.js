@@ -128,14 +128,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return { error: `${data.msg}`, status: `${resp.status}` }; 
 					}
 
+
+					sessionStorage.setItem("accessToken", data.access_token);
+					// getActions().loadProfile(email);
+					console.log("Token guardado en el localStore.");
+
 			
-					if (data.access_token) {
-						setStore({ userToken: data.access_token});
-						getActions().loadProfile(email);
-						console.log("Token guardado en el store.");
-					}
-			
-					return data;
+					return { data: data, ok: true };
 				} catch (error) {
 					console.error("Error en fetch:", error);
 					return { error: error.message };
