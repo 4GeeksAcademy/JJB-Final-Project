@@ -8,7 +8,7 @@ export const Profile = (props) => {
 	  console.log(store.profile);
 
     useEffect(() => {
-      
+      actions.loadProfile();
     }, []);
 
     return (

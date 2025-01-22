@@ -31,7 +31,7 @@ export const Login = () => {
 
         const response = await actions.sendFormLogin(email, password);
 
-        if (store.userToken) {
+        if (response.ok) {
             console.log("FRONT:", response);
             console.log("store.userToken:", store.userToken);
             alert("Inicio de sesión exitoso");

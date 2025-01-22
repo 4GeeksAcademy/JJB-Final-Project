@@ -1,7 +1,7 @@
 """
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
-from flask import Flask, request, jsonify, url_for, Blueprint
+from flask import Flask, request, jsonify, url_for, Blueprint, current_app
 from api.models import db, User,Forum,Comment
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
@@ -42,11 +42,15 @@ def login():
         if not password:
             return jsonify({"error": "Contraseña requerida"}), 400
         
-        user = User.query.filter_by(email = email, password = password).first()
+        user = User.query.filter_by(email = email).first()
         if user is None:
             return jsonify({"msg": "Email o password incorrectos"}), 404
 
-        access_token = create_access_token(identity= email)
+        valid_password = current_app.bcrypt.check_password_hash(user.password, password)
+        if valid_password is False:
+            return jsonify({"msg": "Email o password incorrectos"}), 404
+
+        access_token = create_access_token(identity = email)
         return jsonify(access_token=access_token),200
     
     except Exception as e:
@@ -83,7 +87,11 @@ def register():
         if user is None:
             user_nickname = User.query.filter_by(nickname = nickname).first()
             if user_nickname is None:
-                new_user = User(email=email, password=password, nickname=nickname)
+                new_user = User(
+                    email=email, 
+                    password=current_app.bcrypt.generate_password_hash(password).decode('utf-8'), 
+                    nickname=nickname
+                )
                 db.session.add(new_user)
                 db.session.commit()
                 return jsonify({"msg": "Usuario registrado exitosamente"}), 201 
@@ -101,27 +109,24 @@ def register():
 
 
 #Jessica
-@api.route('/profile/<string:email>', methods=['GET'])
-def get_profile(email):
+@api.route('/profile', methods=['GET'])
+@jwt_required()
+def get_profile():
 
     try:
-        print(email)
-        print("Email del usuario")  
+        email = get_jwt_identity()
+        print(f"Usuario autenticado: {email}")  
         user = User.query.filter_by(email=email).first()
-        if not user:
-            print("Usuario no encontrado")  
+        if not user: 
             return jsonify({"error": "Usuario no encontrado"}), 404
 
-        
-        print("Datos del perfil:", user.serialize()) 
         return jsonify(user.serialize()), 200
 
     except Exception as e:
-        print("Error:", str(e))
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
     
+    
 #Jessica
-
 @api.route('/forum', methods=['GET'])
 def get_forum():
     try:
