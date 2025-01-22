@@ -19,8 +19,8 @@ export const Forums = () => {
     useEffect( () => {
         const loadForums = async () => {
             const resp = await actions.loadForums();
-            console.log("resp:", resp);
-            if (resp.error) {
+            if (resp.error_access_token) {
+                console.log("resp:", resp);
                 navigate('/');
             }
         };

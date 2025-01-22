@@ -22,7 +22,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
-						return { error: "No autorizado" };
+						return { error_access_token: "No autorizado" };
 					}
 					const response = await fetch(`${process.env.BACKEND_URL}api/profile`, {
 						method: "GET",
@@ -46,14 +46,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
-						return { error: "No autorizado" };
+						return { error_access_token: "No autorizado" };
 					}
 					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`,{
-						method: "POST",
-						body: JSON.stringify({
-							email: email,
-							password: password,
-						}),
+						method: "GET",
 						headers: {
 							"Content-Type": "application/json",
 							"accept": "application/json",
