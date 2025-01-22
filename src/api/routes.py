@@ -136,8 +136,22 @@ def get_forum():
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
     
+#Braulio
+@api.route('/forum/<string:name_foro>', methods=['GET'])
+def get_forum_by_name(name_foro):
+    try:
+        forum = Forum.query.filter_by(title=name_foro).first()
+        if not forum:
+            print("foro no encontrado")  
+            return jsonify({"error": "Foro no encontrado"}), 404
 
-    #Jessica
+        return jsonify(forum.serialize()), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+    
+
+#Jessica
 
 @api.route('/forum', methods=['POST'])
 def create_forum():
