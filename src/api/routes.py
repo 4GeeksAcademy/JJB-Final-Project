@@ -42,11 +42,15 @@ def login():
         if not password:
             return jsonify({"error": "Contraseña requerida"}), 400
         
-        user = User.query.filter_by(email = email, password = password).first()
+        user = User.query.filter_by(email = email).first()
         if user is None:
             return jsonify({"msg": "Email o password incorrectos"}), 404
 
-        access_token = create_access_token(identity= email)
+        valid_password = current_app.bcrypt.check_password_hash(user.password, password)
+        if valid_password is False:
+            return jsonify({"msg": "Email o password incorrectos"}), 404
+
+        access_token = create_access_token(identity = email)
         return jsonify(access_token=access_token),200
     
     except Exception as e:
