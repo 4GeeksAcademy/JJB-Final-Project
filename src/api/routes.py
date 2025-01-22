@@ -85,7 +85,7 @@ def register():
             if user_nickname is None:
                 new_user = User(
                     email=email, 
-                    password=password, 
+                    password=current_app.bcrypt.generate_password_hash(password).decode('utf-8'), 
                     nickname=nickname
                 )
                 db.session.add(new_user)
