@@ -136,6 +136,7 @@ def get_forum():
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
     
+#Braulio
 @api.route('/forum/<string:name_foro>', methods=['GET'])
 def get_forum_by_name(name_foro):
     try:
