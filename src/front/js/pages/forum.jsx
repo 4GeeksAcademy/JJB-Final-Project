@@ -2,11 +2,13 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext.js";
 import { Link, useNavigate } from "react-router-dom";
 import { ForumCard } from "../component/forumCard.jsx";
+import Swal from 'sweetalert2'
 import "../../styles/colors.css";
 
 export const Forums = () => {
     const { store, actions } = useContext(Context);
     const [modalShows, setModalShows] = useState(false);
+    const navigate = useNavigate();
     // variables del form para crear un foro
     const [forumName, setForumName] = useState('');
     const [forumContent, setForumContent] = useState('');
@@ -15,8 +17,16 @@ export const Forums = () => {
     const [key, setKey] = useState(0);
 
     
-    useEffect(() => {
-        actions.loadForums();
+    useEffect( () => {
+        const loadForums = async () => {
+            const resp = await actions.loadForums();
+            if (resp.error_access_token) {
+                console.log("resp:", resp);
+                navigate('/');
+            }
+        };
+        loadForums();
+
     }, []);
 
     useEffect(() => {
@@ -71,11 +81,23 @@ export const Forums = () => {
 
         if (response.error) {
             console.error("FRONT Error al crear un foro:", response.error);
-            alert("Error: " + response.error);
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: "Error: " + response.error,
+                showConfirmButton: false,
+                timer: 3500
+            });
 
         } else {
             console.log("FRONT:", response);
-            alert("Foro creado exitosamente");
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: "Foro creado exitosamente",
+                showConfirmButton: false,
+                timer: 2000
+            });
             setForumName(""); 
             setForumContent(""); 
             setForumNameChanged(false); 
@@ -153,7 +175,6 @@ export const Forums = () => {
                     </div>
                 </div>
             </div>
-
         </>
 
     );

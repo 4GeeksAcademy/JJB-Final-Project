@@ -6,6 +6,8 @@ import { BackendURL } from "./component/backendURL";
 import { ResetPassword } from "./pages/reset-password.jsx";
 import { Register } from "./pages/register.jsx";
 import { Profile } from "./pages/profile.jsx";
+import { ForumDetail } from "./pages/1forum.jsx";
+
 import { Login } from "./pages/login.jsx";
 import { Forums } from "./pages/forum.jsx";
 import { Home } from "./pages/home";
@@ -32,6 +34,7 @@ const Layout = () => {
                     <Routes>
                         <Route element={<Profile />} path="/profile" />
                         <Route element={<Forums />} path="/forums" />
+                        <Route element={<ForumDetail />} path="/forum/:forum_id" />
                         <Route element={<Register />} path="/register" />
                         <Route element={<Login />} path="/" /> 
                         <Route element={<Demo />} path="/demo" />
