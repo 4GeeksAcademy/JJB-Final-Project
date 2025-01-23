@@ -93,6 +93,9 @@ export const Register = () => {
                     </div>
                 </div>
             </div>
+            <div className="text-center mt-5">
+                <Link to="/">Regresar</Link>
+            </div>
         </>
 
     );
