@@ -2,7 +2,9 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link, useNavigate  } from "react-router-dom";
 
+
 import "../../styles/login.css";
+import logo from "../../img/logo_shespace_navbar.png";
 
 export const Register = () => {
     const { actions } = useContext(Context);
@@ -53,7 +55,7 @@ export const Register = () => {
                 <div className="row justify-content-center">
                     <div className="col-lg-4 d-none d-sm-block" id="register">
                         <div className="text-md-center p-5 mt-5">
-                            <h1 className="display-4 fw-bold lh-1 nav-primary-item my-5">Conviertete en miembro</h1>
+                            <h1 className="display-4 fw-bold lh-1 nav-primary-item my-5">Conviertete en miembra</h1>
                             <p className="lead text-black fs-3 mb-5">y disfruta de todos los beneficios</p>
                         </div>
                     </div>
@@ -63,13 +65,13 @@ export const Register = () => {
                                 <form id="formLogin" action="/login" method="POST" className="my-5 border border-1 py-4 px-3 px-lg-4 shadow-lg">
                                     <div className=" d-flex justify-content-center">
                                         {/* en la siguiente linea va el logo */}
-                                        <img className="mb-4" src="" alt="" width="80"
+                                        <img className="mb-4" src={logo} alt="" width="80"
                                             height="80"/>
                                     </div>
                                     <div className="form mb-3 fs-5">
-                                        <label htmlFor="email">Email</label>
+                                        <label htmlFor="email">Correo</label>
                                         <input type="text" className="form-control fs-5" id="email" name="email"
-                                            placeholder="Ingresar email" onChange={EmailChanged}/>
+                                            placeholder="Ingresar un correo" onChange={EmailChanged}/>
                                     </div>
                                     <div className="form mb-3 fs-5">
                                         <label htmlFor="pass">Contraseña</label>
@@ -77,7 +79,7 @@ export const Register = () => {
                                             placeholder="Ingresar contraseña" onChange={PasswordChanged}/>
                                     </div>
                                     <div className="form mb-5 fs-5">
-                                        <label htmlFor="nickname">Nickname</label>
+                                        <label htmlFor="nickname">Apodo</label>
                                         <input type="text" className="form-control fs-5" id="nickname" name="nickname"
                                             placeholder="Ingresar un nickname" onChange={NicknameChanged}/>
                                     </div>
