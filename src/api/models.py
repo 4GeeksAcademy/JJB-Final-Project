@@ -60,6 +60,9 @@ class Forum(db.Model):
             "content": self.content,
             "creation_date": str(self.creation_date),
             "id_user": self.id_user,
+            "nickname": self.user.nickname if self.user else None,
+            "comments": [comment.serialize() for comment in self.comments]  
+
         }
 
 class Comment(db.Model):

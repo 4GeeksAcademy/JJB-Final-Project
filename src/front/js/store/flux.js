@@ -205,9 +205,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 
-			loadForumDetails: async (forum_id) => {
+			loadForumDetails: async (forum_title) => {
                 try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/api/forum/${forum_id}`);
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/forum/${forum_title}`);
                     if (!response.ok) throw new Error("Error al cargar los detalles del foro");
                     const data = await response.json();
                     setStore({ forumDetails: data });

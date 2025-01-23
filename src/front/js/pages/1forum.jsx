@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext.js";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "../../styles/colors.css";
 
 export const ForumDetail = () => {
@@ -10,8 +10,11 @@ export const ForumDetail = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        console.log("forum_id", forum_id);
+
         actions.loadForumDetails(forum_id);
     }, [forum_id]);
+
 
     const handleCommentSubmit = async () => {
         if (comment.trim() === "") {
@@ -36,15 +39,20 @@ export const ForumDetail = () => {
         <div className="container">
             <h1>{store.forumDetails.title}</h1>
             <p>{store.forumDetails.content}</p>
-            <p>Creado por: {store.forumDetails.user.nickname}</p>
+            <p>Creado por: {store.forumDetails.nickname}</p>
             <p>Fecha: {new Date(store.forumDetails.creation_date).toLocaleDateString()}</p>
             <hr />
             <h3>Comentarios</h3>
-            {store.forumDetails.comments.map((comment, index) => (
-                <div key={index}>
-                    <p><strong>{comment.user.nickname}:</strong> {comment.content}</p>
-                </div>
-            ))}
+            {store.forumDetails?.comments?.length > 0 ? (
+                store.forumDetails.comments.map((comment, index) => (
+                    <div key={index}>
+                        <p><strong>{comment.id_user}:</strong> {comment.content}</p>
+                    </div>
+                ))
+            ) : (
+                <h1>No se encontraron Comentarios</h1>
+            )}
+
             <hr />
             <div>
                 <textarea
