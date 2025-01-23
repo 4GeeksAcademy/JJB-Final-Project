@@ -231,14 +231,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 
             addCommentToForum: async (id_forum, content) => {
                 try {
-<<<<<<< HEAD
-                    const token = localStorage.getItem("token");
-=======
 					const token = getActions().checkAcessToken();
 					if (token === null) {
 						return { error_access_token: "No autorizado" };
 					}
->>>>>>> 2a5b1c24c6d6783efcf7f677ce0fd7d19f65730f
                     const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
                         method: "POST",
                         headers: {
@@ -251,13 +247,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							id_user: getStore().profile.id_user
 						}),
                     });
-<<<<<<< HEAD
-					console.log(getStore().profile.id_user);
-					
-                    if (!response.ok) throw new Error("Error al agregar el comentario");
-=======
                     if (!response.ok) {throw new Error("Error al agregar el comentario");}
->>>>>>> 2a5b1c24c6d6783efcf7f677ce0fd7d19f65730f
                     return true;
                 } catch (error) {
                     console.error("Error al agregar el comentario:", error);
