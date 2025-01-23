@@ -4,7 +4,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			message: null,
 			userToken: "",
 			profile: {}, 
-			forums : []
+			forums : [],
+			forumDetails: {},
 		},
 
 		actions: {
@@ -169,8 +170,44 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
+
+
+			loadForumDetails: async (forum_id) => {
+                try {
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/forum/${forum_id}`);
+                    if (!response.ok) throw new Error("Error al cargar los detalles del foro");
+                    const data = await response.json();
+                    setStore({ forumDetails: data });
+                } catch (error) {
+                    console.error("Error cargando los detalles del foro:", error);
+                }
+            },
+
+            addCommentToForum: async (forum_id, content) => {
+                try {
+                    const token = localStorage.getItem("token");
+                    const response = await fetch(`${process.env.BACKEND_URL}/api/comment`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        body: JSON.stringify({ content }),
+                    });
+                    if (!response.ok) throw new Error("Error al agregar el comentario");
+                    return true;
+                } catch (error) {
+                    console.error("Error al agregar el comentario:", error);
+                    return false;
+                }
+            },
+
+			
 		}
 	};
 };
+
+
+
 
 export default getState;
