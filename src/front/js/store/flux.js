@@ -9,6 +9,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 
 		actions: {
+			// FUNCIONES TOKEN
 			checkAcessToken: () => {
 				console.log("-----------checkAcessToken----------------")
 				const token = sessionStorage.getItem("accessToken");
@@ -18,6 +19,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				return token;
 			},
+			logOut: () => {
+				console.log("-----------logOut----------------")
+				sessionStorage.removeItem('accessToken');
+				console.log("Token eliminado del almacenamiento local");
+			},
+
 			loadProfile: async () => {
 				console.log("-----------loadProfile----------------")
 				try {
@@ -71,7 +78,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			
-
 			registerUser: async (email, password, nickname) => {
 
 				try {
@@ -104,10 +110,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				} 
 			},
 
-
-
-			
-
 			getMessage: async () => {
 				try{
 					// fetching data from the backend
@@ -134,6 +136,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			},
+
 			sendFormLogin: async (email, password) => {
 				console.log("-----------sendFormLogIn----------------")
 				try {
@@ -170,20 +173,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
+			
 			sendFormForum: async (forumName, forumContent) => {
 				console.log("-----------sendFormForum----------------")
 				try {
-					console.log("id_user", getStore().profile.id_user)
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
+					}
+					console.log("id_user", getStore().profile.id_user);
 					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`,{
 						method: "POST",
 						body: JSON.stringify({
 							title: forumName,
-							content: forumContent,
-							id_user: getStore().profile.id_user
+							content: forumContent
 						}),
 						headers: {
 						  "Content-Type": "application/json",
-						  "accept": "application/json"
+						  "accept": "application/json",
+						  "Authorization": `Bearer ${token}`, 
+						  "Content-Type": "application/json"
 						}
 					});
 					const data = await resp.json();
@@ -198,16 +207,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
-			logOut: () => {
-				console.log("-----------logOut----------------")
-				sessionStorage.removeItem('accessToken');
-				console.log("Token eliminado del almacenamiento local");
-			},
-
 
 			loadForumDetails: async (forum_title) => {
                 try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/api/forum/${forum_title}`);
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
+					}
+                    const response = await fetch(`${process.env.BACKEND_URL}api/forum/${forum_title}`,{
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${token}`, 
+							"Content-Type": "application/json"
+						}
+					});
                     if (!response.ok) throw new Error("Error al cargar los detalles del foro");
                     const data = await response.json();
                     setStore({ forumDetails: data });
@@ -218,12 +231,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 
             addCommentToForum: async (id_forum, content) => {
                 try {
+<<<<<<< HEAD
                     const token = localStorage.getItem("token");
+=======
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
+					}
+>>>>>>> 2a5b1c24c6d6783efcf7f677ce0fd7d19f65730f
                     const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
+                            "Authorization": `Bearer ${token}`,
                         },
 						body: JSON.stringify({
 							id_forum: id_forum,
@@ -231,9 +251,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 							id_user: getStore().profile.id_user
 						}),
                     });
+<<<<<<< HEAD
 					console.log(getStore().profile.id_user);
 					
                     if (!response.ok) throw new Error("Error al agregar el comentario");
+=======
+                    if (!response.ok) {throw new Error("Error al agregar el comentario");}
+>>>>>>> 2a5b1c24c6d6783efcf7f677ce0fd7d19f65730f
                     return true;
                 } catch (error) {
                     console.error("Error al agregar el comentario:", error);
