@@ -66,7 +66,7 @@ export const Login = () => {
                     <div className="card p-md-3" style={{ width: "18rem" }}>
                         <div className="card-body">
                             <h1 className="text-end">Aún no</h1>
-                            <p className="mb-5 text-end fs-3">eres parte del cambio?</p>
+                            <p className="mb-4 text-end fs-3">eres parte del cambio?</p>
                             <div className="d-grid">
                                 <Link to={"/register"} className="btn btn-primary d-grid" style={{ margin: "0" }}>
                                     Registrarse
