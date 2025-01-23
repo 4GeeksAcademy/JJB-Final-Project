@@ -4,6 +4,7 @@ import "../../styles/colors.css";
 import "../../styles/navbar.css";
 import { Context } from "../store/appContext";
 import { Link, useLocation   } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 
 export const Navbar = () => {
@@ -20,6 +21,13 @@ export const Navbar = () => {
 
 	const handleLogOut = () => {
 		actions.logOut()
+		Swal.fire({
+			position: "top",
+			icon: "info",
+			title: "Se ha cerrado sesion correctamente",
+			showConfirmButton: false,
+			timer: 2000
+		});
 	}
 
 	return (
