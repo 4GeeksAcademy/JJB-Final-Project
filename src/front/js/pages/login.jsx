@@ -39,7 +39,7 @@ export const Login = () => {
                 icon: "success",
                 title: "Inicio de sesión exitoso",
                 showConfirmButton: false,
-                timer: 1500
+                timer: 2000
               });
             navigate("/profile");
 
