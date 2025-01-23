@@ -132,7 +132,7 @@ def get_profile():
 def get_forum():
     try:
         email = get_jwt_identity()
-        print(f"Usuario autenticado oara foros: {email}")  
+        print(f"Usuario autenticado para foros: {email}")  
         forums = Forum.query.all()
         if not forums:
             return jsonify({"error": "No se encontraron foros"}), 404
@@ -145,7 +145,8 @@ def get_forum():
     
 #Braulio
 @api.route('/forum/<int:id_foro>', methods=['GET'])
-def get_forum_by_name(id_foro):
+@jwt_required()
+def get_forum_by_id(id_foro):
     try:
         forum = Forum.query.filter_by(id_forum=id_foro).first()
         if not forum:
@@ -161,23 +162,28 @@ def get_forum_by_name(id_foro):
 #Jessica
 
 @api.route('/forum', methods=['POST'])
+@jwt_required()
 def create_forum():
     try:
-        
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para create_forum: {email}")  
         data = request.get_json()
         print(data)
         title = data.get("title")
         content = data.get("content")
-        id_user = data.get("id_user") 
 
-        if not title or not content or not id_user:
-            return jsonify({"error": "Faltan datos obligatorios (title, content, id_user)"}), 400
+        if not title or not content:
+            return jsonify({"error": "Faltan datos obligatorios (title, content)"}), 400
+        
+        user = User.query.filter_by(email=email).first()
+        if not user: 
+            return jsonify({"error": "Usuario no encontrado"}), 404
 
         new_forum = Forum(
             title=title,
             content=content,
             creation_date=datetime.date.today(),
-            id_user=id_user
+            id_user=user.id_user
         )
 
         db.session.add(new_forum)
@@ -190,22 +196,28 @@ def create_forum():
 
 
 @api.route('/comment', methods=['POST'])
+@jwt_required()
 def create_comment():
     try:
-        
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para create_comment: {email}")  
         data = request.get_json()
         print(data)
         content = data.get("content")
         id_forum = data.get("id_forum")
-        id_user = data.get("id_user") 
 
-        if not content or not id_forum or not id_user:
+
+        if not content or not id_forum:
             return jsonify({"error": "Faltan datos obligatorios (content, id_forum, id_user)"}), 400
+        
+        user = User.query.filter_by(email=email).first()
+        if not user: 
+            return jsonify({"error": "Usuario no encontrado"}), 404
 
         new_comment = Comment(
             content = content,
             id_forum = id_forum,
-            id_user = id_user
+            id_user = user.id_user
         )
 
         db.session.add(new_comment)
