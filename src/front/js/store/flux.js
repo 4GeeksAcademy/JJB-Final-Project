@@ -71,7 +71,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			
-
 			registerUser: async (email, password, nickname) => {
 
 				try {
@@ -103,10 +102,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				} 
 			},
-
-
-
-			
 
 			getMessage: async () => {
 				try{
@@ -173,17 +168,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 			sendFormForum: async (forumName, forumContent) => {
 				console.log("-----------sendFormForum----------------")
 				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
+					}
 					console.log("id_user", getStore().profile.id_user)
 					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`,{
 						method: "POST",
 						body: JSON.stringify({
 							title: forumName,
-							content: forumContent,
-							id_user: getStore().profile.id_user
+							content: forumContent
 						}),
 						headers: {
 						  "Content-Type": "application/json",
-						  "accept": "application/json"
+						  "accept": "application/json",
+						  "Authorization": `Bearer ${token}`, 
+						  "Content-Type": "application/json"
 						}
 					});
 					const data = await resp.json();
@@ -207,7 +207,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			loadForumDetails: async (forum_title) => {
                 try {
-                    const response = await fetch(`${process.env.BACKEND_URL}/api/forum/${forum_title}`);
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
+					}
+                    const response = await fetch(`${process.env.BACKEND_URL}api/forum/${forum_title}`,{
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${token}`, 
+							"Content-Type": "application/json"
+						}
+					});
                     if (!response.ok) throw new Error("Error al cargar los detalles del foro");
                     const data = await response.json();
                     setStore({ forumDetails: data });
@@ -218,16 +228,19 @@ const getState = ({ getStore, getActions, setStore }) => {
 
             addCommentToForum: async (forum_id, content) => {
                 try {
-                    const token = localStorage.getItem("token");
-                    const response = await fetch(`${process.env.BACKEND_URL}/api/comment`, {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
+					}
+                    const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
+                            "Authorization": `Bearer ${token}`,
                         },
                         body: JSON.stringify({ content }),
                     });
-                    if (!response.ok) throw new Error("Error al agregar el comentario");
+                    if (!response.ok) {throw new Error("Error al agregar el comentario");}
                     return true;
                 } catch (error) {
                     console.error("Error al agregar el comentario:", error);

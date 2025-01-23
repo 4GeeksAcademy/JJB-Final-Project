@@ -146,7 +146,7 @@ def get_forum():
 #Braulio
 @api.route('/forum/<int:id_foro>', methods=['GET'])
 @jwt_required()
-def get_forum_by_name(id_foro):
+def get_forum_by_id(id_foro):
     try:
         forum = Forum.query.filter_by(id_forum=id_foro).first()
         if not forum:
