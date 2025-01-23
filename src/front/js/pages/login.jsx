@@ -72,6 +72,13 @@ export const Login = () => {
     }
 
     const handleResetPassword = () => {
+        Swal.fire({
+            position: "top",
+            icon: "success",
+            title: "Redirigiendo para reestablecer contraseña",
+            showConfirmButton: false,
+            timer: 1500
+          });
         navigate("/reset-password");
     };
 
