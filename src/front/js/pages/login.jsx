@@ -65,11 +65,11 @@ export const Login = () => {
                 <div className="col-12 col-md-6 d-flex justify-content-md-end justify-content-center mb-3">
                     <div className="card p-md-3" style={{ width: "18rem" }}>
                         <div className="card-body">
-                            <h1 className="text-center">Not yet</h1>
-                            <p className="mb-5 text-end fs-3">a member?</p>
+                            <h1 className="text-end">Aún no</h1>
+                            <p className="mb-5 text-end fs-3">eres miembra?</p>
                             <div className="d-grid">
                                 <Link to={"/register"} className="btn btn-primary d-grid" style={{ margin: "0" }}>
-                                    Sign In
+                                    Registrarse
                                 </Link>
                             </div>
                         </div>
@@ -80,7 +80,7 @@ export const Login = () => {
                         <div className="card-body">
                             <form>
                                 <div className="mb-1">
-                                    <label htmlFor="email" className="form-label">Email</label>
+                                    <label htmlFor="email" className="form-label">Correo</label>
                                     <input
                                         type="email"
                                         className="form-control"
@@ -91,7 +91,7 @@ export const Login = () => {
                                     />
                                 </div>
                                 <div className="mb-1">
-                                    <label htmlFor="password" className="form-label">Password</label>
+                                    <label htmlFor="password" className="form-label">Contraseña</label>
                                     <input
                                         type="password"
                                         className="form-control"
@@ -107,7 +107,7 @@ export const Login = () => {
                                         disabled={!passEmailChanged}
                                         onClick={sendForm}
                                     >
-                                        Log in
+                                        Iniciar Sesión
                                     </button>
                                 </div>
                             </form>
