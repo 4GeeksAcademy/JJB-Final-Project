@@ -172,7 +172,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (token === null) {
 						return { error_access_token: "No autorizado" };
 					}
-					console.log("id_user", getStore().profile.id_user)
+					console.log("id_user", getStore().profile.id_user);
 					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`,{
 						method: "POST",
 						body: JSON.stringify({
