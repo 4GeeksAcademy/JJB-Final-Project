@@ -8,14 +8,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 
 		actions: {
-
+			checkAcessToken: () => {
+				console.log("-----------checkAcessToken----------------")
+				const token = sessionStorage.getItem("accessToken");
+				if (!token) {
+					console.error("No hay token disponible");
+					return null;
+				}
+				return token;
+			},
 			loadProfile: async () => {
 				console.log("-----------loadProfile----------------")
 				try {
-					const token = sessionStorage.getItem("accessToken");
-					if (!token) {
-						console.error("No hay token disponible");
-						return { error: "No autorizado" };
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
 					}
 					const response = await fetch(`${process.env.BACKEND_URL}api/profile`, {
 						method: "GET",
@@ -35,8 +42,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			loadForums: async () => {
+				console.log("-----------loadForums----------------")
 				try {
-					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`);
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
+					}
+					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`,{
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							"accept": "application/json",
+						  	"Authorization": `Bearer ${token}`, 
+							"Content-Type": "application/json"
+						}
+					});
 					const data = await resp.json();
 					console.log(data);
 					if (!resp.ok) {

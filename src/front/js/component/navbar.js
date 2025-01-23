@@ -58,7 +58,7 @@ export const Navbar = () => {
 							<Link className={`nav-link ${location.pathname === '/forums' ? 'active' : ''}`} to={"/forums"}>Foros</Link>
 						</li>
 						<li className="nav-item">
-							<Link className={`nav-link ${location.pathname === '/' ? 'active' : ''}`} to={"/"}>Publicidad</Link>
+							<Link className={`nav-link disabled ${location.pathname === '/' ? 'active' : ''}`} to={"/"}>Publicidad</Link>
 						</li>
 						<li className="nav-item">
 							<Link className="nav-link btn rounded" to={"/"} onClick={handleLogOut}>Cerrar sesion</Link>

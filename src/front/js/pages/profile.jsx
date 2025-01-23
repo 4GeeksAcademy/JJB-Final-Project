@@ -1,14 +1,23 @@
 import React, { useContext, useState, useEffect} from "react";
 import { Context } from "../store/appContext";
 import "../../styles/profile.css";
-import { Link} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export const Profile = (props) => {
     const { store, actions } = useContext(Context);
+    const navigate = useNavigate();
 	  console.log(store.profile);
 
-    useEffect(() => {
-      actions.loadProfile();
+    useEffect( () => {
+        const loadProfile = async () => {
+            const resp = await actions.loadProfile();
+            if (resp.error_access_token) {
+                console.log("resp:", resp);
+                navigate('/');
+            }
+        };
+        loadProfile();
+
     }, []);
 
     return (
