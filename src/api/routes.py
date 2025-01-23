@@ -144,10 +144,10 @@ def get_forum():
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
     
 #Braulio
-@api.route('/forum/<string:name_foro>', methods=['GET'])
-def get_forum_by_name(name_foro):
+@api.route('/forum/<int:id_foro>', methods=['GET'])
+def get_forum_by_name(id_foro):
     try:
-        forum = Forum.query.filter_by(title=name_foro).first()
+        forum = Forum.query.filter_by(id_forum=id_foro).first()
         if not forum:
             print("foro no encontrado")  
             return jsonify({"error": "Foro no encontrado"}), 404
