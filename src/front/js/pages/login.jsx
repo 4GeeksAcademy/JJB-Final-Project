@@ -11,7 +11,6 @@ export const Login = () => {
     const [emailChanged, setEmailChanged] = useState(false);
     const [passwordChanged, setPasswordChanged] = useState(false);
     const [failedAttempts, setFailedAttempts] = useState(0); 
-    const [showModal, setShowModal] = useState(false); 
     const navigate = useNavigate();
 
     const EmailChanged = (e) => {
@@ -50,23 +49,45 @@ export const Login = () => {
                 console.log("response.status:", response.status);
                 setFailedAttempts((prev) => prev + 1);    
                 if (failedAttempts + 1>= 3) {
-                    setShowModal(true);
-                } 
+                    triggerResetAlert();
+                }else {
+                    Swal.fire({
+                        position: "top",
+                        icon: "error",
+                        title: "Error: " + response.error,
+                        showConfirmButton: false,
+                        timer: 3500
+                    });
+                }
+            } else {
+                Swal.fire({
+                    position: "top",
+                    icon: "error",
+                    title: "Error: " + response.error,
+                    showConfirmButton: false,
+                    timer: 3500
+                });
             }
-            Swal.fire({
-                position: "top",
-                icon: "error",
-                title: "Error: " + response.error,
-                showConfirmButton: false,
-                timer: 3500
-              });
         }
-        
     }
 
     const handleResetPassword = () => {
-        alert("Redirigiendo a restablecer contraseña");
-        setShowModal(false); 
+        navigate("/reset-password");
+    };
+
+    const triggerResetAlert = () => {
+        Swal.fire({
+            icon: "warning",
+            title: "Intentos fallidos",
+            text: "Has alcanzado el número máximo de intentos fallidos para iniciar sesión. ¿Deseas restablecer tu contraseña?",
+            showCancelButton: true,
+            confirmButtonText: "Reestablecer contraseña",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                handleResetPassword();
+            }
+        });
     };
 
     const passEmailChanged = emailChanged && passwordChanged;
@@ -129,28 +150,6 @@ export const Login = () => {
                 </div>
             </div>
         </div>
-        
-        {showModal && 
-        <div className={`modal fade ${showModal ? "show" : ""}`} 
-            id="modal" aria-hidden={!showModal}  
-            style={{ display: showModal ? "block" : "none" }}>
-            <div className="modal-dialog">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h1 className="modal-title fs-5" id="exampleModalLabel">Intentos fallidos</h1>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setShowModal(false)}></button>
-                        </div>
-                    <div className="modal-body">
-                        Has alcanzado el número máximo de intentos fallidos para iniciar sesión.
-                        ¿Deseas restablecer tu contraseña?
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => setShowModal(false)}>Cancel</button>
-                        <Link to="/reset-password" type="button" className="btn btn-primary" onClick={handleResetPassword}>Reestablecer contrasña</Link>
-                    </div>
-                </div>
-            </div>
-        </div>}
         </>
 
     );
