@@ -173,7 +173,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
-			
+
 			sendFormForum: async (forumName, forumContent) => {
 				console.log("-----------sendFormForum----------------")
 				try {
@@ -237,11 +237,14 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
                     const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
                         method: "POST",
+						body: JSON.stringify({
+							content: content,
+							id_forum: forum_id,
+						}),
                         headers: {
                             "Content-Type": "application/json",
                             "Authorization": `Bearer ${token}`,
-                        },
-                        body: JSON.stringify({ content }),
+                        }
                     });
                     if (!response.ok) {throw new Error("Error al agregar el comentario");}
                     return true;
