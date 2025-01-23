@@ -9,6 +9,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 
 		actions: {
+			// FUNCIONES TOKEN
 			checkAcessToken: () => {
 				console.log("-----------checkAcessToken----------------")
 				const token = sessionStorage.getItem("accessToken");
@@ -18,6 +19,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 				return token;
 			},
+			logOut: () => {
+				console.log("-----------logOut----------------")
+				sessionStorage.removeItem('accessToken');
+				console.log("Token eliminado del almacenamiento local");
+			},
+
 			loadProfile: async () => {
 				console.log("-----------loadProfile----------------")
 				try {
@@ -129,6 +136,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			},
+
 			sendFormLogin: async (email, password) => {
 				console.log("-----------sendFormLogIn----------------")
 				try {
@@ -165,6 +173,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
+			
 			sendFormForum: async (forumName, forumContent) => {
 				console.log("-----------sendFormForum----------------")
 				try {
@@ -198,12 +207,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
-			logOut: () => {
-				console.log("-----------logOut----------------")
-				sessionStorage.removeItem('accessToken');
-				console.log("Token eliminado del almacenamiento local");
-			},
-
 
 			loadForumDetails: async (forum_title) => {
                 try {
