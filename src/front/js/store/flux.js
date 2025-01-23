@@ -9,11 +9,29 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 
 		actions: {
-
-			loadProfile: async (email) => {
+			checkAcessToken: () => {
+				console.log("-----------checkAcessToken----------------")
+				const token = sessionStorage.getItem("accessToken");
+				if (!token) {
+					console.error("No hay token disponible");
+					return null;
+				}
+				return token;
+			},
+			loadProfile: async () => {
 				console.log("-----------loadProfile----------------")
 				try {
-					const response = await fetch(`${process.env.BACKEND_URL}api/profile/${email}`);
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
+					}
+					const response = await fetch(`${process.env.BACKEND_URL}api/profile`, {
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${token}`, 
+							"Content-Type": "application/json"
+						}
+					});
 					const data = await response.json();
 					console.log(data);
 					setStore({ profile: data});
@@ -25,8 +43,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			loadForums: async () => {
+				console.log("-----------loadForums----------------")
 				try {
-					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`);
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
+					}
+					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`,{
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							"accept": "application/json",
+						  	"Authorization": `Bearer ${token}`, 
+							"Content-Type": "application/json"
+						}
+					});
 					const data = await resp.json();
 					console.log(data);
 					if (!resp.ok) {
@@ -129,14 +160,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return { error: `${data.msg}`, status: `${resp.status}` }; 
 					}
 
+
+					sessionStorage.setItem("accessToken", data.access_token);
+					console.log("Token guardado en el localStore.");
 			
-					if (data.access_token) {
-						setStore({ userToken: data.access_token});
-						getActions().loadProfile(email);
-						console.log("Token guardado en el store.");
-					}
-			
-					return data;
+					return { data: data, ok: true };
 				} catch (error) {
 					console.error("Error en fetch:", error);
 					return { error: error.message };
@@ -169,6 +197,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error en fetch:", error);
 					return { error: error.message };
 				}
+			},
+			logOut: () => {
+				console.log("-----------logOut----------------")
+				sessionStorage.removeItem('accessToken');
+				console.log("Token eliminado del almacenamiento local");
 			},
 
 

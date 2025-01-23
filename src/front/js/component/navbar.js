@@ -1,12 +1,15 @@
-import React, {useState, useEffect}from "react";
+import React, {useState, useEffect, useContext } from "react";
 import logoNav from "../../img/logo_shespace_navbar.png";
 import "../../styles/colors.css";
 import "../../styles/navbar.css";
+import { Context } from "../store/appContext";
 import { Link, useLocation   } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 
 export const Navbar = () => {
 	const [MenuOpen, setMenuOpen] = useState(false);
+	const { store, actions } = useContext(Context);
 	const location = useLocation();
 
 	const handleToggle = () => {
@@ -14,6 +17,17 @@ export const Navbar = () => {
 	}
 	if (location.pathname === "/" || location.pathname === "/register" || location.pathname === "/login") {
 		return null; 
+	}
+
+	const handleLogOut = () => {
+		actions.logOut()
+		Swal.fire({
+			position: "top",
+			icon: "info",
+			title: "Se ha cerrado sesion correctamente",
+			showConfirmButton: false,
+			timer: 2000
+		});
 	}
 
 	return (
@@ -52,10 +66,10 @@ export const Navbar = () => {
 							<Link className={`nav-link ${location.pathname === '/forums' ? 'active' : ''}`} to={"/forums"}>Foros</Link>
 						</li>
 						<li className="nav-item">
-							<Link className={`nav-link ${location.pathname === '/' ? 'active' : ''}`} to={"/"}>Publicidad</Link>
+							<Link className={`nav-link disabled ${location.pathname === '/' ? 'active' : ''}`} to={"/"}>Publicidad</Link>
 						</li>
 						<li className="nav-item">
-							<Link className="nav-link btn rounded" to={"/"}>Cerrar sesion</Link>
+							<Link className="nav-link btn rounded" to={"/"} onClick={handleLogOut}>Cerrar sesion</Link>
 						</li>
 					</ul>
 				</div>

@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect} from "react";
 import { Context } from "../store/appContext";
 import "../../styles/login.css";
 import { Link, useNavigate  } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 export const Login = () => {
     const { store, actions } = useContext(Context);
@@ -10,7 +11,6 @@ export const Login = () => {
     const [emailChanged, setEmailChanged] = useState(false);
     const [passwordChanged, setPasswordChanged] = useState(false);
     const [failedAttempts, setFailedAttempts] = useState(0); 
-    const [showModal, setShowModal] = useState(false); 
     const navigate = useNavigate();
 
     const EmailChanged = (e) => {
@@ -31,10 +31,16 @@ export const Login = () => {
 
         const response = await actions.sendFormLogin(email, password);
 
-        if (store.userToken) {
+        if (response.ok) {
             console.log("FRONT:", response);
             console.log("store.userToken:", store.userToken);
-            alert("Inicio de sesión exitoso");
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: "Inicio de sesión exitoso",
+                showConfirmButton: false,
+                timer: 2000
+              });
             navigate("/profile");
 
         } else {
@@ -43,17 +49,52 @@ export const Login = () => {
                 console.log("response.status:", response.status);
                 setFailedAttempts((prev) => prev + 1);    
                 if (failedAttempts + 1>= 3) {
-                    setShowModal(true);
-                } 
+                    triggerResetAlert();
+                }else {
+                    Swal.fire({
+                        position: "top",
+                        icon: "error",
+                        title: "Error: " + response.error,
+                        showConfirmButton: false,
+                        timer: 3500
+                    });
+                }
+            } else {
+                Swal.fire({
+                    position: "top",
+                    icon: "error",
+                    title: "Error: " + response.error,
+                    showConfirmButton: false,
+                    timer: 3500
+                });
             }
-            alert("Error: " + response.error);
         }
-        
     }
 
     const handleResetPassword = () => {
-        alert("Redirigiendo a restablecer contraseña");
-        setShowModal(false); 
+        Swal.fire({
+            position: "top",
+            icon: "success",
+            title: "Redirigiendo para reestablecer contraseña",
+            showConfirmButton: false,
+            timer: 1500
+          });
+        navigate("/reset-password");
+    };
+
+    const triggerResetAlert = () => {
+        Swal.fire({
+            icon: "warning",
+            title: "Intentos fallidos",
+            text: "Has alcanzado el número máximo de intentos fallidos para iniciar sesión. ¿Deseas restablecer tu contraseña?",
+            showCancelButton: true,
+            confirmButtonText: "Reestablecer contraseña",
+            cancelButtonText: "Cancelar",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                handleResetPassword();
+            }
+        });
     };
 
     const passEmailChanged = emailChanged && passwordChanged;
@@ -65,11 +106,11 @@ export const Login = () => {
                 <div className="col-12 col-md-6 d-flex justify-content-md-end justify-content-center mb-3">
                     <div className="card p-md-3" style={{ width: "18rem" }}>
                         <div className="card-body">
-                            <h1 className="text-center">Not yet</h1>
-                            <p className="mb-5 text-end fs-3">a member?</p>
+                            <h1 className="text-end">Aún no</h1>
+                            <p className="mb-4 text-end fs-3">eres parte del cambio?</p>
                             <div className="d-grid">
                                 <Link to={"/register"} className="btn btn-primary d-grid" style={{ margin: "0" }}>
-                                    Sign In
+                                    Registrarse
                                 </Link>
                             </div>
                         </div>
@@ -80,18 +121,18 @@ export const Login = () => {
                         <div className="card-body">
                             <form>
                                 <div className="mb-1">
-                                    <label htmlFor="email" className="form-label">Email</label>
+                                    <label htmlFor="email" className="form-label">Correo:</label>
                                     <input
                                         type="email"
                                         className="form-control"
                                         id="email"
-                                        placeholder="name@example.com"
+                                        placeholder="nombre@ejemplo.com"
                                         onChange={EmailChanged}
                                         required
                                     />
                                 </div>
                                 <div className="mb-1">
-                                    <label htmlFor="password" className="form-label">Password</label>
+                                    <label htmlFor="password" className="form-label">Contraseña:</label>
                                     <input
                                         type="password"
                                         className="form-control"
@@ -107,7 +148,7 @@ export const Login = () => {
                                         disabled={!passEmailChanged}
                                         onClick={sendForm}
                                     >
-                                        Log in
+                                        Iniciar Sesión
                                     </button>
                                 </div>
                             </form>
@@ -116,28 +157,6 @@ export const Login = () => {
                 </div>
             </div>
         </div>
-        
-        {showModal && 
-        <div className={`modal fade ${showModal ? "show" : ""}`} 
-            id="modal" aria-hidden={!showModal}  
-            style={{ display: showModal ? "block" : "none" }}>
-            <div className="modal-dialog">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h1 className="modal-title fs-5" id="exampleModalLabel">Intentos fallidos</h1>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={() => setShowModal(false)}></button>
-                        </div>
-                    <div className="modal-body">
-                        Has alcanzado el número máximo de intentos fallidos para iniciar sesión.
-                        ¿Deseas restablecer tu contraseña?
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={() => setShowModal(false)}>Cancel</button>
-                        <Link to="/reset-password" type="button" className="btn btn-primary" onClick={handleResetPassword}>Reestablecer contrasña</Link>
-                    </div>
-                </div>
-            </div>
-        </div>}
         </>
 
     );
