@@ -85,7 +85,7 @@ export const Login = () => {
                                         type="email"
                                         className="form-control"
                                         id="email"
-                                        placeholder="name@example.com"
+                                        placeholder="nombre@ejemplo.com"
                                         onChange={EmailChanged}
                                         required
                                     />
