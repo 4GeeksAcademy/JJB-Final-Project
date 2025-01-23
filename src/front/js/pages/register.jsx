@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
 import { Link, useNavigate  } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 
 import "../../styles/login.css";
@@ -40,10 +41,23 @@ export const Register = () => {
         const response = await actions.registerUser(email, password, nickname);
 
         if (response.status) {
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: "Registro exitoso",
+                showConfirmButton: false,
+                timer: 2000
+            });
             navigate("/");
         } else {
             console.error("FRONT Error al registrar usuario:", response.error);
-            alert("Error: " + response.error);
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: "Error: " + response.error,
+                showConfirmButton: false,
+                timer: 3500
+            });
         }
     }
 
