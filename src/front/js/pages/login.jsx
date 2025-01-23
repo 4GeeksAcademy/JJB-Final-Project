@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect} from "react";
 import { Context } from "../store/appContext";
 import "../../styles/login.css";
 import { Link, useNavigate  } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 export const Login = () => {
     const { store, actions } = useContext(Context);
@@ -34,7 +35,13 @@ export const Login = () => {
         if (response.ok) {
             console.log("FRONT:", response);
             console.log("store.userToken:", store.userToken);
-            alert("Inicio de sesión exitoso");
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: "Inicio de sesión exitoso",
+                showConfirmButton: false,
+                timer: 1500
+              });
             navigate("/profile");
 
         } else {
@@ -46,7 +53,13 @@ export const Login = () => {
                     setShowModal(true);
                 } 
             }
-            alert("Error: " + response.error);
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: "Error: " + response.error,
+                showConfirmButton: false,
+                timer: 3500
+              });
         }
         
     }
