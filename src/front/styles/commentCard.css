@@ -1,0 +1,32 @@
+.card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-body {
+    padding: 15px;
+    background-color: #f9f9f9;
+  }
+  
+  .card-text {
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.5;
+  }
+  
+  .card + .card {
+    margin-top: 10px;
+  }
+  
+  #agregar-comentario {
+    background-color: #007bff;
+    border-color: #0056b3;
+    color: #fff;
+  }
+  
+  #agregar-comentario:hover {
+    background-color: #0056b3;
+    border-color: #003f7f;
+  }
+  
