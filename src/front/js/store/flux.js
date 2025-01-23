@@ -216,17 +216,23 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             },
 
-            addCommentToForum: async (forum_id, content) => {
+            addCommentToForum: async (id_forum, content) => {
                 try {
                     const token = localStorage.getItem("token");
-                    const response = await fetch(`${process.env.BACKEND_URL}/api/comment`, {
+                    const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
                             Authorization: `Bearer ${token}`,
                         },
-                        body: JSON.stringify({ content }),
+						body: JSON.stringify({
+							id_forum: id_forum,
+							content: content,
+							id_user: getStore().profile.id_user
+						}),
                     });
+					console.log(getStore().profile.id_user);
+					
                     if (!response.ok) throw new Error("Error al agregar el comentario");
                     return true;
                 } catch (error) {
