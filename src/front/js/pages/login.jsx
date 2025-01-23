@@ -80,7 +80,7 @@ export const Login = () => {
                         <div className="card-body">
                             <form>
                                 <div className="mb-1">
-                                    <label htmlFor="email" className="form-label">Correo</label>
+                                    <label htmlFor="email" className="form-label">Correo:</label>
                                     <input
                                         type="email"
                                         className="form-control"
@@ -91,7 +91,7 @@ export const Login = () => {
                                     />
                                 </div>
                                 <div className="mb-1">
-                                    <label htmlFor="password" className="form-label">Contraseña</label>
+                                    <label htmlFor="password" className="form-label">Contraseña:</label>
                                     <input
                                         type="password"
                                         className="form-control"

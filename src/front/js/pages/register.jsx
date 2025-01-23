@@ -69,17 +69,17 @@ export const Register = () => {
                                             height="80"/>
                                     </div>
                                     <div className="form mb-3 fs-5">
-                                        <label htmlFor="email">Correo</label>
+                                        <label htmlFor="email">Correo:</label>
                                         <input type="text" className="form-control fs-5" id="email" name="email"
                                             placeholder="Ingresar un correo" onChange={EmailChanged}/>
                                     </div>
                                     <div className="form mb-3 fs-5">
-                                        <label htmlFor="pass">Contraseña</label>
+                                        <label htmlFor="pass">Contraseña:</label>
                                         <input type="password" className="form-control fs-5" id="pass" name="pass"
                                             placeholder="Ingresar contraseña" onChange={PasswordChanged}/>
                                     </div>
                                     <div className="form mb-5 fs-5">
-                                        <label htmlFor="nickname">Apodo</label>
+                                        <label htmlFor="nickname">Apodo:</label>
                                         <input type="text" className="form-control fs-5" id="nickname" name="nickname"
                                             placeholder="Ingresar un nickname" onChange={NicknameChanged}/>
                                     </div>
