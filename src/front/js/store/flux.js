@@ -244,7 +244,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						body: JSON.stringify({
 							id_forum: id_forum,
 							content: content,
-							id_user: getStore().profile.id_user
 						}),
                     });
                     if (!response.ok) {throw new Error("Error al agregar el comentario");}
