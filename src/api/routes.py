@@ -196,22 +196,28 @@ def create_forum():
 
 
 @api.route('/comment', methods=['POST'])
+@jwt_required()
 def create_comment():
     try:
-        
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para create_comment: {email}")  
         data = request.get_json()
         print(data)
         content = data.get("content")
         id_forum = data.get("id_forum")
-        id_user = data.get("id_user") 
 
-        if not content or not id_forum or not id_user:
+
+        if not content or not id_forum:
             return jsonify({"error": "Faltan datos obligatorios (content, id_forum, id_user)"}), 400
+        
+        user = User.query.filter_by(email=email).first()
+        if not user: 
+            return jsonify({"error": "Usuario no encontrado"}), 404
 
         new_comment = Comment(
             content = content,
             id_forum = id_forum,
-            id_user = id_user
+            id_user = user.id_user
         )
 
         db.session.add(new_comment)
