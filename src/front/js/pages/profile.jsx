@@ -20,6 +20,27 @@ export const Profile = (props) => {
 
     }, []);
 
+    const profile_image = async (e) => {
+      console.log(e.target.files);
+      const formData = new FormData()
+
+      formData.append('image',e.target.files[0] )
+      const response = await fetch(`${process.env.BACKEND_URL}api/profile`,{
+        method: "POST",
+        body: formData,
+        headers: {
+          "Content-Type":"multipart/formdata"
+        }
+      })
+
+      const data = await response.json()
+      console.log(data);
+      
+  
+      
+
+    }
+
     return (
         <div className="container-fluid">
           <div className="row">
@@ -99,6 +120,7 @@ export const Profile = (props) => {
               </div>
             </div>
           </div>
+          <input type="file" onChange={profile_image}/>
         </div>
       );
 };

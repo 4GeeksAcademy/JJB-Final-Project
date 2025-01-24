@@ -7,12 +7,21 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re , datetime
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
+import os, cloudinary, cloudinary.uploader
 
 
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
+
+cloudinary.config(
+    cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.environ.get("CLOUDINARY_API_KEY"),
+    api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
+
+
+)
 
 
 @api.route('/hello', methods=['POST', 'GET'])
@@ -227,6 +236,20 @@ def create_comment():
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+
+@api.route('/profile', methods=['POST'])
+def profile_image():
+        image = request.files["image"]
+
+        if not image:
+            return jsonify({"error":"The image is required"}),400
+
+            result = cloudinary.uplouder.upload(image)
+
+            return jsonify(result), 200
+
+        
 
 
 
