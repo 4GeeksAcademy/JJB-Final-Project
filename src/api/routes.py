@@ -65,6 +65,7 @@ def register():
         email = request.json.get("email", None)
         password = request.json.get("password", None)
         nickname = request.json.get("nickname", None)
+        es_mayor = request.json.get("es_mayor", None)
 
         email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 
@@ -82,6 +83,9 @@ def register():
 
         if not nickname:
             return jsonify({"error": "Apodo requerido"}), 400
+        
+        if not es_mayor:
+            return jsonify({"error": "Confirmación de mayoria de edad requerida"}), 400
 
         user = User.query.filter_by(email = email).first()
         if user is None:
@@ -90,7 +94,8 @@ def register():
                 new_user = User(
                     email=email, 
                     password=current_app.bcrypt.generate_password_hash(password).decode('utf-8'), 
-                    nickname=nickname
+                    nickname=nickname,
+                    es_mayor=es_mayor
                 )
                 db.session.add(new_user)
                 db.session.commit()
