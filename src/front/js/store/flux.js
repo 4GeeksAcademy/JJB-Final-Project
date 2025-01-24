@@ -229,7 +229,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             },
 
-            addCommentToForum: async (forum_id, content) => {
+            addCommentToForum: async (id_forum, content) => {
                 try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
@@ -241,7 +241,10 @@ const getState = ({ getStore, getActions, setStore }) => {
                             "Content-Type": "application/json",
                             "Authorization": `Bearer ${token}`,
                         },
-                        body: JSON.stringify({ content }),
+						body: JSON.stringify({
+							id_forum: id_forum,
+							content: content,
+						}),
                     });
                     if (!response.ok) {throw new Error("Error al agregar el comentario");}
                     return true;
