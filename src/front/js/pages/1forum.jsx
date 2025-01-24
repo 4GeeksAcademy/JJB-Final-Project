@@ -12,8 +12,17 @@ export const ForumDetail = () => {
     const [commentChanged, setCommentChanged] = useState(false);
     const { forum_id } = useParams();
 
+
     useEffect(() => {
-        actions.loadForumDetails(forum_id);
+        const loadForumDetails = async () => {
+            const resp = await actions.loadForumDetails(forum_id);
+            if (resp.error) {
+                console.log("resp:", resp);
+                navigate('/');
+            }
+        };
+        loadForumDetails();
+
     }, [forum_id]);
 
     useEffect(() => {
@@ -97,7 +106,7 @@ export const ForumDetail = () => {
                 <h1>No se encontraron Comentarios</h1>
             )}
             <hr />
-            
+
 
             <div
                 className="modal fade mt-5"

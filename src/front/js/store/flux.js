@@ -179,7 +179,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
-						return { error_access_token: "No autorizado" };
+						return { error: "No autorizado" };
 					}
 					console.log("id_user", getStore().profile.id_user);
 					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`,{
@@ -212,7 +212,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
-						return { error_access_token: "No autorizado" };
+						return { error: "No autorizado" };
 					}
                     const response = await fetch(`${process.env.BACKEND_URL}api/forum/${forum_title}`,{
 						method: "GET",
@@ -221,11 +221,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json"
 						}
 					});
-                    if (!response.ok) throw new Error("Error al cargar los detalles del foro");
-                    const data = await response.json();
-                    setStore({ forumDetails: data });
+					const data = await response.json();
+                    if (!response.ok) {return { error: `${data.error}`}; }
+					setStore({ forumDetails: data });
+                    return data; 
                 } catch (error) {
                     console.error("Error cargando los detalles del foro:", error);
+					return { error: error.message };
                 }
             },
 
@@ -233,7 +235,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                 try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
-						return { error_access_token: "No autorizado" };
+						return { error: "No autorizado" };
 					}
                     const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
                         method: "POST",
@@ -246,11 +248,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 							content: content,
 						}),
                     });
-                    if (!response.ok) {throw new Error("Error al agregar el comentario");}
-                    return true;
+					const data = await response.json();
+                    if (!response.ok) {return { error: `${data.error}`}; }
+                    return data;
                 } catch (error) {
                     console.error("Error al agregar el comentario:", error);
-                    return false;
+                    return { error: error.message };
                 }
             },
 
