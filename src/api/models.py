@@ -43,7 +43,7 @@ class User(db.Model):
 class Forum(db.Model):
     id_forum = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     title = db.Column(db.String(120), nullable=False)
-    content = db.Column(db.String(255), nullable=False)
+    content = db.Column(db.Text, nullable=False)
     creation_date = db.Column(db.Date, nullable=False)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)  
     user = db.relationship("User")
