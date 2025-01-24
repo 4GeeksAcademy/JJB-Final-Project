@@ -1,20 +1,28 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext.js";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { CommentCard } from "../component/commentCard.jsx";
+import Swal from "sweetalert2";
 import "../../styles/colors.css";
 
 export const ForumDetail = () => {
     const { store, actions } = useContext(Context);
     const [modalShows, setModalShows] = useState(false);
-    const [comment, setComment] = useState('');
+    const [comment, setComment] = useState("");
     const [commentChanged, setCommentChanged] = useState(false);
-    // const [key, setKey] = useState(0);
     const { forum_id } = useParams();
-    const [loading, setLoading] = useState(false);
+
 
     useEffect(() => {
-        console.log("forum_id", forum_id);
-        actions.loadForumDetails(forum_id);
+        const loadForumDetails = async () => {
+            const resp = await actions.loadForumDetails(forum_id);
+            if (resp.error) {
+                console.log("resp:", resp);
+                navigate('/');
+            }
+        };
+        loadForumDetails();
+
     }, [forum_id]);
 
     useEffect(() => {
@@ -42,54 +50,41 @@ export const ForumDetail = () => {
     }, [modalShows]);
 
     const toggleModal = () => {
-        console.log("toggleModal:", modalShows)
-        setModalShows(!modalShows)
+        setModalShows(!modalShows);
         setComment("");
         setCommentChanged(false);
-    }
+    };
 
     const CommentChanged = (e) => {
         setComment(e.target.value);
-        setCommentChanged(true)
-    }
+        setCommentChanged(true);
+    };
 
     const sendFormComment = async () => {
-        console.log("Se manda formulario creacion comentario")
-        console.log("comment:", comment)
-
-        const response = await actions.addCommentToForum(forum_id,comment);
+        const response = await actions.addCommentToForum(forum_id, comment);
 
         if (response.error) {
-            console.error("FRONT Error al agragar un comentario:", response.error);
-            alert("Error: " + response.error);
-
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: "Error: " + response.error,
+                showConfirmButton: false,
+                timer: 3500
+            });
         } else {
-            console.log("FRONT:", response);
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: "Comentario creado exitosamente",
+                showConfirmButton: false,
+                timer: 2000
+            });
+
             setComment("");
             setCommentChanged(false);
-            // resetCommentCard(); 
             setModalShows(false);
+            await actions.loadForumDetails(forum_id);
         }
-    }
-
-    // const resetCommentCard = () => {
-    //     setKey(prevKey => prevKey + 1);
-    // };
-
-
-    const handleCommentSubmit = async () => {
-        if (comment.trim() === "") {
-            alert("El comentario no puede estar vacío");
-            return;
-        }
-
-        setLoading(true);
-        const success = await actions.addCommentToForum(forum_id, comment);
-        if (success) {
-            setComment(""); // Limpiar el campo del comentario
-            actions.loadForumDetails(forum_id); // Recargar los comentarios
-        }
-        setLoading(false);
     };
 
     if (!store.forumDetails) {
@@ -104,63 +99,52 @@ export const ForumDetail = () => {
             <p>Fecha: {new Date(store.forumDetails.creation_date).toLocaleDateString()}</p>
             <hr />
             <h3>Comentarios</h3>
+            <button onClick={toggleModal}>Agregar comentario</button>
             {store.forumDetails?.comments?.length > 0 ? (
-                store.forumDetails.comments.map((comment, index) => (
-                    <div key={index}>
-                        <p><strong>{comment.id_user}:</strong> {comment.content}</p>
-                    </div>
-                ))
+                <CommentCard />
             ) : (
                 <h1>No se encontraron Comentarios</h1>
             )}
-
             <hr />
 
-            <button onClick={toggleModal}>Agregar comentario</button>
 
-
-
-            {/* <div>
-                <textarea
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    placeholder="Escribe tu comentario aquí..."
-                ></textarea>
-                <button onClick={handleCommentSubmit} disabled={loading}>
-                    {loading ? "Enviando..." : "Comentar"}
-                </button>
-            </div> */}
-
-            <div className="modal fade mt-5"
+            <div
+                className="modal fade mt-5"
                 id="myModal"
                 tabIndex="-1"
                 aria-labelledby="myModalLabel"
                 aria-hidden="true"
-                role="dialog">
+                role="dialog"
+            >
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <button type="button"
+                            <button
+                                type="button"
                                 className="btn-close"
                                 onClick={toggleModal}
                             ></button>
                         </div>
                         <form className="p-3">
-
-
                             <div className="mb-3">
-                                <label htmlFor="contentForum" className="form-label">Descripción</label>
-                                <textarea type="text"
+                                <label htmlFor="contentForum" className="form-label">
+                                    Comentario
+                                </label>
+                                <textarea
+                                    type="text"
                                     className="form-control"
                                     id="contentForum"
                                     onChange={CommentChanged}
                                     value={comment}
                                 />
                             </div>
-
                             <div className="d-grid">
-                                <button type="button"
-                                    style={{ background: 'var( --primary-color)', color: 'var(--text-color)' }}
+                                <button
+                                    type="button"
+                                    style={{
+                                        background: "var(--primary-color)",
+                                        color: "var(--text-color)"
+                                    }}
                                     className="btn btn-primary btn-block"
                                     disabled={!commentChanged}
                                     onClick={sendFormComment}
@@ -172,9 +156,6 @@ export const ForumDetail = () => {
                     </div>
                 </div>
             </div>
-
-
-
         </div>
     );
 };
