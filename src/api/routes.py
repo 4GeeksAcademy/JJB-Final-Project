@@ -216,6 +216,7 @@ def create_comment():
 
         new_comment = Comment(
             content = content,
+            creation_date=datetime.date.today(),
             id_forum = id_forum,
             id_user = user.id_user
         )

@@ -6,25 +6,23 @@ export const CommentCard = () => {
     const { store, actions } = useContext(Context);
     return (
         <div className="container my-5">
-            <div className="row g-4">
-                {store.comments.map((item, index) => (
-                    <div key={index} className="col-md-4">
-                        <div className="card h-100">
-                            <div className="card-body">
-                                <h5 className="card-title">{item.title}</h5>
-                                <p className="card-text">
-                                    {item.content}
-                                </p>
-                                <Link to={`/comment/${item.id_comment}`} className="btn btn-secondary">Entrar</Link>
-                            </div>
-                            <div className="card-footer text-muted">
-                                {item.creation_date}
-                            </div>
+            <div className="d-flex flex-column gap-4">
+                {store.forumDetails.comments.map((comment, index) => (
+                    <div key={index} className="card">
+                        <div className="card-body">
+                            <h5 className="card-title">{comment.nickname}</h5>
+                            <p className="card-text">
+                                {comment.content}
+                            </p>
+                        </div>
+                        <div className="card-footer text-muted">
+                            {comment.creation_date}
                         </div>
                     </div>
                 ))}
             </div>
         </div>
+
     );
 };
 
