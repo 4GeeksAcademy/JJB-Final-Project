@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { Link, useNavigate  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
 
 
@@ -80,26 +80,32 @@ export const Register = () => {
                                     <div className=" d-flex justify-content-center">
                                         {/* en la siguiente linea va el logo */}
                                         <img className="mb-4" src={logo} alt="" width="80"
-                                            height="80"/>
+                                            height="80" />
                                     </div>
                                     <div className="form mb-3 fs-5">
                                         <label htmlFor="email">Correo:</label>
                                         <input type="text" className="form-control fs-5" id="email" name="email"
-                                            placeholder="Ingresar un correo" onChange={EmailChanged}/>
+                                            placeholder="Ingresar un correo" onChange={EmailChanged} />
                                     </div>
                                     <div className="form mb-3 fs-5">
                                         <label htmlFor="pass">Contraseña:</label>
                                         <input type="password" className="form-control fs-5" id="pass" name="pass"
-                                            placeholder="Ingresar contraseña" onChange={PasswordChanged}/>
+                                            placeholder="Ingresar contraseña" onChange={PasswordChanged} />
                                     </div>
-                                    <div className="form mb-5 fs-5">
+                                    <div className="form mb-3 fs-5">
                                         <label htmlFor="nickname">Apodo:</label>
                                         <input type="text" className="form-control fs-5" id="nickname" name="nickname"
-                                            placeholder="Ingresar un nickname" onChange={NicknameChanged}/>
+                                            placeholder="Ingresar un nickname" onChange={NicknameChanged} />
                                     </div>
-                                    
+                                    <div className="form-check mb-3 d-flex justify-content-center">
+                                        <input className="form-check-input fs-5 me-2" type="checkbox" value="" id="flexCheckDefault"/>
+                                            <label className="form-check-label fs-5" for="flexCheckDefault">
+                                                Soy mayor de edad
+                                            </label>
+                                    </div>
+
                                     <button className="w-100 btn btn-lg btn-dark" type="button" disabled={!emailPasswordNicknameChanged}
-                                    onClick={sendForm}>Registrarse</button>
+                                        onClick={sendForm}>Registrarse</button>
                                 </form>
 
                             </div>
