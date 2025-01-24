@@ -50,7 +50,7 @@ export const Register = () => {
         console.log("nickname:", nickname)
         console.log("checkbox:", checkbox)
 
-        const response = await actions.registerUser(email, password, nickname);
+        const response = await actions.registerUser(email, password, nickname, checkbox);
 
         if (response.status) {
             Swal.fire({

@@ -78,7 +78,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 			
-			registerUser: async (email, password, nickname) => {
+			registerUser: async (email, password, nickname, checkbox) => {
 
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}api/register`,{
@@ -88,6 +88,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							email: email,
 							password: password,
 							nickname: nickname,
+							es_mayor:checkbox
 						})
 					})
 
