@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext";
-import { Link, useNavigate  } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2'
 
 
@@ -12,33 +12,45 @@ export const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [nickname, setNickname] = useState('');
+    const [checkbox, setCheckbox] = useState('');
     const [emailChanged, setEmailChanged] = useState(false);
     const [passwordChanged, setPasswordChanged] = useState(false);
     const [nicknameChanged, setNicknameChanged] = useState(false);
+    const [checkboxChanged, setCheckboxChanged] = useState(false);
     const navigate = useNavigate();
 
     const EmailChanged = (e) => {
-        setEmail(e.target.value);
-        setEmailChanged(true)
-    }
+        const newEmail = e.target.value;
+        setEmail(newEmail);
+        setEmailChanged(newEmail !== "");
+    };
 
     const PasswordChanged = (e) => {
-        setPassword(e.target.value);
-        setPasswordChanged(true)
-    }
-
+        const newPassword = e.target.value;
+        setPassword(newPassword);
+        setPasswordChanged(newPassword !== "");
+    };
+    
     const NicknameChanged = (e) => {
-        setNickname(e.target.value);
-        setNicknameChanged(true)
-    }
+        const newNickname = e.target.value;
+        setNickname(newNickname);
+        setNicknameChanged(newNickname !== ""); 
+    };
+    
+    const CheckboxChanged = (e) => {
+        const newCheckboxValue = e.target.checked;
+        setCheckbox(newCheckboxValue);
+        setCheckboxChanged(newCheckboxValue);
+    };
 
     const sendForm = async () => {
         console.log("Se manda formulario")
         console.log("email:", email)
         console.log("password:", password)
         console.log("nickname:", nickname)
+        console.log("checkbox:", checkbox)
 
-        const response = await actions.registerUser(email, password, nickname);
+        const response = await actions.registerUser(email, password, nickname, checkbox);
 
         if (response.status) {
             Swal.fire({
@@ -61,7 +73,7 @@ export const Register = () => {
         }
     }
 
-    const emailPasswordNicknameChanged = emailChanged && passwordChanged && nicknameChanged;
+    const emailPasswordNicknameChanged = emailChanged && passwordChanged && nicknameChanged && checkboxChanged;
 
     return (
         <>
@@ -80,26 +92,33 @@ export const Register = () => {
                                     <div className=" d-flex justify-content-center">
                                         {/* en la siguiente linea va el logo */}
                                         <img className="mb-4" src={logo} alt="" width="80"
-                                            height="80"/>
+                                            height="80" />
                                     </div>
                                     <div className="form mb-3 fs-5">
                                         <label htmlFor="email">Correo:</label>
                                         <input type="text" className="form-control fs-5" id="email" name="email"
-                                            placeholder="Ingresar un correo" onChange={EmailChanged}/>
+                                            placeholder="Ingresar un correo" onChange={EmailChanged} />
                                     </div>
                                     <div className="form mb-3 fs-5">
                                         <label htmlFor="pass">Contraseña:</label>
                                         <input type="password" className="form-control fs-5" id="pass" name="pass"
-                                            placeholder="Ingresar contraseña" onChange={PasswordChanged}/>
+                                            placeholder="Ingresar contraseña" onChange={PasswordChanged} />
                                     </div>
-                                    <div className="form mb-5 fs-5">
+                                    <div className="form mb-3 fs-5">
                                         <label htmlFor="nickname">Apodo:</label>
                                         <input type="text" className="form-control fs-5" id="nickname" name="nickname"
-                                            placeholder="Ingresar un nickname" onChange={NicknameChanged}/>
+                                            placeholder="Ingresar un nickname" onChange={NicknameChanged} />
                                     </div>
-                                    
+
+                                    <div className="form-check mb-3 d-flex justify-content-center">
+                                        <input className="form-check-input fs-5 me-2" type="checkbox" value="" id="flexCheckDefault" onChange={CheckboxChanged}/>
+                                            <label className="form-check-label fs-5" for="flexCheckDefault">
+                                                Soy mayor de edad
+                                            </label>
+                                    </div>
+
                                     <button className="w-100 btn btn-lg btn-dark" type="button" disabled={!emailPasswordNicknameChanged}
-                                    onClick={sendForm}>Registrarse</button>
+                                        onClick={sendForm}>Registrarse</button>
                                 </form>
 
                             </div>
