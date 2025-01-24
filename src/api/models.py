@@ -13,6 +13,7 @@ class User(db.Model):
     role = db.Column(db.String(50), nullable=False, default="usuario")
     avatar_url = db.Column(db.String(255), nullable=False, default="default_avatar_url")
     membership = db.Column(db.String(20), nullable=False, default="free")
+    es_mayor = db.Column(db.Boolean, nullable=False)
     is_active = db.Column(db.Boolean, nullable=False, default=True)
 
     
