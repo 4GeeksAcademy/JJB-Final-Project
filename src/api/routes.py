@@ -238,16 +238,16 @@ def create_comment():
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
-@api.route('/profile', methods=['POST'])
-def profile_image():
+@api.route('/upload', methods=['POST'])
+def upload_image():
         image = request.files["image"]
 
         if not image:
             return jsonify({"error":"The image is required"}),400
 
-            result = cloudinary.uplouder.upload(image)
+        result = cloudinary.uploader.upload(image)
 
-            return jsonify(result), 200
+        return jsonify(result["secure_url"]), 200
 
         
 
