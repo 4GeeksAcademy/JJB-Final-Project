@@ -10,6 +10,7 @@ export const Advertising = () => {
    
     return (
         <>
+        {store.forums.length > 0 ? <ForumCard key={key}/> : <h1> No se encontraron Forums </h1>}
            
         </>
 

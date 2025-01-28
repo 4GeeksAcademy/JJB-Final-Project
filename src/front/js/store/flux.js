@@ -5,6 +5,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userToken: "",
 			profile: {}, 
 			forums : [],
+			advertising : [],
+			forumDetails: {},
 			forumDetails: {},
 		},
 
