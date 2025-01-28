@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import "../../styles/commentCard.css";
 export const CommentCard = (props) => {
     const { store, actions } = useContext(Context);
+    const [editingIndex, setEditingIndex] = useState(null);
+    const [editedContent, setEditedContent] = useState("");
 
     const handleEditClick = (index, currentContent) => {
         setEditingIndex(index);
