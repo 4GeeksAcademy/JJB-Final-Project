@@ -15,8 +15,20 @@ export const Navbar = () => {
 
 	useEffect(()=> {
 		const token = actions.checkAcessToken();
-		token ? setTokenExists(true) : setTokenExists(false)
-	})
+		if(token) {
+			setTokenExists(true) 
+			const loadProfile = async () => {
+				const resp = await actions.loadProfile();
+				if (resp.error_access_token) {
+					console.log("resp:", resp);
+					navigate('/');
+				}
+			};
+			loadProfile();
+		}else {
+			setTokenExists(false)
+		}
+	}, []);
 
 	const handleToggle = () => {
 		setMenuOpen(!MenuOpen);
