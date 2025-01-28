@@ -166,6 +166,7 @@ export const Advertising = () => {
                                         e.target.style.height = `${e.target.scrollHeight}px`;
                                     }}
                                     style={{ overflow: "hidden", resize: "none" }}
+                                    onChange={AdvertisingContentChanged}
                                 ></textarea>
                             </div>
 
