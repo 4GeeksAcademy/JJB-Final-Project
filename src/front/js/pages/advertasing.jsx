@@ -77,6 +77,8 @@ export const Advertising = () => {
         console.log("advertisingContent:", advertisingContent)
 
         const response = await actions.sendFormAdvertising(advertisingName, advertisingContent);
+        console.log(store.Advertising);
+        
 
         if (response.error) {
             console.error("FRONT Error al crear una publicidad:", response.error);
@@ -142,7 +144,6 @@ export const Advertising = () => {
                                 onClick={toggleModal}
                             ></button>
                         </div>
-
 
                         <form className="p-3">
                             <div className="mb-3">

@@ -97,7 +97,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					});
 					const data = await resp.json();
-					console.log(data);
+					console.log("data log advertising",data);
 					if (!resp.ok) {
 						return { error: `${data.error}` }; 
 					}
@@ -265,7 +265,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (!resp.ok) {
 						return { error: `${data.error}`}; 
 					}
-					console.log("BACK Datos devueltos:", data);
+					console.log("DVERTISING:", data);
 					setStore({ advertising: [...getStore().advertising, data.advertising]});
 					return data;
 				} catch (error) {
