@@ -355,3 +355,18 @@ def update_advertising(id_advertising):
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+    
+
+@api.route('/advertising/<int:id_advertising>', methods=['GET'])
+@jwt_required()
+def get_advertising_by_id(id_advertising):
+    try:
+        advertising = Advertising.query.filter_by(id_advertising=id_advertising).first()
+        if not advertising:
+            print("Publicidad no encontrada")  
+            return jsonify({"error": "Publicidad no encontrada"}), 404
+
+        return jsonify(advertising.serialize()), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
