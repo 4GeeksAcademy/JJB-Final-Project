@@ -18,9 +18,9 @@ export const CommentCard = (props) => {
         
         const resp = actions.updateComment(id_comment, editedContent, props.forum); 
         handleResponse(resp);
-        console.log("handleSaveClick, index", index, " props.forum",  props.forum)
+        console.log("handleSaveClick, id_comment", id_comment, " props.forum",  props.forum)
         setEditingIndex(null);
-        setEditedContent("");
+        // setEditedContent("");
     };
 
     const handleDeleteClick = (id_comment) => {
