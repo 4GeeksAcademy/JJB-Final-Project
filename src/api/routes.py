@@ -327,6 +327,23 @@ def delete_comment():
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
+@api.route('/advertising', methods=['GET'])
+@jwt_required()
+def get_advertising():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para publicidad: {email}")  
+        advertising = Advertising.query.all()
+        if not advertising:
+            return jsonify({"error": "No se encontro publicidad"}), 404
+        
+        serialized_advertising = [advertising.serialize() for advertising in advertising]
+        return jsonify(serialized_advertising), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+
 @api.route('/advertising', methods=['POST'])
 @jwt_required()
 def create_advertising():
