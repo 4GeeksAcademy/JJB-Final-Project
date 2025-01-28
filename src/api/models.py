@@ -82,6 +82,7 @@ class Comment(db.Model):
             "id_comment": self.id_comment,
             "content": self.content,
             "creation_date": str(self.creation_date),
+            "modification_date": str(self.modification_date),
             "id_forum": self.id_forum,
             "id_user": self.id_user,
             "nickname": self.user.nickname if self.user else None,
