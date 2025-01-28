@@ -2,8 +2,21 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "../../styles/commentCard.css";
-export const CommentCard = () => {
+export const CommentCard = (props) => {
     const { store, actions } = useContext(Context);
+
+
+    const handleEditClick = (index, currentContent) => {
+        setEditingIndex(index);
+        setEditedContent(currentContent);
+    };
+
+    const handleSaveClick = (index) => {
+        actions.updateComment(index, editedContent, props.forum); 
+        setEditingIndex(null);
+        setEditedContent("");
+    };
+
     return (
         <div className="container my-5">
             <div className="d-flex flex-column gap-4">
