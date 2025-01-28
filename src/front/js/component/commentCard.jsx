@@ -46,10 +46,15 @@ export const CommentCard = (props) => {
                             </div>
                         </div>
                         <div className="card-body">
-                            <h5 className="card-title">{comment.nickname}</h5>
-                            <p className="card-text">
-                                {comment.content}
-                            </p>
+                            {editingIndex === index ? (
+                                <textarea
+                                    className="form-control"
+                                    value={editedContent}
+                                    onChange={(e) => setEditedContent(e.target.value)}
+                                />
+                            ) : (
+                                <p className="card-text">{comment.content}</p>
+                            )}
                         </div>
                         <div className="card-footer text-muted">
                             {comment.creation_date}
