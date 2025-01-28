@@ -345,18 +345,31 @@ const getState = ({ getStore, getActions, setStore }) => {
                     });
 					const data = await response.json();
 					console.log("data", data)
+
                     if (!response.ok) {return { error: `${data.error}`}; }
-					const { new_comment } = data.new_comment;
 
-					const store = getStore();
-					setStore({
-						forumDetails: {
-							...store.forumDetails,
-							comments: new_comment || store.forumDetails.comments, 
-						},
-					});
+					const new_comment = data.new_comment;
+					console.log("new_comment", new_comment)
 
-					setStore({ forumDetails: {...comments, comments} });
+					// const store = getStore();
+					// const actualComments = [...store.forumDetails.comments];
+					// console.log("actualCommentspRIMERO", actualComments)
+					
+					// const index = actualComments.findIndex(comment => comment.id_comment === new_comment.id_comment);
+					// console.log("index", index)
+
+					// if (index !== -1) {
+					// 	console.log("actualComments", actualComments)
+					// 	actualComments[index] = new_comment;
+					// 	console.log("actualCommentsindex", actualComments)
+					
+					// 	setStore({
+					// 		forumDetails: {
+					// 			...store.forumDetails,
+					// 			comments: actualComments,
+					// 		},
+					// 	});
+					// }
                     return data;
                 } catch (error) {
                     console.error("Error al agregar el comentario:", error);
