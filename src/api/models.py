@@ -70,6 +70,7 @@ class Comment(db.Model):
     id_comment = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     content = db.Column(db.Text, nullable=False)
     creation_date = db.Column(db.Date, nullable=False)
+    modification_date = db.Column(db.Date, nullable=False)
     id_forum = db.Column(db.Integer, db.ForeignKey('forum.id_forum'), nullable=False) 
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False) 
 
