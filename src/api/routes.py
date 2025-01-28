@@ -298,6 +298,7 @@ def update_comment():
         # db.session.commit()
 
         # return jsonify({"msg": "comentario creado exitosamente", "comentario": new_comment.serialize()}), 201
+        return jsonify({"msg": "comentario actualizado exitosamente"} ), 201
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500

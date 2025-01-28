@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "../../styles/commentCard.css";
+import Swal from "sweetalert2";
+
 export const CommentCard = (props) => {
     const { store, actions } = useContext(Context);
     const [editingIndex, setEditingIndex] = useState(null);
@@ -13,18 +15,42 @@ export const CommentCard = (props) => {
     };
 
     const handleSaveClick = (index) => {
-        actions.updateComment(index, editedContent, props.forum); 
+        
+        const resp = actions.updateComment(index, editedContent, props.forum); 
+        handleResponse(resp);
         console.log("handleSaveClick, index", index, " props.forum",  props.forum)
         setEditingIndex(null);
         setEditedContent("");
     };
 
     const handleDeleteClick = (index) => {
-        //actions.deleteComment(index, props.forum); 
+        //const resp = actions.deleteComment(index, props.forum); 
+        //handleResponse(resp);
         console.log("handleDeleteClick, index", index, " props.forum",  props.forum)
         setEditingIndex(null);
         setEditedContent("");
     };
+
+    const handleResponse = (resp) => {
+        if (resp.error) {
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: "Error: " + resp.error,
+                showConfirmButton: false,
+                timer: 3500
+            });
+        } else {
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: "Comentario editado exitosamente",
+                showConfirmButton: false,
+                timer: 2000
+            });
+        }
+    };
+    
 
     return (
         <div className="container my-5">
@@ -62,7 +88,7 @@ export const CommentCard = (props) => {
                                     className="btn btn-secondary"
                                         onClick={() => handleDeleteClick(index)}
                                     >
-                                        <i class="fa-solid fa-trash"></i>
+                                        <i className="fa-solid fa-trash"></i>
                                     </button>                                                                                
                                 )}
                             </div>

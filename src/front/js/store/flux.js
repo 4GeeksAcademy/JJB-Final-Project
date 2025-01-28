@@ -324,6 +324,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
             updateComment: async (index, content, forum) => {
 				console.log("-----------updateComment----------------")
+				console.log("index", index, "content", content, "forum",  forum)
                 try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
@@ -336,7 +337,8 @@ const getState = ({ getStore, getActions, setStore }) => {
                             "Authorization": `Bearer ${token}`,
                         },
 						body: JSON.stringify({
-							id_forum: id_forum,
+							comment_index: index,
+							id_forum: forum,
 							content: content,
 						}),
                     });
