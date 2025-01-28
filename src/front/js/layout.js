@@ -10,6 +10,7 @@ import { ForumDetail } from "./pages/1forum.jsx";
 
 import { Login } from "./pages/login.jsx";
 import { Forums } from "./pages/forum.jsx";
+import { Advertising } from "./pages/advertasing.jsx";
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
@@ -34,6 +35,7 @@ const Layout = () => {
                     <Routes>
                         <Route element={<Profile />} path="/profile" />
                         <Route element={<Forums />} path="/forums" />
+                        <Route element={<Advertising />} path="/advertising" />
                         <Route element={<ForumDetail />} path="/forum/:forum_id" />
                         <Route element={<Register />} path="/register" />
                         <Route element={<Login />} path="/" /> 
