@@ -243,12 +243,13 @@ def create_comment():
         data = request.get_json()
         print(data)
         
-        content = data.get("content")
-        id_forum = data.get("id_forum")
+        content = request.json.get("content", None)
+        id_forum = request.json.get("id_forum", None)
+        parent_id = request.json.get("parent_id", None)
 
 
         if not content or not id_forum:
-            return jsonify({"error": "Faltan datos obligatorios (content, id_forum, id_user)"}), 400
+            return jsonify({"error": "Faltan datos obligatorios (content, id_forum)"}), 400
         
         user = User.query.filter_by(email=email).first()
         if not user: 
@@ -258,7 +259,8 @@ def create_comment():
             content = content,
             creation_date=datetime.date.today(),
             id_forum = id_forum,
-            id_user = user.id_user
+            id_user = user.id_user,
+            parent_id=parent_id
         )
 
         db.session.add(new_comment)
