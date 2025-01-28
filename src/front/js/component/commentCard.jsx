@@ -9,6 +9,28 @@ export const CommentCard = () => {
             <div className="d-flex flex-column gap-4">
                 {store.forumDetails.comments.map((comment, index) => (
                     <div key={index} className="card">
+                        <div className="card-header d-flex">
+                            <h5 className="card-title flex-grow-1">{comment.nickname}</h5>
+                            <div className="">
+                                {comment.nickname === store.profile.nickname && (
+                                    editingIndex === index ? (
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() => handleSaveClick(index)}
+                                        >
+                                            Guardar
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className="btn btn-secondary"
+                                            onClick={() => handleEditClick(index, comment.content)}
+                                        >
+                                            Editar
+                                        </button>
+                                    )
+                                )}
+                            </div>
+                        </div>
                         <div className="card-body">
                             <h5 className="card-title">{comment.nickname}</h5>
                             <p className="card-text">
