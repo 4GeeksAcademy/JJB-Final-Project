@@ -242,6 +242,7 @@ def create_comment():
         print(f"Usuario autenticado para create_comment: {email}")  
         data = request.get_json()
         print(data)
+        
         content = data.get("content")
         id_forum = data.get("id_forum")
 
@@ -272,33 +273,26 @@ def create_comment():
 @jwt_required()
 def update_comment():
     try:
-        # email = get_jwt_identity()
-        # print(f"Usuario autenticado para create_comment: {email}")  
-        # data = request.get_json()
-        # print(data)
-        # content = data.get("content")
-        # id_forum = data.get("id_forum")
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para create_comment: {email}")  
 
+        comment_index = request.json.get("comment_index", None)
+        id_forum = request.json.get("id_forum", None)
+        content = request.json.get("content", None)
 
-        # if not content or not id_forum:
-        #     return jsonify({"error": "Faltan datos obligatorios (content, id_forum, id_user)"}), 400
+        if not comment_index or not id_forum or not content :
+            return jsonify({"error": "Faltan datos obligatorios (content, id_forum, comment_index)"}), 400
         
-        # user = User.query.filter_by(email=email).first()
-        # if not user: 
-        #     return jsonify({"error": "Usuario no encontrado"}), 404
+        comment = Comment.query.filter_by(id_comment=comment_index).first()
+        if not comment: 
+            return jsonify({"error": "Comentario no encontrado"}), 404
 
-        # new_comment = Comment(
-        #     content = content,
-        #     creation_date=datetime.date.today(),
-        #     id_forum = id_forum,
-        #     id_user = user.id_user
-        # )
+        comment.content = content
+        comment.modification_date = datetime.date.today()
 
-        # db.session.add(new_comment)
-        # db.session.commit()
+        db.session.commit()
 
-        # return jsonify({"msg": "comentario creado exitosamente", "comentario": new_comment.serialize()}), 201
-        return jsonify({"msg": "comentario actualizado exitosamente"} ), 201
+        return jsonify({"msg": "Comentario actualizado exitosamente", "comentario": comment.serialize()}), 200
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
