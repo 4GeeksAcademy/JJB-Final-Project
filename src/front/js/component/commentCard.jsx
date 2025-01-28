@@ -5,7 +5,6 @@ import "../../styles/commentCard.css";
 export const CommentCard = (props) => {
     const { store, actions } = useContext(Context);
 
-
     const handleEditClick = (index, currentContent) => {
         setEditingIndex(index);
         setEditedContent(currentContent);
