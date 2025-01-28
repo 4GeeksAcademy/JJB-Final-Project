@@ -297,6 +297,29 @@ const getState = ({ getStore, getActions, setStore }) => {
                 }
             },
 
+			loadAdvertisingDetail: async (advertising_title) => {
+                try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+                    const response = await fetch(`${process.env.BACKEND_URL}api/advertising/${advertising_title}`,{
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${token}`, 
+							"Content-Type": "application/json"
+						}
+					});
+					const data = await response.json();
+                    if (!response.ok) {return { error: `${data.error}`}; }
+					setStore({ advertisingDetail: data });
+                    return data; 
+                } catch (error) {
+                    console.error("Error cargando los detalles de la publicidad:", error);
+					return { error: error.message };
+                }
+            },
+
             addCommentToForum: async (id_forum, content) => {
                 try {
 					const token = getActions().checkAcessToken();
