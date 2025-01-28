@@ -89,7 +89,7 @@ class Comment(db.Model):
 class Advertising(db.Model):
     id_advertising = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     title = db.Column(db.String(120), nullable=False)
-    content = db.Column(db.String(255), nullable=False)
+    content = db.Column(db.Text, nullable=False)
     creation_date = db.Column(db.Date, nullable=False)
     active = db.Column(db.Boolean, nullable=False, default=True)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)  
