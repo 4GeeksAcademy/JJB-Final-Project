@@ -7,6 +7,23 @@ import "../../styles/colors.css";
 
 export const AdvertisingDetail = () => {
     const { store, actions } = useContext(Context);
+    const { advertising_id } = useParams();
+
+    useEffect(() => {
+        const loadAdvertisingDetail = async () => {
+            const resp = await actions.loadAdvertisingDetail(advertising_id);
+            if (resp.error) {
+                console.log("resp:", resp);
+                navigate('/');
+            }
+        };
+        loadAdvertisingDetail();
+
+    }, [advertising_id]);
+
+    if (!store.advertisingDetail) {
+        return <h1>Cargando...</h1>;
+    }
 
     return (
         <div className="container">
