@@ -131,7 +131,7 @@ def get_profile():
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
     
     
-#Jessica
+#Jessica get foros
 @api.route('/forum', methods=['GET'])
 @jwt_required()
 def get_forum():
@@ -148,7 +148,7 @@ def get_forum():
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
     
-#Braulio
+#get 1 forum
 @api.route('/forum/<int:id_foro>', methods=['GET'])
 @jwt_required()
 def get_forum_by_id(id_foro):
@@ -163,41 +163,42 @@ def get_forum_by_id(id_foro):
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
     
-
-#Jessica
-
-@api.route('/forum', methods=['POST'])
+#put 1 foro
+@api.route('/forum/<int:id_foro>', methods=['PUT'])
 @jwt_required()
-def create_forum():
+def update_forum(id_foro):
     try:
-        email = get_jwt_identity()
-        print(f"Usuario autenticado para create_forum: {email}")  
+        forum = Forum.query.filter_by(id_forum=id_foro).first()
+        if not forum:
+            return jsonify({"error": "Foro no encontrado"}), 404
+
         data = request.get_json()
-        print(data)
-        title = data.get("title")
-        content = data.get("content")
 
-        if not title or not content:
-            return jsonify({"error": "Faltan datos obligatorios (title, content)"}), 400
-        
-        user = User.query.filter_by(email=email).first()
-        if not user: 
-            return jsonify({"error": "Usuario no encontrado"}), 404
+        forum.title = data.get('title', forum.title)
+        forum.content = data.get('content', forum.content)
 
-        new_forum = Forum(
-            title=title,
-            content=content,
-            creation_date=datetime.date.today(),
-            id_user=user.id_user
-        )
-
-        db.session.add(new_forum)
         db.session.commit()
-
-        return jsonify({"msg": "Foro creado exitosamente", "forum": new_forum.serialize()}), 201
+        return jsonify(forum.serialize()), 200
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+#delete 1 forum
+@api.route('/forum/<int:id_foro>', methods=['DELETE'])
+@jwt_required()
+def delete_forum(id_foro):
+    try:
+        forum = Forum.query.filter_by(id_forum=id_foro).first()
+        if not forum:
+            return jsonify({"error": "Foro no encontrado"}), 404
+
+        db.session.delete(forum)
+        db.session.commit()
+        return jsonify({"message": "Foro eliminado exitosamente"}), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
 
 
 @api.route('/comment', methods=['POST'])
