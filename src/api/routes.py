@@ -300,5 +300,36 @@ def update_comment():
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
+@api.route('/comment', methods=['DELETE'])
+@jwt_required()
+def delete_comment():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para update_comment: {email}")  
+
+        comment_index = request.json.get("comment_index", None)
+        id_forum = request.json.get("id_forum", None)
+        content = request.json.get("content", None)
+
+        print(f"Datos recibidos: comment_index={comment_index}, id_forum={id_forum}, content={content}")
+        if comment_index is None or id_forum is None or not content:
+            return jsonify({"error": "Faltan datos obligatorios (content, id_forum, comment_index)"}), 400
+              
+        comment = Comment.query.filter_by(id_comment=comment_index).first()
+        print(f"comment: {comment.id_comment}") 
+        if not comment: 
+            return jsonify({"error": "Comentario no encontrado"}), 404
+
+        comment.content = content
+        comment.modification_date = datetime.date.today()
+
+        db.session.commit()
+
+        return jsonify({"msg": "Comentario actualizado exitosamente", "new_comment": comment.serialize()}), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+
 
 

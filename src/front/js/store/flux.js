@@ -382,7 +382,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return { error: "No autorizado" };
 					}
                     const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
-                        method: "PUT",
+                        method: "DELETE",
                         headers: {
                             "Content-Type": "application/json",
                             "Authorization": `Bearer ${token}`,
