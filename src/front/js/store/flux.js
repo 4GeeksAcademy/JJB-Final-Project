@@ -87,7 +87,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (token === null) {
 						return { error_access_token: "No autorizado" };
 					}
-					const resp = await fetch(`${process.env.BACKEND_URL}api/advertinsing`,{
+					const resp = await fetch(`${process.env.BACKEND_URL}api/advertising`,{
 						method: "GET",
 						headers: {
 							"Content-Type": "application/json",
