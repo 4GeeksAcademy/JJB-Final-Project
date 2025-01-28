@@ -268,6 +268,39 @@ def create_comment():
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
+@api.route('/comment', methods=['PUT'])
+@jwt_required()
+def update_comment():
+    try:
+        # email = get_jwt_identity()
+        # print(f"Usuario autenticado para create_comment: {email}")  
+        # data = request.get_json()
+        # print(data)
+        # content = data.get("content")
+        # id_forum = data.get("id_forum")
+
+
+        # if not content or not id_forum:
+        #     return jsonify({"error": "Faltan datos obligatorios (content, id_forum, id_user)"}), 400
+        
+        # user = User.query.filter_by(email=email).first()
+        # if not user: 
+        #     return jsonify({"error": "Usuario no encontrado"}), 404
+
+        # new_comment = Comment(
+        #     content = content,
+        #     creation_date=datetime.date.today(),
+        #     id_forum = id_forum,
+        #     id_user = user.id_user
+        # )
+
+        # db.session.add(new_comment)
+        # db.session.commit()
+
+        # return jsonify({"msg": "comentario creado exitosamente", "comentario": new_comment.serialize()}), 201
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
 

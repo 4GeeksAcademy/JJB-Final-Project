@@ -13,7 +13,7 @@ export const CommentCard = (props) => {
     };
 
     const handleSaveClick = (index) => {
-        //actions.updateComment(index, editedContent, props.forum); 
+        actions.updateComment(index, editedContent, props.forum); 
         console.log("handleSaveClick, index", index, " props.forum",  props.forum)
         setEditingIndex(null);
         setEditedContent("");
