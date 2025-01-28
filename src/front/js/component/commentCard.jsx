@@ -24,9 +24,9 @@ export const CommentCard = (props) => {
     };
 
     const handleDeleteClick = (id_comment) => {
-        const resp = actions.deleteComment(index, props.forum); 
+        const resp = actions.deleteComment(id_comment); 
         handleResponse(resp);
-        console.log("handleDeleteClick, id_comment", id_comment, " props.forum",  props.forum)
+        console.log("handleDeleteClick, id_comment", id_comment)
         setEditingIndex(null);
         setEditedContent("");
     };

@@ -373,9 +373,9 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return { error: error.message };
                 }
             },
-			deleteComment: async (id_comment, content, forum) => {
+			deleteComment: async (id_comment) => {
 				console.log("-----------deleteComment----------------")
-				console.log("id_comment", id_comment, "content", content, "forum",  forum)
+				console.log("id_comment", id_comment)
                 try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
@@ -388,9 +388,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                             "Authorization": `Bearer ${token}`,
                         },
 						body: JSON.stringify({
-							comment_index: id_comment,
-							id_forum: forum,
-							content: content,
+							comment_index: id_comment
 						}),
                     });
 					const data = await response.json();
@@ -398,24 +396,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 
                     if (!response.ok) {return { error: `${data.error}`}; }
 
-					const new_comment = data.new_comment;
-					console.log("new_comment", new_comment)
-
 					const store = getStore();
-					const actualComments = store.forumDetails.comments;
-					
-					const index = actualComments.findIndex(comment => comment.id_comment === new_comment.id_comment);
 
-					if (index !== -1) {
-						actualComments[index] = new_comment;
 					
-						setStore({
-							forumDetails: {
-								...store.forumDetails,
-								comments: actualComments,
-							},
-						});
-					}
+					const updatedComments = store.forumDetails.comments.filter(
+						(comment) => comment.id_comment !== id_comment
+					);
+			
+					// Actualizar el store
+					setStore({
+						forumDetails: {
+							...store.forumDetails,
+							comments: updatedComments,
+						},
+					});
                     return data;
                 } catch (error) {
                     console.error("Error al agregar el comentario:", error);
