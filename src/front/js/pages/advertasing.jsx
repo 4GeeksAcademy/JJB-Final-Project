@@ -11,6 +11,18 @@ export const Advertising = () => {
     return (
         <>
         {store.forums.length > 0 ? <ForumCard key={key}/> : <h1> No se encontraron Forums </h1>}
+        <div className="container">
+                <div className="row">
+                    <div className="col d-flex justify-content-center" >
+                        <div className="btn" 
+                            style={{background: 'var( --primary-color)', color: 'var(--text-color)'}}
+                            // onClick={toggleModal}
+                            >
+                            Crear Publicidad
+                        </div>
+                    </div>
+                </div>
+            </div>
            
         </>
 
