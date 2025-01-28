@@ -14,12 +14,14 @@ export const CommentCard = (props) => {
 
     const handleSaveClick = (index) => {
         //actions.updateComment(index, editedContent, props.forum); 
+        console.log("handleSaveClick, index", index, " props.forum",  props.forum)
         setEditingIndex(null);
         setEditedContent("");
     };
 
     const handleDeleteClick = (index) => {
         //actions.deleteComment(index, props.forum); 
+        console.log("handleDeleteClick, index", index, " props.forum",  props.forum)
         setEditingIndex(null);
         setEditedContent("");
     };
