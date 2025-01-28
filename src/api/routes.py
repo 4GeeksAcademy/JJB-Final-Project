@@ -319,3 +319,19 @@ def get_advertising():
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+
+@api.route('/advertising/<int:id_advertising>', methods=['DELETE'])
+@jwt_required()
+def delete_advertising(id_advertising):
+    try:
+        advertising = Advertising.query.filter_by(id_advertising=id_advertising).first()
+        if not advertising:
+            return jsonify({"error": "Publicidad no encontrado"}), 404
+
+        db.session.delete(advertising)
+        db.session.commit()
+        return jsonify({"message": "Publicidad eliminada exitosamente"}), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
