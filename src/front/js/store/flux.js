@@ -5,6 +5,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userToken: "",
 			profile: {}, 
 			forums : [],
+			advertising : [],
+			forumDetails: {},
 			forumDetails: {},
 		},
 
@@ -71,6 +73,35 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return { error: `${data.error}` }; 
 					}
 					setStore({ forums: data});
+					return data;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+
+			loadAdvertising: async () => {
+				console.log("-----------loadAdvertising----------------")
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
+					}
+					const resp = await fetch(`${process.env.BACKEND_URL}api/advertising`,{
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							"accept": "application/json",
+						  	"Authorization": `Bearer ${token}`, 
+							"Content-Type": "application/json"
+						}
+					});
+					const data = await resp.json();
+					console.log(data);
+					if (!resp.ok) {
+						return { error: `${data.error}` }; 
+					}
+					setStore({ advertising: data});
 					return data;
 				} catch (error) {
 					console.error("Error en fetch:", error);
@@ -202,6 +233,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 					}
 					console.log("BACK Datos devueltos:", data);
 					setStore({ forums: [...getStore().forums, data.forum]});
+					return data;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+
+			sendFormAdvertising: async (advertisingName, advertisingContent) => {
+				console.log("-----------sendFormAdvertising----------------")
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+					console.log("id_user", getStore().profile.id_user);
+					const resp = await fetch(`${process.env.BACKEND_URL}api/advertising`,{
+						method: "POST",
+						body: JSON.stringify({
+							title: advertisingName,
+							content: advertisingContent
+						}),
+						headers: {
+						  "Content-Type": "application/json",
+						  "accept": "application/json",
+						  "Authorization": `Bearer ${token}`, 
+						  "Content-Type": "application/json"
+						}
+					});
+					const data = await resp.json();
+					if (!resp.ok) {
+						return { error: `${data.error}`}; 
+					}
+					console.log("BACK Datos devueltos:", data);
+					setStore({ advertising: [...getStore().advertising, data.advertising]});
 					return data;
 				} catch (error) {
 					console.error("Error en fetch:", error);
