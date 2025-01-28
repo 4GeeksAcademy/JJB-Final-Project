@@ -327,11 +327,31 @@ def delete_advertising(id_advertising):
     try:
         advertising = Advertising.query.filter_by(id_advertising=id_advertising).first()
         if not advertising:
-            return jsonify({"error": "Publicidad no encontrado"}), 404
+            return jsonify({"error": "Publicidad no encontrada"}), 404
 
         db.session.delete(advertising)
         db.session.commit()
         return jsonify({"message": "Publicidad eliminada exitosamente"}), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+    
+
+@api.route('/advertising/<int:id_advertising>', methods=['PUT'])
+@jwt_required()
+def update_advertising(id_advertising):
+    try:
+        advertising = Advertising.query.filter_by(id_advertising=id_advertising).first()
+        if not advertising:
+            return jsonify({"error": "Publicidad no encontrada"}), 404
+
+        data = request.get_json()
+
+        advertising.title = data.get('title', advertising.title)
+        advertising.content = data.get('content', advertising.content)
+
+        db.session.commit()
+        return jsonify(advertising.serialize()), 200
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
