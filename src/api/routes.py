@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
-from api.models import db, User,Forum,Comment
+from api.models import db, User,Forum,Comment,Advertising
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re , datetime
@@ -270,5 +270,52 @@ def create_comment():
 
 
 
+@api.route('/advertising', methods=['POST'])
+@jwt_required()
+def create_advertising():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para create_advertising: {email}")  
+        data = request.get_json()
+        print(data)
+        title = data.get("title")
+        content = data.get("content")
 
+        if not title or not content:
+            return jsonify({"error": "Faltan datos obligatorios (title, content)"}), 400
+        
+        user = User.query.filter_by(email=email).first()
+        if not user: 
+            return jsonify({"error": "Usuario no encontrado"}), 404
 
+        new_advertising = Advertising(
+            title=title,
+            content=content,
+            creation_date=datetime.date.today(),
+            id_user=user.id_user,
+            active = True
+        )
+
+        db.session.add(new_advertising)
+        db.session.commit()
+
+        return jsonify({"msg": "Publicidad creada exitosamente", "advertising": new_advertising.serialize()}), 201
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+@api.route('/advertising', methods=['GET'])
+@jwt_required()
+def get_advertising():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para advertising: {email}")  
+        advertising = Advertising.query.all()
+        if not advertising:
+            return jsonify({"error": "No se encontro publicidad"}), 404
+        
+        serialized_advertising = [advertising.serialize() for advertising in advertising]
+        return jsonify(serialized_advertising), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
