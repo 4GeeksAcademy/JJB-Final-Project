@@ -11,7 +11,6 @@ import { ForumDetail } from "./pages/1forum.jsx";
 import { Login } from "./pages/login.jsx";
 import { Forums } from "./pages/forum.jsx";
 import { Advertising } from "./pages/advertasing.jsx";
-import { AdvertisingDetail } from "./pages/advertisingDetail.jsx";
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
