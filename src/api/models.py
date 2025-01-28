@@ -86,7 +86,7 @@ class Comment(db.Model):
             "nickname": self.user.nickname if self.user else None,
         }
 
-class Advertinsing(db.Model):
+class Advertising(db.Model):
     id_advertinsing = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     title = db.Column(db.String(120), nullable=False)
     content = db.Column(db.String(255), nullable=False)
