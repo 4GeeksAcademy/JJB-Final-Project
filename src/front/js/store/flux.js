@@ -373,6 +373,55 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return { error: error.message };
                 }
             },
+			deleteComment: async (id_comment, content, forum) => {
+				console.log("-----------deleteComment----------------")
+				console.log("id_comment", id_comment, "content", content, "forum",  forum)
+                try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+                    const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`,
+                        },
+						body: JSON.stringify({
+							comment_index: id_comment,
+							id_forum: forum,
+							content: content,
+						}),
+                    });
+					const data = await response.json();
+					console.log("data", data)
+
+                    if (!response.ok) {return { error: `${data.error}`}; }
+
+					const new_comment = data.new_comment;
+					console.log("new_comment", new_comment)
+
+					const store = getStore();
+					const actualComments = store.forumDetails.comments;
+					
+					const index = actualComments.findIndex(comment => comment.id_comment === new_comment.id_comment);
+
+					if (index !== -1) {
+						actualComments[index] = new_comment;
+					
+						setStore({
+							forumDetails: {
+								...store.forumDetails,
+								comments: actualComments,
+							},
+						});
+					}
+                    return data;
+                } catch (error) {
+                    console.error("Error al agregar el comentario:", error);
+                    return { error: error.message };
+                }
+            },
 			
 		}
 	};
