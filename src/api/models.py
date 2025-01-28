@@ -73,19 +73,35 @@ class Comment(db.Model):
     modification_date = db.Column(db.Date, nullable=True)
     id_forum = db.Column(db.Integer, db.ForeignKey('forum.id_forum'), nullable=False) 
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False) 
+    parent_id = db.Column(db.Integer, db.ForeignKey("comment.id"), nullable=True)
+
+    parent = db.relationship("Comment", remote_side=[id], backref="children")
 
     def __repr__(self):
         return f'<Comment {self.id_comment}>'
 
-    def serialize(self):
+    def serialize(self, visited=None):
+        if visited is None:
+            visited = set()  
+
+        if self.id in visited:
+            return None  
+
+        visited.add(self.id)
+
         return {
-            "id_comment": self.id_comment,
+            "id_comment": self.id,
             "content": self.content,
             "creation_date": str(self.creation_date),
-            "modification_date": str(self.modification_date),
-            "id_forum": self.id_forum,
+            "modification_date": str(self.modification_date) if self.modification_date else None,
             "id_user": self.id_user,
+            "id_forum": self.id_forum,
             "nickname": self.user.nickname if self.user else None,
+            "parent_id": self.parent_id,
+            "children": [
+                child.serialize(visited)
+                for child in sorted(self.children, key=lambda x: x.creation_date)
+            ] if self.children else [],
         }
 
 class Advertising(db.Model):
