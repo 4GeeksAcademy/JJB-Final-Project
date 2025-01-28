@@ -49,8 +49,6 @@ export const CommentCard = (props) => {
                 timer: 2000
             });
         }
-
-        // await actions.loadForumDetails(props.forum);
     };
     
 
