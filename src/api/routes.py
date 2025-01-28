@@ -327,5 +327,42 @@ def delete_comment():
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
+@api.route('/advertising', methods=['POST'])
+@jwt_required()
+def create_advertising():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para create_advertising: {email}")  
+        data = request.get_json()
+        print(data)
+        title = data.get("title")
+        content = data.get("content")
+
+        if not title or not content:
+            return jsonify({"error": "Faltan datos obligatorios (title, content)"}), 400
+        
+        user = User.query.filter_by(email=email).first()
+        if not user: 
+            return jsonify({"error": "Usuario no encontrado"}), 404
+
+        new_advertising = Advertising(
+            title=title,
+            content=content,
+            creation_date=datetime.date.today(),
+            id_user=user.id_user,
+            active=True
+        )
+
+        db.session.add(new_advertising)
+        db.session.commit()
+
+        return jsonify({"msg": "Publicidad creada exitosamente", "Publicidad": new_advertising.serialize()}), 201
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+
+
+
 
 
