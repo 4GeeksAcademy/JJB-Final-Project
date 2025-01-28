@@ -274,7 +274,7 @@ def create_comment():
 def update_comment():
     try:
         email = get_jwt_identity()
-        print(f"Usuario autenticado para create_comment: {email}")  
+        print(f"Usuario autenticado para update_comment: {email}")  
 
         comment_index = request.json.get("comment_index", None)
         id_forum = request.json.get("id_forum", None)
@@ -294,7 +294,7 @@ def update_comment():
 
         db.session.commit()
 
-        return jsonify({"msg": "Comentario actualizado exitosamente", "comentario": comment.serialize()}), 200
+        return jsonify({"msg": "Comentario actualizado exitosamente", "new_comment": comment.serialize()}), 200
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
