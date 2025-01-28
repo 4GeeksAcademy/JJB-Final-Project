@@ -1,34 +1,41 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext.js";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { CommentCard } from "../component/commentCard.jsx";
 import Swal from "sweetalert2";
 import "../../styles/colors.css";
 
 export const ForumDetail = () => {
     const { store, actions } = useContext(Context);
-    const [modalShows, setModalShows] = useState(false);
-    const [comment, setComment] = useState("");
-    const [commentChanged, setCommentChanged] = useState(false);
+    const navigate = useNavigate();
     const { forum_id } = useParams();
 
+    const [isEditing, setIsEditing] = useState(false);
+    const [modalShows, setModalShows] = useState(false);
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
+    const [comment, setComment] = useState("");
+    const [commentChanged, setCommentChanged] = useState(false);
 
+    // Carga los detalles del foro
     useEffect(() => {
         const loadForumDetails = async () => {
             const resp = await actions.loadForumDetails(forum_id);
             if (resp.error) {
                 console.log("resp:", resp);
-                navigate('/');
+                navigate("/");
+            } else {
+                setTitle(resp.title);
+                setContent(resp.content);
             }
         };
         loadForumDetails();
-
     }, [forum_id]);
 
+    // Modal de comentarios
     useEffect(() => {
         const modalElement = document.getElementById("myModal");
         const backdrop = document.createElement("div");
-
         backdrop.className = "modal-backdrop fade";
 
         if (modalShows) {
@@ -87,16 +94,103 @@ export const ForumDetail = () => {
         }
     };
 
+    // Editar foro
+    const handleEdit = async () => {
+        const updatedForum = await actions.updateForum(forum_id, { title, content });
+        if (!updatedForum.error) {
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: "Foro actualizado exitosamente",
+                showConfirmButton: false,
+                timer: 2000
+            });
+            setIsEditing(false);
+            actions.loadForumDetails(forum_id); // Recarga el foro actualizado
+        } else {
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: "Error al actualizar el foro",
+                showConfirmButton: false,
+                timer: 3500
+            });
+        }
+    };
+
+    // Eliminar foro
+    const handleDelete = async () => {
+        const result = await actions.deleteForum(forum_id);
+        if (!result.error) {
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: "Foro eliminado exitosamente",
+                showConfirmButton: false,
+                timer: 2000
+            });
+            navigate("/forum"); // Redirige después de eliminar
+        } else {
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: "Error al eliminar el foro",
+                showConfirmButton: false,
+                timer: 3500
+            });
+        }
+    };
+
     if (!store.forumDetails) {
         return <h1>Cargando...</h1>;
     }
 
     return (
         <div className="container">
-            <h1>{store.forumDetails.title}</h1>
-            <p>{store.forumDetails.content}</p>
-            <p>Creado por: {store.forumDetails.nickname}</p>
-            <p>Fecha: {new Date(store.forumDetails.creation_date).toLocaleDateString()}</p>
+            <h1>Detalles del Foro</h1>
+            {!isEditing ? (
+                <div>
+                    <h2>{title}</h2>
+                    <p>{content}</p>
+                    <p>Creado por: {store.forumDetails.nickname}</p>
+                    <p>Fecha: {new Date(store.forumDetails.creation_date).toLocaleDateString()}</p>
+                    <button className="btn btn-warning me-3" onClick={() => setIsEditing(true)}>
+                        Editar Foro
+                    </button>
+                    <button className="btn btn-danger" onClick={handleDelete}>
+                        Eliminar Foro
+                    </button>
+                </div>
+            ) : (
+                <form>
+                    <div className="mb-3">
+                        <label htmlFor="forumTitle" className="form-label">Título</label>
+                        <input
+                            type="text"
+                            className="form-control"
+                            id="forumTitle"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
+                        />
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="forumContent" className="form-label">Contenido</label>
+                        <textarea
+                            className="form-control"
+                            id="forumContent"
+                            value={content}
+                            onChange={(e) => setContent(e.target.value)}
+                        />
+                    </div>
+                    <button className="btn btn-success me-3" onClick={handleEdit}>
+                        Guardar Cambios
+                    </button>
+                    <button className="btn btn-secondary" onClick={() => setIsEditing(false)}>
+                        Cancelar
+                    </button>
+                </form>
+            )}
+
             <hr />
             <h3>Comentarios</h3>
             <button onClick={toggleModal}>Agregar comentario</button>
@@ -107,7 +201,7 @@ export const ForumDetail = () => {
             )}
             <hr />
 
-
+            {/* Modal para comentarios */}
             <div
                 className="modal fade mt-5"
                 id="myModal"
@@ -127,9 +221,7 @@ export const ForumDetail = () => {
                         </div>
                         <form className="p-3">
                             <div className="mb-3">
-                                <label htmlFor="contentForum" className="form-label">
-                                    Comentario
-                                </label>
+                                <label htmlFor="contentForum" className="form-label">Comentario</label>
                                 <textarea
                                     type="text"
                                     className="form-control"
