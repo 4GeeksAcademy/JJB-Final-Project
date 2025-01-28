@@ -9,29 +9,29 @@ export const CommentCard = (props) => {
     const [editingIndex, setEditingIndex] = useState(null);
     const [editedContent, setEditedContent] = useState("");
 
-    const handleEditClick = (index, currentContent) => {
-        setEditingIndex(index);
+    const handleEditClick = (id_comment, currentContent) => {
+        setEditingIndex(id_comment);
         setEditedContent(currentContent);
     };
 
-    const handleSaveClick = (index) => {
+    const handleSaveClick = (id_comment) => {
         
-        const resp = actions.updateComment(index, editedContent, props.forum); 
+        const resp = actions.updateComment(id_comment, editedContent, props.forum); 
         handleResponse(resp);
         console.log("handleSaveClick, index", index, " props.forum",  props.forum)
         setEditingIndex(null);
         setEditedContent("");
     };
 
-    const handleDeleteClick = (index) => {
+    const handleDeleteClick = (id_comment) => {
         //const resp = actions.deleteComment(index, props.forum); 
         //handleResponse(resp);
-        console.log("handleDeleteClick, index", index, " props.forum",  props.forum)
+        console.log("handleDeleteClick, id_comment", id_comment, " props.forum",  props.forum)
         setEditingIndex(null);
         setEditedContent("");
     };
 
-    const handleResponse = (resp) => {
+    const handleResponse = async (resp) => {
         if (resp.error) {
             Swal.fire({
                 position: "top",
@@ -49,6 +49,8 @@ export const CommentCard = (props) => {
                 timer: 2000
             });
         }
+
+        await actions.loadForumDetails(props.forum);
     };
     
 
@@ -62,17 +64,17 @@ export const CommentCard = (props) => {
                             <div className="me-1">
                                 <div>
                                     {comment.nickname === store.profile.nickname && (
-                                        editingIndex === index ? (
+                                        editingIndex === comment.id_comment ? (
                                             <button
                                                 className="btn btn-primary"
-                                                onClick={() => handleSaveClick(index)}
+                                                onClick={() => handleSaveClick(comment.id_comment)}
                                             >
                                                 Guardar
                                             </button>
                                         ) : (
                                             <button
                                                 className="btn btn-secondary"
-                                                onClick={() => handleEditClick(index, comment.content)}
+                                                onClick={() => handleEditClick(comment.id_comment, comment.content)}
                                             >
                                                 Editar
                                             </button>
@@ -80,13 +82,12 @@ export const CommentCard = (props) => {
                                         
                                     )}
                                 </div>
-
                             </div>
                             <div>
                                 {comment.nickname === store.profile.nickname && (
                                     <button
                                     className="btn btn-secondary"
-                                        onClick={() => handleDeleteClick(index)}
+                                        onClick={() => handleDeleteClick(comment.id_comment)}
                                     >
                                         <i className="fa-solid fa-trash"></i>
                                     </button>                                                                                
@@ -94,7 +95,7 @@ export const CommentCard = (props) => {
                             </div>
                         </div>
                         <div className="card-body">
-                            {editingIndex === index ? (
+                            {editingIndex === comment.id_comment ? (
                                 <textarea
                                     className="form-control"
                                     value={editedContent}

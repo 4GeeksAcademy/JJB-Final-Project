@@ -264,7 +264,7 @@ def create_comment():
         db.session.add(new_comment)
         db.session.commit()
 
-        return jsonify({"msg": "comentario creado exitosamente", "comentario": new_comment.serialize()}), 201
+        return jsonify({"msg": "comentario creado exitosamente", "new_comment": new_comment.serialize()}), 201
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
@@ -280,10 +280,12 @@ def update_comment():
         id_forum = request.json.get("id_forum", None)
         content = request.json.get("content", None)
 
-        if not comment_index or not id_forum or not content :
+        print(f"Datos recibidos: comment_index={comment_index}, id_forum={id_forum}, content={content}")
+        if comment_index is None or id_forum is None or not content:
             return jsonify({"error": "Faltan datos obligatorios (content, id_forum, comment_index)"}), 400
-        
+              
         comment = Comment.query.filter_by(id_comment=comment_index).first()
+        print(f"comment: {comment.id_comment}") 
         if not comment: 
             return jsonify({"error": "Comentario no encontrado"}), 404
 
