@@ -373,7 +373,7 @@ def create_advertising():
         db.session.add(new_advertising)
         db.session.commit()
 
-        return jsonify({"msg": "Publicidad creada exitosamente", "Publicidad": new_advertising.serialize()}), 201
+        return jsonify({"msg": "Publicidad creada exitosamente", "advertising": new_advertising.serialize()}), 201
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
