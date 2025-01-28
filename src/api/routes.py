@@ -327,57 +327,5 @@ def delete_comment():
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
-<<<<<<< HEAD
-@api.route('/advertising/<int:id_advertising>', methods=['DELETE'])
-@jwt_required()
-def delete_advertising(id_advertising):
-    try:
-        advertising = Advertising.query.filter_by(id_advertising=id_advertising).first()
-        if not advertising:
-            return jsonify({"error": "Publicidad no encontrada"}), 404
-
-        db.session.delete(advertising)
-        db.session.commit()
-        return jsonify({"message": "Publicidad eliminada exitosamente"}), 200
-
-    except Exception as e:
-        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
-    
-
-@api.route('/advertising/<int:id_advertising>', methods=['PUT'])
-@jwt_required()
-def update_advertising(id_advertising):
-    try:
-        advertising = Advertising.query.filter_by(id_advertising=id_advertising).first()
-        if not advertising:
-            return jsonify({"error": "Publicidad no encontrada"}), 404
-
-        data = request.get_json()
-
-        advertising.title = data.get('title', advertising.title)
-        advertising.content = data.get('content', advertising.content)
-
-        db.session.commit()
-        return jsonify(advertising.serialize()), 200
-
-    except Exception as e:
-        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
-    
-
-@api.route('/advertising/<int:id_advertising>', methods=['GET'])
-@jwt_required()
-def get_advertising_by_id(id_advertising):
-    try:
-        advertising = Advertising.query.filter_by(id_advertising=id_advertising).first()
-        if not advertising:
-            print("Publicidad no encontrada")  
-            return jsonify({"error": "Publicidad no encontrada"}), 404
-
-        return jsonify(advertising.serialize()), 200
-
-    except Exception as e:
-        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
-=======
 
 
->>>>>>> c7da32df01e89b5a0eb8ca004f73f4dc5fe4584f
