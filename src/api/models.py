@@ -77,8 +77,6 @@ class Comment(db.Model):
 
     # Relación con comentarios hijos
     parent = db.relationship("Comment", remote_side=[id_comment], backref="children")
-    # Relación con usuario sin usar backref automático
-    user = db.relationship("User", backref=db.backref("user_comments", lazy=True))
 
     def __repr__(self):
         return f'<Comment {self.id_comment}>'
