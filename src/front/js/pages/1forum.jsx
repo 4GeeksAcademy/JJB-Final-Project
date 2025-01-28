@@ -101,7 +101,7 @@ export const ForumDetail = () => {
             <h3>Comentarios</h3>
             <button onClick={toggleModal}>Agregar comentario</button>
             {store.forumDetails?.comments?.length > 0 ? (
-                <CommentCard />
+                <CommentCard forum={forum_id} />
             ) : (
                 <h1>No se encontraron Comentarios</h1>
             )}

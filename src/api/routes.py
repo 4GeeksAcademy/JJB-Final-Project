@@ -242,6 +242,7 @@ def create_comment():
         print(f"Usuario autenticado para create_comment: {email}")  
         data = request.get_json()
         print(data)
+        
         content = data.get("content")
         id_forum = data.get("id_forum")
 
@@ -263,59 +264,68 @@ def create_comment():
         db.session.add(new_comment)
         db.session.commit()
 
-        return jsonify({"msg": "comentario creado exitosamente", "comentario": new_comment.serialize()}), 201
+        return jsonify({"msg": "comentario creado exitosamente", "new_comment": new_comment.serialize()}), 201
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
-
-
-@api.route('/advertising', methods=['POST'])
+@api.route('/comment', methods=['PUT'])
 @jwt_required()
-def create_advertising():
+def update_comment():
     try:
         email = get_jwt_identity()
-        print(f"Usuario autenticado para create_advertising: {email}")  
-        data = request.get_json()
-        print(data)
-        title = data.get("title")
-        content = data.get("content")
+        print(f"Usuario autenticado para update_comment: {email}")  
 
-        if not title or not content:
-            return jsonify({"error": "Faltan datos obligatorios (title, content)"}), 400
-        
-        user = User.query.filter_by(email=email).first()
-        if not user: 
-            return jsonify({"error": "Usuario no encontrado"}), 404
+        comment_index = request.json.get("comment_index", None)
+        id_forum = request.json.get("id_forum", None)
+        content = request.json.get("content", None)
 
-        new_advertising = Advertising(
-            title=title,
-            content=content,
-            creation_date=datetime.date.today(),
-            id_user=user.id_user,
-            active = True
-        )
+        print(f"Datos recibidos: comment_index={comment_index}, id_forum={id_forum}, content={content}")
+        if comment_index is None or id_forum is None or not content:
+            return jsonify({"error": "Faltan datos obligatorios (content, id_forum, comment_index)"}), 400
+              
+        comment = Comment.query.filter_by(id_comment=comment_index).first()
+        print(f"comment: {comment.id_comment}") 
+        if not comment: 
+            return jsonify({"error": "Comentario no encontrado"}), 404
 
-        db.session.add(new_advertising)
+        comment.content = content
+        comment.modification_date = datetime.date.today()
+
         db.session.commit()
 
-        return jsonify({"msg": "Publicidad creada exitosamente", "advertising": new_advertising.serialize()}), 201
+        return jsonify({"msg": "Comentario actualizado exitosamente", "new_comment": comment.serialize()}), 200
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
-@api.route('/advertising', methods=['GET'])
+
+@api.route('/comment', methods=['DELETE'])
 @jwt_required()
-def get_advertising():
+def delete_comment():
     try:
         email = get_jwt_identity()
-        print(f"Usuario autenticado para advertising: {email}")  
-        advertising = Advertising.query.all()
-        if not advertising:
-            return jsonify({"error": "No se encontro publicidad"}), 404
-        
-        serialized_advertising = [advertising.serialize() for advertising in advertising]
-        return jsonify(serialized_advertising), 200
+        print(f"Usuario autenticado para delete_comment: {email}")  
+
+        comment_index = request.json.get("comment_index", None)
+
+        print(f"Datos recibidos: comment_index={comment_index}")
+        if comment_index is None:
+            return jsonify({"error": "Faltan datos obligatorios (comment_index)"}), 400
+              
+        comment = Comment.query.filter_by(id_comment=comment_index).first()
+        print(f"comment: {comment.id_comment}") 
+        if not comment: 
+            return jsonify({"error": "Comentario no encontrado"}), 404
+
+        db.session.delete(comment)
+        db.session.commit()
+
+        return jsonify({"msg": "Comentario borrado exitosamente"}), 200
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+
+
+

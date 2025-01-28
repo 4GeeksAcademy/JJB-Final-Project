@@ -110,7 +110,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			
 			registerUser: async (email, password, nickname, checkbox) => {
-
+				console.log("-----------registerUser----------------")
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}api/register`,{
 						method: "POST",
@@ -275,6 +275,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			loadForumDetails: async (forum_title) => {
+				console.log("-----------loadForumDetails----------------")
                 try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
@@ -298,6 +299,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
 
             addCommentToForum: async (id_forum, content) => {
+				console.log("-----------addCommentToForum----------------")
                 try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
@@ -322,7 +324,98 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return { error: error.message };
                 }
             },
+            updateComment: async (id_comment, content, forum) => {
+				console.log("-----------updateComment----------------")
+				console.log("id_comment", id_comment, "content", content, "forum",  forum)
+                try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+                    const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`,
+                        },
+						body: JSON.stringify({
+							comment_index: id_comment,
+							id_forum: forum,
+							content: content,
+						}),
+                    });
+					const data = await response.json();
+					console.log("data", data)
 
+                    if (!response.ok) {return { error: `${data.error}`}; }
+
+					const new_comment = data.new_comment;
+					console.log("new_comment", new_comment)
+
+					const store = getStore();
+					const actualComments = store.forumDetails.comments;
+					
+					const index = actualComments.findIndex(comment => comment.id_comment === new_comment.id_comment);
+
+					if (index !== -1) {
+						actualComments[index] = new_comment;
+					
+						setStore({
+							forumDetails: {
+								...store.forumDetails,
+								comments: actualComments,
+							},
+						});
+					}
+                    return data;
+                } catch (error) {
+                    console.error("Error al agregar el comentario:", error);
+                    return { error: error.message };
+                }
+            },
+			deleteComment: async (id_comment) => {
+				console.log("-----------deleteComment----------------")
+				console.log("id_comment", id_comment)
+                try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+                    const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`,
+                        },
+						body: JSON.stringify({
+							comment_index: id_comment
+						}),
+                    });
+					const data = await response.json();
+					console.log("data", data)
+
+                    if (!response.ok) {return { error: `${data.error}`}; }
+
+					const store = getStore();
+
+					
+					const updatedComments = store.forumDetails.comments.filter(
+						(comment) => comment.id_comment !== id_comment
+					);
+			
+					// Actualizar el store
+					setStore({
+						forumDetails: {
+							...store.forumDetails,
+							comments: updatedComments,
+						},
+					});
+                    return data;
+                } catch (error) {
+                    console.error("Error al agregar el comentario:", error);
+                    return { error: error.message };
+                }
+            },
 			
 		}
 	};

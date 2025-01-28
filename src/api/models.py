@@ -48,7 +48,7 @@ class Forum(db.Model):
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)  
     user = db.relationship("User")
 
-    comments = db.relationship('Comment', backref='forum', lazy=True, cascade="all, delete-orphan")
+    comments = db.relationship('Comment', backref='forum', lazy=True, cascade="all, delete-orphan", order_by="Comment.id_comment.asc()")
     favorites = db.relationship('Favorite', backref='forum', lazy=True, cascade="all, delete-orphan")
 
     def __repr__(self):
@@ -70,6 +70,7 @@ class Comment(db.Model):
     id_comment = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     content = db.Column(db.Text, nullable=False)
     creation_date = db.Column(db.Date, nullable=False)
+    modification_date = db.Column(db.Date, nullable=True)
     id_forum = db.Column(db.Integer, db.ForeignKey('forum.id_forum'), nullable=False) 
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False) 
 
@@ -81,6 +82,7 @@ class Comment(db.Model):
             "id_comment": self.id_comment,
             "content": self.content,
             "creation_date": str(self.creation_date),
+            "modification_date": str(self.modification_date),
             "id_forum": self.id_forum,
             "id_user": self.id_user,
             "nickname": self.user.nickname if self.user else None,
