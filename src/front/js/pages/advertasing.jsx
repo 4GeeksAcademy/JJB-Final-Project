@@ -15,6 +15,18 @@ export const Advertising = () => {
     const [advertisingContentChanged, setAdvertisingContentChanged] = useState(false);
     const [key, setKey] = useState(0);
 
+    useEffect(() => {
+        const loadAdvertising = async () => {
+            const resp = await actions.loadAdvertising();
+            if (resp.error_access_token) {
+                console.log("resp:", resp);
+                navigate('/');
+            }
+        };
+        loadAdvertising();
+
+    }, []);
+
 
     useEffect(() => {
         const modalElement = document.getElementById("myModal");
