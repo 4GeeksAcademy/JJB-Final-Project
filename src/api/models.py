@@ -71,26 +71,29 @@ class Comment(db.Model):
     content = db.Column(db.Text, nullable=False)
     creation_date = db.Column(db.Date, nullable=False)
     modification_date = db.Column(db.Date, nullable=True)
-    id_forum = db.Column(db.Integer, db.ForeignKey('forum.id_forum'), nullable=False) 
-    id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False) 
-    parent_id = db.Column(db.Integer, db.ForeignKey("comment.id"), nullable=True)
+    id_forum = db.Column(db.Integer, db.ForeignKey('forum.id_forum'), nullable=False)
+    id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)
+    parent_id = db.Column(db.Integer, db.ForeignKey("comment.id_comment"), nullable=True)
 
-    parent = db.relationship("Comment", remote_side=[id], backref="children")
+    # Relación con comentarios hijos
+    parent = db.relationship("Comment", remote_side=[id_comment], backref="children")
+    # Relación con usuario sin usar backref automático
+    user = db.relationship("User", backref=db.backref("user_comments", lazy=True))
 
     def __repr__(self):
         return f'<Comment {self.id_comment}>'
 
     def serialize(self, visited=None):
         if visited is None:
-            visited = set()  
+            visited = set()
 
-        if self.id in visited:
-            return None  
+        if self.id_comment in visited:
+            return None
 
-        visited.add(self.id)
+        visited.add(self.id_comment)
 
         return {
-            "id_comment": self.id,
+            "id_comment": self.id_comment,
             "content": self.content,
             "creation_date": str(self.creation_date),
             "modification_date": str(self.modification_date) if self.modification_date else None,
