@@ -15,7 +15,6 @@ export const AdvertisingCard = () => {
                                 <p className="card-text">
                                     {item.content}
                                 </p>
-                                <Link to={`/advertising/${item.id_advertising}`} className="btn btn-secondary">Entrar</Link>
                             </div>
                             <div className="card-footer text-muted">
                                 {item.creation_date}
