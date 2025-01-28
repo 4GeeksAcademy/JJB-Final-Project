@@ -4,7 +4,7 @@ from flask_admin import Admin
 from .models import db, User
 from .models import db, Forum
 from .models import db, Comment
-from .models import db, Advertinsing
+from .models import db, Advertising
 from .models import db, Favorite
 from .models import db, Invoice
 
@@ -24,7 +24,7 @@ def setup_admin(app):
     admin.add_view(ModelView(User, db.session))
     admin.add_view(ModelView(Forum, db.session))
     admin.add_view(ModelView(Comment, db.session))
-    admin.add_view(ModelView(Advertinsing, db.session))
+    admin.add_view(ModelView(Advertising, db.session))
     admin.add_view(ModelView(Favorite, db.session))
     admin.add_view(ModelView(Invoice, db.session))
 

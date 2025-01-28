@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext.js";
 import { Link, useNavigate } from "react-router-dom";
-import { ForumCard } from "../component/forumCard.jsx";
+import { AdvertisingCard } from "../component/advertisingCard.jsx";
 import Swal from 'sweetalert2'
 import "../../styles/colors.css";
 
@@ -77,6 +77,8 @@ export const Advertising = () => {
         console.log("advertisingContent:", advertisingContent)
 
         const response = await actions.sendFormAdvertising(advertisingName, advertisingContent);
+        console.log(store.Advertising);
+        
 
         if (response.error) {
             console.error("FRONT Error al crear una publicidad:", response.error);
@@ -114,7 +116,7 @@ export const Advertising = () => {
 
     return (
         <>
-            {store.forums.length > 0 ? <ForumCard key={key} /> : <h1> No se encontraron Forums </h1>}
+            {store.advertising.length > 0 ? <AdvertisingCard key={key} /> : <h1> No se encontro publicidad </h1>}
             <div className="container">
                 <div className="row">
                     <div className="col d-flex justify-content-center" >
@@ -142,7 +144,6 @@ export const Advertising = () => {
                                 onClick={toggleModal}
                             ></button>
                         </div>
-
 
                         <form className="p-3">
                             <div className="mb-3">
