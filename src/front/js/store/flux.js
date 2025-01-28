@@ -324,6 +324,32 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return { error: error.message };
                 }
             },
+			addCommentToComment: async (id_forum, content) => {
+				console.log("-----------addCommentToComment----------------")
+                try {
+					// const token = getActions().checkAcessToken();
+					// if (token === null) {
+					// 	return { error: "No autorizado" };
+					// }
+                    // const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
+                    //     method: "POST",
+                    //     headers: {
+                    //         "Content-Type": "application/json",
+                    //         "Authorization": `Bearer ${token}`,
+                    //     },
+					// 	body: JSON.stringify({
+					// 		id_forum: id_forum,
+					// 		content: content,
+					// 	}),
+                    // });
+					// const data = await response.json();
+                    // if (!response.ok) {return { error: `${data.error}`}; }
+                    // return data;
+                } catch (error) {
+                    console.error("Error al agregar el comentario:", error);
+                    return { error: error.message };
+                }
+            },
             updateComment: async (id_comment, content, forum) => {
 				console.log("-----------updateComment----------------")
 				console.log("id_comment", id_comment, "content", content, "forum",  forum)

@@ -50,87 +50,81 @@ export const CommentCard = (props) => {
             });
         }
     };
+
     
+    const handleReply = (id_comment) => {
+        // const resp = actions.addCommentToComment(id_comment, editedContent, props.forum); 
+        // handleResponse(resp);
+        console.log("handleReply, id_comment", id_comment)
+    };
+
     const renderComments = (comments) => {
         return comments.map((comment) => (
-            <div key={comment.id_comment} className="comment">
-                <p>{comment.content}</p>
-                <small>{comment.creation_date}</small>
-                {/* Botón de respuesta */}
-                <button onClick={() => handleReply(comment.id_comment)}>Responder</button>
-                {comment.children.length > 0 && (
-                    <div className="children-comments">
+            <div key={comment.id_comment} className="card mb-3">
+                <div className="card-header d-flex">
+                    <h5 className="card-title flex-grow-1">{comment.nickname}</h5>
+                    {comment.nickname === store.profile.nickname && (
+                        <>
+                            {editingIndex === comment.id_comment ? (
+                                <button
+                                    className="btn btn-primary me-2"
+                                    onClick={() => handleSaveClick(comment.id_comment)}
+                                >
+                                    Guardar
+                                </button>
+                            ) : (
+                                <button
+                                    className="btn btn-secondary me-2"
+                                    onClick={() => handleEditClick(comment.id_comment, comment.content)}
+                                >
+                                    Editar
+                                </button>
+                            )}
+                            <button
+                                className="btn btn-danger"
+                                onClick={() => handleDeleteClick(comment.id_comment)}
+                            >
+                                <i className="fa-solid fa-trash"></i>
+                            </button>
+                        </>
+                    )}
+                </div>
+                <div className="card-body">
+                    {editingIndex === comment.id_comment ? (
+                        <textarea
+                            className="form-control"
+                            value={editedContent}
+                            onChange={(e) => setEditedContent(e.target.value)}
+                        />
+                    ) : (
+                        <p className="card-text">{comment.content}</p>
+                    )}
+                </div>
+                <div className="card-footer text-muted d-flex">
+                    <div className="flex-grow-1">
+                        <button className="btn btn-link" onClick={() => handleReply(comment.id_comment)}>
+                            Responder
+                        </button>
+                    </div>
+                    <div>{comment.creation_date}</div>
+                </div>
+                {comment.children && comment.children.length > 0 && (
+                    <div className="ms-4">
                         {renderComments(comment.children)}
                     </div>
                 )}
             </div>
         ));
     };
-    
-    // return <div>{renderComments(store.forumDetails.comments)}</div>;
-    
 
     return (
         <div className="container my-5">
             <div className="d-flex flex-column gap-4">
-                {store.forumDetails.comments.map((comment, index) => (
-                    <div key={index} className="card">
-                        <div className="card-header d-flex">
-                            <h5 className="card-title flex-grow-1">{comment.nickname}</h5>
-                            <div className="me-1">
-                                <div>
-                                    {comment.nickname === store.profile.nickname && (
-                                        editingIndex === comment.id_comment ? (
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={() => handleSaveClick(comment.id_comment)}
-                                            >
-                                                Guardar
-                                            </button>
-                                        ) : (
-                                            <button
-                                                className="btn btn-secondary"
-                                                onClick={() => handleEditClick(comment.id_comment, comment.content)}
-                                            >
-                                                Editar
-                                            </button>
-                                        )
-                                        
-                                    )}
-                                </div>
-                            </div>
-                            <div>
-                                {comment.nickname === store.profile.nickname && (
-                                    <button
-                                    className="btn btn-secondary"
-                                        onClick={() => handleDeleteClick(comment.id_comment)}
-                                    >
-                                        <i className="fa-solid fa-trash"></i>
-                                    </button>                                                                                
-                                )}
-                            </div>
-                        </div>
-                        <div className="card-body">
-                            {editingIndex === comment.id_comment ? (
-                                <textarea
-                                    className="form-control"
-                                    value={editedContent}
-                                    onChange={(e) => setEditedContent(e.target.value)}
-                                />
-                            ) : (
-                                <p className="card-text">{comment.content}</p>
-                            )}
-                        </div>
-                        <div className="card-footer text-muted">
-                            {comment.creation_date}
-                        </div>
-                        <button onClick={() => handleReply(comment.id_comment)}>Responder</button>
-                        
-                    </div>
-                ))}
+                {store.forumDetails.comments &&
+                    store.forumDetails.comments.length > 0 &&
+                    renderComments(store.forumDetails.comments)}
             </div>
         </div>
-
     );
 };
 
