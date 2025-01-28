@@ -293,7 +293,7 @@ def create_advertising():
             content=content,
             creation_date=datetime.date.today(),
             id_user=user.id_user,
-            active = "True"
+            active = True
         )
 
         db.session.add(new_advertising)
