@@ -13,7 +13,13 @@ export const CommentCard = (props) => {
     };
 
     const handleSaveClick = (index) => {
-        actions.updateComment(index, editedContent, props.forum); 
+        //actions.updateComment(index, editedContent, props.forum); 
+        setEditingIndex(null);
+        setEditedContent("");
+    };
+
+    const handleDeleteClick = (index) => {
+        //actions.deleteComment(index, props.forum); 
         setEditingIndex(null);
         setEditedContent("");
     };
@@ -25,23 +31,37 @@ export const CommentCard = (props) => {
                     <div key={index} className="card">
                         <div className="card-header d-flex">
                             <h5 className="card-title flex-grow-1">{comment.nickname}</h5>
-                            <div className="">
+                            <div className="me-1">
+                                <div>
+                                    {comment.nickname === store.profile.nickname && (
+                                        editingIndex === index ? (
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() => handleSaveClick(index)}
+                                            >
+                                                Guardar
+                                            </button>
+                                        ) : (
+                                            <button
+                                                className="btn btn-secondary"
+                                                onClick={() => handleEditClick(index, comment.content)}
+                                            >
+                                                Editar
+                                            </button>
+                                        )
+                                        
+                                    )}
+                                </div>
+
+                            </div>
+                            <div>
                                 {comment.nickname === store.profile.nickname && (
-                                    editingIndex === index ? (
-                                        <button
-                                            className="btn btn-primary"
-                                            onClick={() => handleSaveClick(index)}
-                                        >
-                                            Guardar
-                                        </button>
-                                    ) : (
-                                        <button
-                                            className="btn btn-secondary"
-                                            onClick={() => handleEditClick(index, comment.content)}
-                                        >
-                                            Editar
-                                        </button>
-                                    )
+                                    <button
+                                    className="btn btn-secondary"
+                                        onClick={() => handleDeleteClick(index)}
+                                    >
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>                                                                                
                                 )}
                             </div>
                         </div>
