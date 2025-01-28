@@ -15,12 +15,12 @@ export const CommentCard = (props) => {
     };
 
     const handleSaveClick = (id_comment) => {
-        
+
         const resp = actions.updateComment(id_comment, editedContent, props.forum); 
         handleResponse(resp);
         console.log("handleSaveClick, id_comment", id_comment, " props.forum",  props.forum)
         setEditingIndex(null);
-        // setEditedContent("");
+        setEditedContent("");
     };
 
     const handleDeleteClick = (id_comment) => {
@@ -50,7 +50,7 @@ export const CommentCard = (props) => {
             });
         }
 
-        await actions.loadForumDetails(props.forum);
+        // await actions.loadForumDetails(props.forum);
     };
     
 

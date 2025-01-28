@@ -48,7 +48,7 @@ class Forum(db.Model):
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)  
     user = db.relationship("User")
 
-    comments = db.relationship('Comment', backref='forum', lazy=True, cascade="all, delete-orphan")
+    comments = db.relationship('Comment', backref='forum', lazy=True, cascade="all, delete-orphan", order_by="Comment.id_comment.asc()")
     favorites = db.relationship('Favorite', backref='forum', lazy=True, cascade="all, delete-orphan")
 
     def __repr__(self):

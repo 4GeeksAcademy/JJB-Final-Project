@@ -110,7 +110,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			
 			registerUser: async (email, password, nickname, checkbox) => {
-
+				console.log("-----------registerUser----------------")
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}api/register`,{
 						method: "POST",
@@ -275,6 +275,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			loadForumDetails: async (forum_title) => {
+				console.log("-----------loadForumDetails----------------")
                 try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
@@ -351,25 +352,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const new_comment = data.new_comment;
 					console.log("new_comment", new_comment)
 
-					// const store = getStore();
-					// const actualComments = [...store.forumDetails.comments];
-					// console.log("actualCommentspRIMERO", actualComments)
+					const store = getStore();
+					const actualComments = store.forumDetails.comments;
 					
-					// const index = actualComments.findIndex(comment => comment.id_comment === new_comment.id_comment);
-					// console.log("index", index)
+					const index = actualComments.findIndex(comment => comment.id_comment === new_comment.id_comment);
 
-					// if (index !== -1) {
-					// 	console.log("actualComments", actualComments)
-					// 	actualComments[index] = new_comment;
-					// 	console.log("actualCommentsindex", actualComments)
+					if (index !== -1) {
+						actualComments[index] = new_comment;
 					
-					// 	setStore({
-					// 		forumDetails: {
-					// 			...store.forumDetails,
-					// 			comments: actualComments,
-					// 		},
-					// 	});
-					// }
+						setStore({
+							forumDetails: {
+								...store.forumDetails,
+								comments: actualComments,
+							},
+						});
+					}
                     return data;
                 } catch (error) {
                     console.error("Error al agregar el comentario:", error);
