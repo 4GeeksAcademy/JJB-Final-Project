@@ -51,6 +51,24 @@ export const CommentCard = (props) => {
         }
     };
     
+    const renderComments = (comments) => {
+        return comments.map((comment) => (
+            <div key={comment.id_comment} className="comment">
+                <p>{comment.content}</p>
+                <small>{comment.creation_date}</small>
+                {/* Botón de respuesta */}
+                <button onClick={() => handleReply(comment.id_comment)}>Responder</button>
+                {comment.children.length > 0 && (
+                    <div className="children-comments">
+                        {renderComments(comment.children)}
+                    </div>
+                )}
+            </div>
+        ));
+    };
+    
+    // return <div>{renderComments(store.forumDetails.comments)}</div>;
+    
 
     return (
         <div className="container my-5">
@@ -106,6 +124,8 @@ export const CommentCard = (props) => {
                         <div className="card-footer text-muted">
                             {comment.creation_date}
                         </div>
+                        <button onClick={() => handleReply(comment.id_comment)}>Responder</button>
+                        
                     </div>
                 ))}
             </div>
@@ -113,5 +133,6 @@ export const CommentCard = (props) => {
 
     );
 };
+
 
 
