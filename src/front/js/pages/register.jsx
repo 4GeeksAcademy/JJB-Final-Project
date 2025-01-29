@@ -81,7 +81,7 @@ export const Register = () => {
                 <div className="row justify-content-center">
                     <div className="col-lg-4 d-none d-sm-block" id="register">
                         <div className="text-md-center p-5 mt-5">
-                            <h1 className="display-4 fw-bold lh-1 nav-primary-item my-5">Conviertete en miembra</h1>
+                            <h1 className="display-4 fw-bold lh-1 nav-primary-item my-5">Conviertete en socia</h1>
                             <p className="lead text-black fs-3 mb-5">y disfruta de todos los beneficios</p>
                         </div>
                     </div>

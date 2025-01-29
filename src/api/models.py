@@ -19,7 +19,7 @@ class User(db.Model):
     
     forums = db.relationship('Forum', back_populates='user', lazy=True, cascade="all, delete-orphan")
     comments = db.relationship('Comment', backref='user', lazy=True, cascade="all, delete-orphan")
-    advertisings = db.relationship('Advertinsing', backref='user', lazy=True, cascade="all, delete-orphan")
+    advertisings = db.relationship('Advertising', backref='user', lazy=True, cascade="all, delete-orphan")
     favorites = db.relationship('Favorite', backref='user', lazy=True, cascade="all, delete-orphan")
     invoices = db.relationship('Invoice', backref='user', lazy=True, cascade="all, delete-orphan") 
 
@@ -48,7 +48,7 @@ class Forum(db.Model):
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)  
     user = db.relationship("User")
 
-    comments = db.relationship('Comment', backref='forum', lazy=True, cascade="all, delete-orphan")
+    comments = db.relationship('Comment', backref='forum', lazy=True, cascade="all, delete-orphan", order_by="Comment.id_comment.asc()")
     favorites = db.relationship('Favorite', backref='forum', lazy=True, cascade="all, delete-orphan")
 
     def __repr__(self):
@@ -70,6 +70,7 @@ class Comment(db.Model):
     id_comment = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     content = db.Column(db.Text, nullable=False)
     creation_date = db.Column(db.Date, nullable=False)
+    modification_date = db.Column(db.Date, nullable=True)
     id_forum = db.Column(db.Integer, db.ForeignKey('forum.id_forum'), nullable=False) 
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False) 
 
@@ -81,27 +82,28 @@ class Comment(db.Model):
             "id_comment": self.id_comment,
             "content": self.content,
             "creation_date": str(self.creation_date),
+            "modification_date": str(self.modification_date),
             "id_forum": self.id_forum,
             "id_user": self.id_user,
             "nickname": self.user.nickname if self.user else None,
         }
 
-class Advertinsing(db.Model):
-    id_advertinsing = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+class Advertising(db.Model):
+    id_advertising = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     title = db.Column(db.String(120), nullable=False)
-    content = db.Column(db.String(255), nullable=False)
+    content = db.Column(db.Text, nullable=False)
     creation_date = db.Column(db.Date, nullable=False)
     active = db.Column(db.Boolean, nullable=False, default=True)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)  
 
-    favorites = db.relationship('Favorite', backref='advertinsing', lazy=True, cascade="all, delete-orphan")
+    favorites = db.relationship('Favorite', backref='advertising', lazy=True, cascade="all, delete-orphan")
 
     def __repr__(self):
-        return f'<Advertinsing {self.title}>'
+        return f'<Advertising {self.title}>'
 
     def serialize(self):
         return {
-            "id_advertinsing": self.id_advertinsing,
+            "id_advertising": self.id_advertising,
             "title": self.title,
             "content": self.content,
             "creation_date": self.creation_date,
@@ -112,7 +114,7 @@ class Advertinsing(db.Model):
 class Favorite(db.Model):
     id_favorite = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     id_forum = db.Column(db.Integer, db.ForeignKey('forum.id_forum'), nullable=True)  
-    id_advertinsing = db.Column(db.Integer, db.ForeignKey('advertinsing.id_advertinsing'), nullable=True)  
+    id_advertising = db.Column(db.Integer, db.ForeignKey('advertising.id_advertising'), nullable=True)  
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)  
 
     def __repr__(self):
@@ -122,7 +124,7 @@ class Favorite(db.Model):
         return {
             "id_favorite": self.id_favorite,
             "id_forum": self.id_forum,
-            "id_advertinsing": self.id_advertinsing,
+            "id_advertising": self.id_advertising,
             "id_user": self.id_user,
         }
 

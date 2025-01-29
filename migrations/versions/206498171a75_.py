@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 771b33e03018
+Revision ID: 206498171a75
 Revises: 
-Create Date: 2025-01-24 18:24:45.150449
+Create Date: 2025-01-28 16:39:47.759006
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '771b33e03018'
+revision = '206498171a75'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -35,15 +35,15 @@ def upgrade():
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('nickname')
     )
-    op.create_table('advertinsing',
-    sa.Column('id_advertinsing', sa.Integer(), autoincrement=True, nullable=False),
+    op.create_table('advertising',
+    sa.Column('id_advertising', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('title', sa.String(length=120), nullable=False),
-    sa.Column('content', sa.String(length=255), nullable=False),
+    sa.Column('content', sa.Text(), nullable=False),
     sa.Column('creation_date', sa.Date(), nullable=False),
     sa.Column('active', sa.Boolean(), nullable=False),
     sa.Column('id_user', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['id_user'], ['user.id_user'], ),
-    sa.PrimaryKeyConstraint('id_advertinsing')
+    sa.PrimaryKeyConstraint('id_advertising')
     )
     op.create_table('forum',
     sa.Column('id_forum', sa.Integer(), autoincrement=True, nullable=False),
@@ -68,6 +68,7 @@ def upgrade():
     sa.Column('id_comment', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('content', sa.Text(), nullable=False),
     sa.Column('creation_date', sa.Date(), nullable=False),
+    sa.Column('modification_date', sa.Date(), nullable=True),
     sa.Column('id_forum', sa.Integer(), nullable=False),
     sa.Column('id_user', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['id_forum'], ['forum.id_forum'], ),
@@ -77,9 +78,9 @@ def upgrade():
     op.create_table('favorite',
     sa.Column('id_favorite', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('id_forum', sa.Integer(), nullable=True),
-    sa.Column('id_advertinsing', sa.Integer(), nullable=True),
+    sa.Column('id_advertising', sa.Integer(), nullable=True),
     sa.Column('id_user', sa.Integer(), nullable=False),
-    sa.ForeignKeyConstraint(['id_advertinsing'], ['advertinsing.id_advertinsing'], ),
+    sa.ForeignKeyConstraint(['id_advertising'], ['advertising.id_advertising'], ),
     sa.ForeignKeyConstraint(['id_forum'], ['forum.id_forum'], ),
     sa.ForeignKeyConstraint(['id_user'], ['user.id_user'], ),
     sa.PrimaryKeyConstraint('id_favorite')
@@ -93,6 +94,6 @@ def downgrade():
     op.drop_table('comment')
     op.drop_table('invoice')
     op.drop_table('forum')
-    op.drop_table('advertinsing')
+    op.drop_table('advertising')
     op.drop_table('user')
     # ### end Alembic commands ###
