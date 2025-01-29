@@ -164,11 +164,11 @@ export const ForumDetail = () => {
                     <p>{content}</p>
                     <p>Creado por: {store.forumDetails.nickname}</p>
                     <p>Fecha: {new Date(store.forumDetails.creation_date).toLocaleDateString()}</p>
-                    <button className="btn btn-warning me-3" onClick={() => setIsEditing(true)}>
+                    <button className="btn me-3" style={{background:"var(--accent-color)",color:"var(--text-color)"}} onClick={() => setIsEditing(true)}>
                         Editar Foro
                     </button>
-                    <button className="btn btn-danger" onClick={handleDelete}>
-                        Eliminar Foro
+                    <button className="btn"style={{background:"var(--primary-color)",color:"var(--text-color)"}} onClick={handleDelete}>
+                    <i className="fa-solid fa-trash"></i>
                     </button>
                 </div>
             ) : (
@@ -192,7 +192,7 @@ export const ForumDetail = () => {
                             onChange={(e) => setContent(e.target.value)}
                         />
                     </div>
-                    <button className="btn btn-success me-3" onClick={handleEdit}>
+                    <button className="btn me-3" style={{background:"var(--secondary-color)",color:"var(--text-color)"}} onClick={handleEdit}>
                         Guardar Cambios
                     </button>
                     <button className="btn btn-secondary" onClick={() => setIsEditing(false)}>
