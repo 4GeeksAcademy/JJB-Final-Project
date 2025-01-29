@@ -70,26 +70,7 @@ export const AdvertisingCard = () => {
                                     {item.creation_date}
                                 </div>
 
-                                {/* <div>
-                                    {advertising.nickname === store.profile.nickname && (
-                                        editedIdAdvertising === store.advertising.advertising_id? (
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={() => handleSaveClick(store.advertising.advertising_id)}
-                                            >
-                                                Guardar
-                                            </button>
-                                        ) : (
-                                            <button
-                                                className="btn btn-secondary"
-                                                onClick={() => handleEditClick(store.advertising.advertising_id, store.advertising.content)}
-                                            >
-                                                Editar
-                                            </button>
-                                        )
-                                        
-                                    )}
-                                </div> */}
+
                             <div>
                                 {item.nickname === store.profile.nickname && (
                                     <button
