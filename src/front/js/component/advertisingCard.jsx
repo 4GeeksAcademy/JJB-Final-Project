@@ -95,7 +95,7 @@ export const AdvertisingCard = () => {
                                 <div className="text-muted">{item.creation_date}</div>
                                 <div>
                                     {item.nickname === store.profile?.nickname && (
-                                        <>
+                                        <div className="card-footer d-flex justify-content-between">
                                             {editedIdAdvertising === item.id_advertising ? (
                                                 <button
                                                     className="btn btn-primary me-2"
@@ -119,7 +119,7 @@ export const AdvertisingCard = () => {
                                             >
                                                 Eliminar
                                             </button>
-                                        </>
+                                        </div>
                                     )}
                                 </div>
                             </div>
