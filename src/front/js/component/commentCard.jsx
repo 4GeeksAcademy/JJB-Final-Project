@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
-import "../../styles/commentCard.css";
 import Swal from "sweetalert2";
+import "../../styles/commentCard.css";
 
-export const CommentCard = (props) => {
+export const CommentCard = ({ forum, toggleModal }) => {
     const { store, actions } = useContext(Context);
     const [editingIndex, setEditingIndex] = useState(null);
     const [editedContent, setEditedContent] = useState("");
@@ -15,10 +14,8 @@ export const CommentCard = (props) => {
     };
 
     const handleSaveClick = (id_comment) => {
-
-        const resp = actions.updateComment(id_comment, editedContent, props.forum); 
+        const resp = actions.updateComment(id_comment, editedContent, forum); 
         handleResponse(resp);
-        console.log("handleSaveClick, id_comment", id_comment, " props.forum",  props.forum)
         setEditingIndex(null);
         setEditedContent("");
     };
@@ -26,7 +23,6 @@ export const CommentCard = (props) => {
     const handleDeleteClick = (id_comment) => {
         const resp = actions.deleteComment(id_comment); 
         handleResponse(resp);
-        console.log("handleDeleteClick, id_comment", id_comment)
         setEditingIndex(null);
         setEditedContent("");
     };
@@ -51,18 +47,11 @@ export const CommentCard = (props) => {
         }
     };
 
-    
-    const handleReply = (id_comment) => {
-        // const resp = actions.addCommentToComment(id_comment, editedContent, props.forum); 
-        // handleResponse(resp);
-        console.log("handleReply, id_comment", id_comment)
-    };
-
     const renderComments = (comments) => {
         return comments.map((comment) => (
             <div key={comment.id_comment} className="card mb-3">
                 <div className="card-header d-flex">
-                    <h5 className="card-title flex-grow-1">{comment.nickname}</h5>
+                    <h5 className="card-title flex-grow-1">{comment.nickname} --- {comment.id_comment}</h5>
                     {comment.nickname === store.profile.nickname && (
                         <>
                             {editingIndex === comment.id_comment ? (
@@ -101,11 +90,9 @@ export const CommentCard = (props) => {
                     )}
                 </div>
                 <div className="card-footer text-muted d-flex">
-                    <div className="flex-grow-1">
-                        <button className="btn btn-link" onClick={() => handleReply(comment.id_comment)}>
-                            Responder
-                        </button>
-                    </div>
+                    <button className="btn btn-link flex-grow-1" onClick={() => toggleModal(comment.id_comment)}>
+                        Responder
+                    </button>
                     <div>{comment.creation_date}</div>
                 </div>
                 {comment.children && comment.children.length > 0 && (
@@ -127,6 +114,3 @@ export const CommentCard = (props) => {
         </div>
     );
 };
-
-
-

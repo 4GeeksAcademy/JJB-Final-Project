@@ -247,23 +247,34 @@ def create_comment():
         id_forum = request.json.get("id_forum", None)
         parent_id = request.json.get("parent_id", None)
 
-
         if not content or not id_forum:
             return jsonify({"error": "Faltan datos obligatorios (content, id_forum)"}), 400
+        
+        if parent_id:
+            parent_comment = Comment.query.get(parent_id) 
+            if not parent_comment:
+                return jsonify({"error": "El comentario padre no existe"}), 400
+
+        print("if not content or not id_forum")
         
         user = User.query.filter_by(email=email).first()
         if not user: 
             return jsonify({"error": "Usuario no encontrado"}), 404
+
+        print(f"user: {user}")  
 
         new_comment = Comment(
             content = content,
             creation_date=datetime.date.today(),
             id_forum = id_forum,
             id_user = user.id_user,
-            parent_id=parent_id
+            parent_id = parent_id
         )
 
+        print(f"new_comment: {new_comment}") 
         db.session.add(new_comment)
+
+        print("Antes de hacer commit") 
         db.session.commit()
 
         return jsonify({"msg": "comentario creado exitosamente", "new_comment": new_comment.serialize()}), 201
