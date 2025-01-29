@@ -7,27 +7,35 @@ export const CommentCard = ({ forum, toggleModal }) => {
     const { store, actions } = useContext(Context);
     const [editingIndex, setEditingIndex] = useState(null);
     const [editedContent, setEditedContent] = useState("");
+    const [showReplies, setShowReplies] = useState({});
+
+    const toggleReplies = (commentId) => {
+        setShowReplies(prevState => ({
+            ...prevState,
+            [commentId]: !prevState[commentId] 
+        }));
+    };
 
     const handleEditClick = (id_comment, currentContent) => {
         setEditingIndex(id_comment);
         setEditedContent(currentContent);
     };
 
-    const handleSaveClick = (id_comment) => {
-        const resp = actions.updateComment(id_comment, editedContent, forum); 
+    const handleSaveClick = async (id_comment) => {
+        const resp = await actions.updateComment(id_comment, editedContent, forum); 
         handleResponse(resp);
         setEditingIndex(null);
         setEditedContent("");
     };
 
-    const handleDeleteClick = (id_comment) => {
-        const resp = actions.deleteComment(id_comment); 
+    const handleDeleteClick = async (id_comment) => {
+        const resp = await actions.deleteComment(id_comment); 
         handleResponse(resp);
         setEditingIndex(null);
         setEditedContent("");
     };
 
-    const handleResponse = async (resp) => {
+    const handleResponse = (resp) => {
         if (resp.error) {
             Swal.fire({
                 position: "top",
@@ -40,7 +48,7 @@ export const CommentCard = ({ forum, toggleModal }) => {
             Swal.fire({
                 position: "top",
                 icon: "success",
-                title: "Comentario editado exitosamente",
+                title: "Operación realizada correctamente",
                 showConfirmButton: false,
                 timer: 2000
             });
@@ -55,24 +63,15 @@ export const CommentCard = ({ forum, toggleModal }) => {
                     {comment.nickname === store.profile.nickname && (
                         <>
                             {editingIndex === comment.id_comment ? (
-                                <button
-                                    className="btn btn-primary me-2"
-                                    onClick={() => handleSaveClick(comment.id_comment)}
-                                >
+                                <button className="btn btn-primary me-2" onClick={() => handleSaveClick(comment.id_comment)}>
                                     Guardar
                                 </button>
                             ) : (
-                                <button
-                                    className="btn btn-secondary me-2"
-                                    onClick={() => handleEditClick(comment.id_comment, comment.content)}
-                                >
+                                <button className="btn btn-secondary me-2" onClick={() => handleEditClick(comment.id_comment, comment.content)}>
                                     Editar
                                 </button>
                             )}
-                            <button
-                                className="btn btn-danger"
-                                onClick={() => handleDeleteClick(comment.id_comment)}
-                            >
+                            <button className="btn btn-danger" onClick={() => handleDeleteClick(comment.id_comment)}>
                                 <i className="fa-solid fa-trash"></i>
                             </button>
                         </>
@@ -80,22 +79,26 @@ export const CommentCard = ({ forum, toggleModal }) => {
                 </div>
                 <div className="card-body">
                     {editingIndex === comment.id_comment ? (
-                        <textarea
-                            className="form-control"
-                            value={editedContent}
-                            onChange={(e) => setEditedContent(e.target.value)}
-                        />
+                        <textarea className="form-control" value={editedContent} onChange={(e) => setEditedContent(e.target.value)} />
                     ) : (
                         <p className="card-text">{comment.content}</p>
                     )}
                 </div>
                 <div className="card-footer text-muted d-flex">
-                    <button className="btn btn-link flex-grow-1" onClick={() => toggleModal(comment.id_comment)}>
-                        Responder
-                    </button>
+                    <div className="flex-grow-1">
+                        {comment.children && comment.children.length > 0 && (
+                            <button onClick={() => toggleReplies(comment.id_comment)}>
+                                {showReplies[comment.id_comment] ? "Ocultar respuestas" : `Ver respuestas (${comment.children.length})`}
+                            </button>
+                        )}
+                        <button className="btn btn-link" onClick={() => toggleModal(comment.id_comment)}>
+                            Responder
+                        </button>
+                    </div>
                     <div>{comment.creation_date}</div>
                 </div>
-                {comment.children && comment.children.length > 0 && (
+
+                {showReplies[comment.id_comment] && comment.children && comment.children.length > 0 && (
                     <div className="ms-4">
                         {renderComments(comment.children)}
                     </div>
@@ -107,9 +110,7 @@ export const CommentCard = ({ forum, toggleModal }) => {
     return (
         <div className="container my-5">
             <div className="d-flex flex-column gap-4">
-                {store.forumDetails.comments &&
-                    store.forumDetails.comments.length > 0 &&
-                    renderComments(store.forumDetails.comments)}
+                {store.forumDetails.comments && store.forumDetails.comments.length > 0 && renderComments(store.forumDetails.comments)}
             </div>
         </div>
     );

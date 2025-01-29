@@ -291,6 +291,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const data = await response.json();
                     if (!response.ok) {return { error: `${data.error}`}; }
 					setStore({ forumDetails: data });
+					console.log("data", data)
                     return data; 
                 } catch (error) {
                     console.error("Error cargando los detalles del foro:", error);
