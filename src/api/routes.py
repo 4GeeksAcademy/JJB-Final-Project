@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
-from api.models import db, User,Forum,Comment
+from api.models import db, User,Forum,Comment,Advertising
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re , datetime
@@ -74,6 +74,7 @@ def register():
         email = request.json.get("email", None)
         password = request.json.get("password", None)
         nickname = request.json.get("nickname", None)
+        es_mayor = request.json.get("es_mayor", None)
 
         email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
 
@@ -91,6 +92,9 @@ def register():
 
         if not nickname:
             return jsonify({"error": "Apodo requerido"}), 400
+        
+        if not es_mayor:
+            return jsonify({"error": "Confirmación de mayoria de edad requerida"}), 400
 
         user = User.query.filter_by(email = email).first()
         if user is None:
@@ -99,7 +103,8 @@ def register():
                 new_user = User(
                     email=email, 
                     password=current_app.bcrypt.generate_password_hash(password).decode('utf-8'), 
-                    nickname=nickname
+                    nickname=nickname,
+                    es_mayor=es_mayor
                 )
                 db.session.add(new_user)
                 db.session.commit()
@@ -135,7 +140,7 @@ def get_profile():
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
     
     
-#Jessica
+#Jessica get foros
 @api.route('/forum', methods=['GET'])
 @jwt_required()
 def get_forum():
@@ -152,7 +157,7 @@ def get_forum():
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
     
-#Braulio
+#get 1 forum
 @api.route('/forum/<int:id_foro>', methods=['GET'])
 @jwt_required()
 def get_forum_by_id(id_foro):
@@ -167,9 +172,6 @@ def get_forum_by_id(id_foro):
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
     
-
-#Jessica
-
 @api.route('/forum', methods=['POST'])
 @jwt_required()
 def create_forum():
@@ -202,6 +204,43 @@ def create_forum():
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+    
+#put 1 foro
+@api.route('/forum/<int:id_foro>', methods=['PUT'])
+@jwt_required()
+def update_forum(id_foro):
+    try:
+        forum = Forum.query.filter_by(id_forum=id_foro).first()
+        if not forum:
+            return jsonify({"error": "Foro no encontrado"}), 404
+
+        data = request.get_json()
+
+        forum.title = data.get('title', forum.title)
+        forum.content = data.get('content', forum.content)
+
+        db.session.commit()
+        return jsonify(forum.serialize()), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+#delete 1 forum
+@api.route('/forum/<int:id_foro>', methods=['DELETE'])
+@jwt_required()
+def delete_forum(id_foro):
+    try:
+        forum = Forum.query.filter_by(id_forum=id_foro).first()
+        if not forum:
+            return jsonify({"error": "Foro no encontrado"}), 404
+
+        db.session.delete(forum)
+        db.session.commit()
+        return jsonify({"message": "Foro eliminado exitosamente"}), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
 
 
 @api.route('/comment', methods=['POST'])
@@ -212,6 +251,7 @@ def create_comment():
         print(f"Usuario autenticado para create_comment: {email}")  
         data = request.get_json()
         print(data)
+        
         content = data.get("content")
         id_forum = data.get("id_forum")
 
@@ -225,6 +265,7 @@ def create_comment():
 
         new_comment = Comment(
             content = content,
+            creation_date=datetime.date.today(),
             id_forum = id_forum,
             id_user = user.id_user
         )
@@ -232,7 +273,64 @@ def create_comment():
         db.session.add(new_comment)
         db.session.commit()
 
-        return jsonify({"msg": "comentario creado exitosamente", "comentario": new_comment.serialize()}), 201
+        return jsonify({"msg": "comentario creado exitosamente", "new_comment": new_comment.serialize()}), 201
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+@api.route('/comment', methods=['PUT'])
+@jwt_required()
+def update_comment():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para update_comment: {email}")  
+
+        comment_index = request.json.get("comment_index", None)
+        id_forum = request.json.get("id_forum", None)
+        content = request.json.get("content", None)
+
+        print(f"Datos recibidos: comment_index={comment_index}, id_forum={id_forum}, content={content}")
+        if comment_index is None or id_forum is None or not content:
+            return jsonify({"error": "Faltan datos obligatorios (content, id_forum, comment_index)"}), 400
+              
+        comment = Comment.query.filter_by(id_comment=comment_index).first()
+        print(f"comment: {comment.id_comment}") 
+        if not comment: 
+            return jsonify({"error": "Comentario no encontrado"}), 404
+
+        comment.content = content
+        comment.modification_date = datetime.date.today()
+
+        db.session.commit()
+
+        return jsonify({"msg": "Comentario actualizado exitosamente", "new_comment": comment.serialize()}), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+
+@api.route('/comment', methods=['DELETE'])
+@jwt_required()
+def delete_comment():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para delete_comment: {email}")  
+
+        comment_index = request.json.get("comment_index", None)
+
+        print(f"Datos recibidos: comment_index={comment_index}")
+        if comment_index is None:
+            return jsonify({"error": "Faltan datos obligatorios (comment_index)"}), 400
+              
+        comment = Comment.query.filter_by(id_comment=comment_index).first()
+        print(f"comment: {comment.id_comment}") 
+        if not comment: 
+            return jsonify({"error": "Comentario no encontrado"}), 404
+
+        db.session.delete(comment)
+        db.session.commit()
+
+        return jsonify({"msg": "Comentario borrado exitosamente"}), 200
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
@@ -250,7 +348,6 @@ def upload_image():
         return jsonify(result["secure_url"]), 200
 
         
-
 
 
 

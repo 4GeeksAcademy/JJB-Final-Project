@@ -9,14 +9,35 @@ import Swal from 'sweetalert2'
 
 export const Navbar = () => {
 	const [MenuOpen, setMenuOpen] = useState(false);
+	const [tokenExists, setTokenExists] = useState(false);
 	const { store, actions } = useContext(Context);
 	const location = useLocation();
 
+	useEffect(() => {
+		const token = actions.checkAcessToken();
+		if(token) {
+			setTokenExists(true) 
+		}else {
+			setTokenExists(false)
+		}
+	});
+
+	useEffect(() => {
+		if(tokenExists) {
+			const loadProfile = async () => {
+				const resp = await actions.loadProfile();
+				if (resp.error_access_token) {
+					console.log("resp:", resp);
+					navigate('/');
+				}
+			};
+			loadProfile();
+		}
+	}, []);
+
+
 	const handleToggle = () => {
 		setMenuOpen(!MenuOpen);
-	}
-	if (location.pathname === "/" || location.pathname === "/register" || location.pathname === "/login") {
-		return null; 
 	}
 
 	const handleLogOut = () => {
@@ -43,36 +64,40 @@ export const Navbar = () => {
 					/>
 					SheSpace
 				</Link>
-				<button
-				className="navbar-toggler"
-				type="button"
-				aria-expanded={MenuOpen} 
-				onClick={handleToggle} 
-				aria-label="Toggle navigation"
-				data-bs-toggle="collapse"
-				data-bs-target="#navbarNavDropdown" 
-				>
-					<span className="navbar-toggler-icon"><i className="fa-solid fa-bars"></i></span>
-				</button>
-				<div
-				className={`collapse navbar-collapse d-flex justify-content-md-end ${MenuOpen ? 'show' : ''}`}
-				id="navbarNavDropdown" 
-				>
-					<ul className="navbar-nav">
-						<li className="nav-item">
-							<Link className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}  to={"/profile"}>Perfil</Link>
-						</li>
-						<li className="nav-item">
-							<Link className={`nav-link ${location.pathname === '/forums' ? 'active' : ''}`} to={"/forums"}>Foros</Link>
-						</li>
-						<li className="nav-item">
-							<Link className={`nav-link disabled ${location.pathname === '/' ? 'active' : ''}`} to={"/"}>Publicidad</Link>
-						</li>
-						<li className="nav-item">
-							<Link className="nav-link btn rounded" to={"/"} onClick={handleLogOut}>Cerrar sesion</Link>
-						</li>
-					</ul>
-				</div>
+				{ tokenExists && (
+				<>
+					<button
+					className="navbar-toggler"
+					type="button"
+					aria-expanded={MenuOpen} 
+					onClick={handleToggle} 
+					aria-label="Toggle navigation"
+					data-bs-toggle="collapse"
+					data-bs-target="#navbarNavDropdown" 
+					>
+						<span className="navbar-toggler-icon"><i className="fa-solid fa-bars"></i></span>
+					</button>
+					<div
+					className={`collapse navbar-collapse d-flex justify-content-md-end ${MenuOpen ? 'show' : ''}`}
+					id="navbarNavDropdown" 
+					>
+						<ul className="navbar-nav">
+							<li className="nav-item">
+								<Link className={`nav-link ${location.pathname === '/profile' ? 'active' : ''}`}  to={"/profile"}>Perfil</Link>
+							</li>
+							<li className="nav-item">
+								<Link className={`nav-link ${location.pathname === '/forums' ? 'active' : ''}`} to={"/forums"}>Foros</Link>
+							</li>
+							<li className="nav-item">
+								<Link className={`nav-link  ${location.pathname === '/advertising' ? 'active' : ''}`} to={"/advertising"}>Publicidad</Link>
+							</li>
+							<li className="nav-item">
+								<Link className="nav-link btn rounded" to={"/"} onClick={handleLogOut}>Cerrar sesion</Link>
+							</li>
+						</ul>
+					</div>
+				</>
+				)}
 			</div>
 		</nav>
 	);

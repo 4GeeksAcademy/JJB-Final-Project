@@ -5,6 +5,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			userToken: "",
 			profile: {}, 
 			forums : [],
+			advertising : [],
+			forumDetails: {},
 			forumDetails: {},
 		},
 
@@ -77,9 +79,113 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
-			
-			registerUser: async (email, password, nickname) => {
 
+			updateForum: async (id_forum, forumData) => {
+				console.log("-----------updateForum----------------");
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+			
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/forum/${id_forum}`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`
+						},
+						body: JSON.stringify(forumData)
+					});
+			
+					const data = await resp.json();
+			
+					if (!resp.ok) {
+						console.error("Error al actualizar el foro:", data.error);
+						return { error: `${data.error}` }; // Retorna el mensaje de error.
+					}
+			
+					// Actualiza el estado global del foro modificado.
+					const store = getStore();
+					const updatedForums = store.forums.map(forum => 
+						forum.id_forum === id_forum ? data : forum
+					);
+					setStore({ forums: updatedForums });
+			
+					console.log("Foro actualizado exitosamente:", data);
+					return data;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+			
+			deleteForum: async (id_forum) => {
+				console.log("-----------deleteForum----------------");
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+			
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/forum/${id_forum}`, {
+						method: "DELETE",
+						headers: {
+							"Authorization": `Bearer ${token}`
+						}
+					});
+			
+					const data = await resp.json();
+			
+					if (!resp.ok) {
+						console.error("Error al eliminar el foro:", data.error);
+						return { error: `${data.error}` }; // Retorna el mensaje de error.
+					}
+			
+					// Elimina el foro del estado global.
+					const store = getStore();
+					const updatedForums = store.forums.filter(forum => forum.id_forum !== id_forum);
+					setStore({ forums: updatedForums });
+			
+					console.log("Foro eliminado exitosamente:", data.message);
+					return { success: true };
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+			
+
+			loadAdvertising: async () => {
+				console.log("-----------loadAdvertising----------------")
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
+					}
+					const resp = await fetch(`${process.env.BACKEND_URL}api/advertising`,{
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							"accept": "application/json",
+						  	"Authorization": `Bearer ${token}`, 
+							"Content-Type": "application/json"
+						}
+					});
+					const data = await resp.json();
+					console.log(data);
+					if (!resp.ok) {
+						return { error: `${data.error}` }; 
+					}
+					setStore({ advertising: data});
+					return data;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+			
+			registerUser: async (email, password, nickname, checkbox) => {
+				console.log("-----------registerUser----------------")
 				try {
 					const resp = await fetch(`${process.env.BACKEND_URL}api/register`,{
 						method: "POST",
@@ -88,6 +194,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							email: email,
 							password: password,
 							nickname: nickname,
+							es_mayor:checkbox
 						})
 					})
 
@@ -179,7 +286,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
-						return { error_access_token: "No autorizado" };
+						return { error: "No autorizado" };
 					}
 					console.log("id_user", getStore().profile.id_user);
 					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`,{
@@ -208,11 +315,46 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			sendFormAdvertising: async (advertisingName, advertisingContent) => {
+				console.log("-----------sendFormAdvertising----------------")
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+					console.log("id_user", getStore().profile.id_user);
+					const resp = await fetch(`${process.env.BACKEND_URL}api/advertising`,{
+						method: "POST",
+						body: JSON.stringify({
+							title: advertisingName,
+							content: advertisingContent
+						}),
+						headers: {
+						  "Content-Type": "application/json",
+						  "accept": "application/json",
+						  "Authorization": `Bearer ${token}`, 
+						  "Content-Type": "application/json"
+						}
+					});
+					const data = await resp.json();
+					if (!resp.ok) {
+						return { error: `${data.error}`}; 
+					}
+					console.log("BACK Datos devueltos:", data);
+					setStore({ advertising: [...getStore().advertising, data.advertising]});
+					return data;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+
 			loadForumDetails: async (forum_title) => {
+				console.log("-----------loadForumDetails----------------")
                 try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
-						return { error_access_token: "No autorizado" };
+						return { error: "No autorizado" };
 					}
                     const response = await fetch(`${process.env.BACKEND_URL}api/forum/${forum_title}`,{
 						method: "GET",
@@ -221,19 +363,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json"
 						}
 					});
-                    if (!response.ok) throw new Error("Error al cargar los detalles del foro");
-                    const data = await response.json();
-                    setStore({ forumDetails: data });
+					const data = await response.json();
+                    if (!response.ok) {return { error: `${data.error}`}; }
+					setStore({ forumDetails: data });
+                    return data; 
                 } catch (error) {
                     console.error("Error cargando los detalles del foro:", error);
+					return { error: error.message };
                 }
             },
 
             addCommentToForum: async (id_forum, content) => {
+				console.log("-----------addCommentToForum----------------")
                 try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
-						return { error_access_token: "No autorizado" };
+						return { error: "No autorizado" };
 					}
                     const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
                         method: "POST",
@@ -246,14 +391,106 @@ const getState = ({ getStore, getActions, setStore }) => {
 							content: content,
 						}),
                     });
-                    if (!response.ok) {throw new Error("Error al agregar el comentario");}
-                    return true;
+					const data = await response.json();
+                    if (!response.ok) {return { error: `${data.error}`}; }
+                    return data;
                 } catch (error) {
                     console.error("Error al agregar el comentario:", error);
-                    return false;
+                    return { error: error.message };
                 }
             },
+            updateComment: async (id_comment, content, forum) => {
+				console.log("-----------updateComment----------------")
+				console.log("id_comment", id_comment, "content", content, "forum",  forum)
+                try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+                    const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`,
+                        },
+						body: JSON.stringify({
+							comment_index: id_comment,
+							id_forum: forum,
+							content: content,
+						}),
+                    });
+					const data = await response.json();
+					console.log("data", data)
 
+                    if (!response.ok) {return { error: `${data.error}`}; }
+
+					const new_comment = data.new_comment;
+					console.log("new_comment", new_comment)
+
+					const store = getStore();
+					const actualComments = store.forumDetails.comments;
+					
+					const index = actualComments.findIndex(comment => comment.id_comment === new_comment.id_comment);
+
+					if (index !== -1) {
+						actualComments[index] = new_comment;
+					
+						setStore({
+							forumDetails: {
+								...store.forumDetails,
+								comments: actualComments,
+							},
+						});
+					}
+                    return data;
+                } catch (error) {
+                    console.error("Error al agregar el comentario:", error);
+                    return { error: error.message };
+                }
+            },
+			deleteComment: async (id_comment) => {
+				console.log("-----------deleteComment----------------")
+				console.log("id_comment", id_comment)
+                try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+                    const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`,
+                        },
+						body: JSON.stringify({
+							comment_index: id_comment
+						}),
+                    });
+					const data = await response.json();
+					console.log("data", data)
+
+                    if (!response.ok) {return { error: `${data.error}`}; }
+
+					const store = getStore();
+
+					
+					const updatedComments = store.forumDetails.comments.filter(
+						(comment) => comment.id_comment !== id_comment
+					);
+			
+					// Actualizar el store
+					setStore({
+						forumDetails: {
+							...store.forumDetails,
+							comments: updatedComments,
+						},
+					});
+                    return data;
+                } catch (error) {
+                    console.error("Error al agregar el comentario:", error);
+                    return { error: error.message };
+                }
+            },
 			
 		}
 	};
