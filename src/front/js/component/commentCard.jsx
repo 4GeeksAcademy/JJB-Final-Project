@@ -87,7 +87,7 @@ export const CommentCard = ({ forum, toggleModal }) => {
                 <div className="card-footer text-muted d-flex">
                     <div className="flex-grow-1">
                         {comment.children && comment.children.length > 0 && (
-                            <button onClick={() => toggleReplies(comment.id_comment)}>
+                            <button className="btn btn-link" onClick={() => toggleReplies(comment.id_comment)}>
                                 {showReplies[comment.id_comment] ? "Ocultar respuestas" : `Ver respuestas (${comment.children.length})`}
                             </button>
                         )}
@@ -99,7 +99,7 @@ export const CommentCard = ({ forum, toggleModal }) => {
                 </div>
 
                 {showReplies[comment.id_comment] && comment.children && comment.children.length > 0 && (
-                    <div className="ms-4">
+                    <div className="ms-4 replies" >
                         {renderComments(comment.children)}
                     </div>
                 )}
