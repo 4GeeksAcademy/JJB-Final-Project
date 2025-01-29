@@ -109,6 +109,7 @@ class Advertising(db.Model):
             "creation_date": self.creation_date,
             "active": self.active,
             "id_user": self.id_user,
+            "nickname": self.user.nickname if self.user else None,
         }
 
 class Favorite(db.Model):

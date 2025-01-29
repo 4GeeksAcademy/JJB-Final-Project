@@ -324,6 +324,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return { error: error.message };
                 }
             },
+
             updateComment: async (id_comment, content, forum) => {
 				console.log("-----------updateComment----------------")
 				console.log("id_comment", id_comment, "content", content, "forum",  forum)
@@ -373,6 +374,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return { error: error.message };
                 }
             },
+
 			deleteComment: async (id_comment) => {
 				console.log("-----------deleteComment----------------")
 				console.log("id_comment", id_comment)
@@ -416,8 +418,55 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return { error: error.message };
                 }
             },
+
+			deleteAdvertising: async (id_advertising) => {
+				console.log("-----------deleteAdvertising----------------")
+				console.log("id_advertising", id_advertising)
+                try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+                    const response = await fetch(`${process.env.BACKEND_URL}api/advertising`, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`,
+                        },
+						body: JSON.stringify({
+							id_advertising: id_advertising
+						}),
+                    });
+					const data = await response.json();
+					console.log("data", data)
+
+                    if (!response.ok) {return { error: `${data.error}`}; }
+
+					const store = getStore();
+
+					
+					const updatedAdvertising = store.advertising.filter(
+						(advertising) => advertising.id_advertising !== id_advertising
+					);
+			
+					// Actualizar el store
+					setStore({
+						advertising: {
+							...store.advertising,
+							comments: updatedAdvertising,
+						},
+					});
+                    return data;
+                } catch (error) {
+                    console.error("Error al agregar el comentario:", error);
+                    return { error: error.message };
+                }
+            },
 			
 		}
+
+		
+
 	};
 };
 
