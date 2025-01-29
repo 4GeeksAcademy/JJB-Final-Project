@@ -377,6 +377,41 @@ def create_advertising():
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+    
+@api.route('/advertising', methods=['PUT'])
+@jwt_required()
+def update_advertising():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para update_advertising: {email}")  
+
+        # advertising_index = request.json.get("advertising_index", None)
+        id_advertising = request.json.get("id_advertising", None)
+        content = request.json.get("content", None)
+
+        print(f"Datos recibidos: id_forum={id_advertising}, content={content}")
+        
+        # if comment_index is None or id_forum is None or not content:
+        #     return jsonify({"error": "Faltan datos obligatorios (content, id_forum, comment_index)"}), 400
+
+        if id_advertising is None or not content:
+            return jsonify({"error": "Faltan datos obligatorios (id_advertising, content)"}), 400
+              
+        advertising = Advertising.query.filter_by(id_advertising=id_advertising).first()
+        print(f"advertising: {id_advertising}") 
+        if not advertising: 
+            return jsonify({"error": "Publicidad no encontrada"}), 404
+
+        advertising.content = content
+        # advertising.modification_date = datetime.date.today()
+        advertising.creation_date=datetime.date.today()
+
+        db.session.commit()
+
+        return jsonify({"msg": "Publicidad actualizada exitosamente", "new_advertising": advertising.serialize()}), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
 
