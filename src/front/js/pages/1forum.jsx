@@ -151,12 +151,17 @@ export const ForumDetail = () => {
                     <p>{content}</p>
                     <p>Creado por: {store.forumDetails.nickname}</p>
                     <p>Fecha: {new Date(store.forumDetails.creation_date).toLocaleDateString()}</p>
-                    <button className="btn me-3" style={{background:"var(--accent-color)",color:"var(--text-color)"}} onClick={() => setIsEditing(true)}>
-                        Editar Foro
-                    </button>
-                    <button className="btn"style={{background:"var(--primary-color)",color:"var(--text-color)"}} onClick={handleDelete}>
-                    <i className="fa-solid fa-trash"></i>
-                    </button>
+                    {store.profile && store.forumDetails.nickname === store.profile.nickname && (
+                        <>
+                        <button className="btn me-3" style={{background:"var(--accent-color)",color:"var(--text-color)"}} onClick={() => setIsEditing(true)}>
+                            Editar Foro
+                        </button>
+                        <button className="btn"style={{background:"var(--primary-color)",color:"var(--text-color)"}} onClick={handleDelete}>
+                            <i className="fa-solid fa-trash"></i>
+                        </button>
+                        </>
+                    )}
+
                 </div>
             ) : (
                 <form>
