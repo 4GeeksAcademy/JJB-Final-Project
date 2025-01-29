@@ -120,25 +120,35 @@ export const ForumDetail = () => {
 
     // Eliminar foro
     const handleDelete = async () => {
-        const result = await actions.deleteForum(forum_id);
-        if (!result.error) {
-            Swal.fire({
-                position: "top",
-                icon: "success",
-                title: "Foro eliminado exitosamente",
-                showConfirmButton: false,
-                timer: 2000
-            });
-            navigate("/forum"); // Redirige después de eliminar
-        } else {
-            Swal.fire({
-                position: "top",
-                icon: "error",
-                title: "Error al eliminar el foro",
-                showConfirmButton: false,
-                timer: 3500
-            });
+        const confirm = await Swal.fire({
+            position: "top",
+            icon: "question",
+            title: "¿Segura que deseas eliminar este foro?",
+            showConfirmButton: true,
+            showCancelButton:true,
+        })
+        if(confirm.isConfirmed){
+            const result = await actions.deleteForum(forum_id);
+            if (!result.error) {
+                Swal.fire({
+                    position: "top",
+                    icon: "success",
+                    title: "Foro eliminado exitosamente",
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+                navigate("/forums"); // Redirige después de eliminar
+            } else {
+                Swal.fire({
+                    position: "top",
+                    icon: "error",
+                    title: "Error al eliminar el foro",
+                    showConfirmButton: false,
+                    timer: 3500
+                });
+            }
         }
+        
     };
 
     if (!store.forumDetails) {
