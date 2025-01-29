@@ -15,7 +15,35 @@ export const ForumDetail = () => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [comment, setComment] = useState("");
+     const [image,setImage] = useState("")
     const [commentChanged, setCommentChanged] = useState(false);
+
+    const uploadImage = async (e) => {
+        console.log(e.target.files[0]);
+        const formData = new FormData()
+
+        formData.append('image', e.target.files[0])
+        console.log(formData.get("image"));
+
+        const response = await fetch(process.env.BACKEND_URL + "api/upload", {
+            method: "POST",
+            body: formData,
+            header: {
+                "Content-Type": "multipart/formdata"
+            }
+        })
+
+        const data = await response.json()
+        if (data) {
+            setImage(data)
+        }
+        console.log(data);
+
+
+
+
+    }
+
 
     // Carga los detalles del foro
     useEffect(() => {
@@ -125,9 +153,9 @@ export const ForumDetail = () => {
             icon: "question",
             title: "¿Segura que deseas eliminar este foro?",
             showConfirmButton: true,
-            showCancelButton:true,
+            showCancelButton: true,
         })
-        if(confirm.isConfirmed){
+        if (confirm.isConfirmed) {
             const result = await actions.deleteForum(forum_id);
             if (!result.error) {
                 Swal.fire({
@@ -148,7 +176,7 @@ export const ForumDetail = () => {
                 });
             }
         }
-        
+
     };
 
     if (!store.forumDetails) {
@@ -162,13 +190,14 @@ export const ForumDetail = () => {
                 <div>
                     <h2>{title}</h2>
                     <p>{content}</p>
+                    <img src={image} />
                     <p>Creado por: {store.forumDetails.nickname}</p>
                     <p>Fecha: {new Date(store.forumDetails.creation_date).toLocaleDateString()}</p>
-                    <button className="btn me-3" style={{background:"var(--accent-color)",color:"var(--text-color)"}} onClick={() => setIsEditing(true)}>
+                    <button className="btn me-3" style={{ background: "var(--accent-color)", color: "var(--text-color)" }} onClick={() => setIsEditing(true)}>
                         Editar Foro
                     </button>
-                    <button className="btn"style={{background:"var(--primary-color)",color:"var(--text-color)"}} onClick={handleDelete}>
-                    <i className="fa-solid fa-trash"></i>
+                    <button className="btn" style={{ background: "var(--primary-color)", color: "var(--text-color)" }} onClick={handleDelete}>
+                        <i className="fa-solid fa-trash"></i>
                     </button>
                 </div>
             ) : (
@@ -192,7 +221,8 @@ export const ForumDetail = () => {
                             onChange={(e) => setContent(e.target.value)}
                         />
                     </div>
-                    <button className="btn me-3" style={{background:"var(--secondary-color)",color:"var(--text-color)"}} onClick={handleEdit}>
+                    <input type="file" onChange={uploadImage} />
+                    <button className="btn me-3" style={{ background: "var(--secondary-color)", color: "var(--text-color)" }} onClick={handleEdit}>
                         Guardar Cambios
                     </button>
                     <button className="btn btn-secondary" onClick={() => setIsEditing(false)}>
@@ -253,6 +283,7 @@ export const ForumDetail = () => {
                                 >
                                     Crear Comentario
                                 </button>
+
                             </div>
                         </form>
                     </div>

@@ -338,14 +338,14 @@ def delete_comment():
 
 @api.route('/upload', methods=['POST'])
 def upload_image():
-        image = request.files["image"]
+    image = request.files["image"]
 
-        if not image:
-            return jsonify({"error":"The image is required"}),400
+    if not image:
+        return jsonify({"error":"The image is required"}),400
 
-        result = cloudinary.uploader.upload(image)
+    result = cloudinary.uploader.upload(image)
 
-        return jsonify(result["secure_url"]), 200
+    return jsonify(result["secure_url"]), 200
 
         
 
