@@ -62,7 +62,7 @@ class Forum(db.Model):
             "creation_date": str(self.creation_date),
             "id_user": self.id_user,
             "nickname": self.user.nickname if self.user else None,
-            "comments": [comment.serialize() for comment in self.comments]  
+            "comments": [comment.serialize() for comment in self.comments if comment.parent_id is None]
 
         }
 
