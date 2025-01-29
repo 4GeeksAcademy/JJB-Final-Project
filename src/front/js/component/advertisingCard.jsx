@@ -69,18 +69,16 @@ export const AdvertisingCard = () => {
                                 <div className="text-muted">
                                     {item.creation_date}
                                 </div>
-
-
-                            <div>
-                                {item.nickname === store.profile.nickname && (
-                                    <button
-                                    className="btn btn-secondary"
-                                        onClick={() => handleDeleteClick(item.id_advertising)}
-                                    >
-                                        <i className="fa-solid fa-trash"></i>
-                                    </button>                                                                                
-                                )}
-                            </div>
+                                <div>
+                                    {item.nickname === store.profile.nickname && (
+                                        <button
+                                            className="btn btn-secondary"
+                                            onClick={() => handleDeleteClick(item.id_advertising)}
+                                        >
+                                            <i className="fa-solid fa-trash"></i>
+                                        </button>
+                                    )}
+                                </div>
 
                             </div>
                         </div>

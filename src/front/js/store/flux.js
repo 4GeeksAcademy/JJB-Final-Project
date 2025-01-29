@@ -6,7 +6,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			profile: {}, 
 			forums : [],
 			advertising : [],
-			
 			forumDetails: {},
 		},
 
@@ -458,7 +457,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
                     return data;
                 } catch (error) {
-                    console.error("Error al agregar el comentario:", error);
+                    console.error("Error al elimimar el comentario:", error);
                     return { error: error.message };
                 }
             },
