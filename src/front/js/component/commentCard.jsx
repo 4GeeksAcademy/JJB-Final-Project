@@ -29,10 +29,19 @@ export const CommentCard = ({ forum, toggleModal }) => {
     };
 
     const handleDeleteClick = async (id_comment) => {
-        const resp = await actions.deleteComment(id_comment); 
-        handleResponse(resp);
-        setEditingIndex(null);
-        setEditedContent("");
+        const confirm = await Swal.fire({
+            position: "top",
+            icon: "question",
+            title: "¿Segura que deseas eliminar este comentario?",
+            showConfirmButton: true,
+            showCancelButton:true,
+        })
+        if(confirm.isConfirmed){
+            const resp = await actions.deleteComment(id_comment); 
+            handleResponse(resp);
+            setEditingIndex(null);
+            setEditedContent("");
+        }
     };
 
     const handleResponse = (resp) => {
@@ -48,7 +57,7 @@ export const CommentCard = ({ forum, toggleModal }) => {
             Swal.fire({
                 position: "top",
                 icon: "success",
-                title: "Operación realizada correctamente",
+                title: resp.msg,
                 showConfirmButton: false,
                 timer: 2000
             });
