@@ -80,6 +80,81 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			updateForum: async (id_forum, forumData) => {
+				console.log("-----------updateForum----------------");
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+			
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/forum/${id_forum}`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`
+						},
+						body: JSON.stringify(forumData)
+					});
+			
+					const data = await resp.json();
+			
+					if (!resp.ok) {
+						console.error("Error al actualizar el foro:", data.error);
+						return { error: `${data.error}` }; // Retorna el mensaje de error.
+					}
+			
+					// Actualiza el estado global del foro modificado.
+					const store = getStore();
+					const updatedForums = store.forums.map(forum => 
+						forum.id_forum === id_forum ? data : forum
+					);
+					setStore({ forums: updatedForums });
+			
+					console.log("Foro actualizado exitosamente:", data);
+					return data;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+			
+			deleteForum: async (id_forum) => {
+				console.log("-----------deleteForum----------------");
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+			
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/forum/${id_forum}`, {
+						method: "DELETE",
+						headers: {
+							"Authorization": `Bearer ${token}`
+						}
+					});
+			
+					const data = await resp.json();
+			
+					if (!resp.ok) {
+						console.error("Error al eliminar el foro:", data.error);
+						return { error: `${data.error}` }; // Retorna el mensaje de error.
+					}
+			
+					// Elimina el foro del estado global.
+					const store = getStore();
+					const updatedForums = store.forums.filter(forum => forum.id_forum !== id_forum);
+					setStore({ forums: updatedForums });
+			
+					console.log("Foro eliminado exitosamente:", data.message);
+					return { success: true };
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+			
+
 			loadAdvertising: async () => {
 				console.log("-----------loadAdvertising----------------")
 				try {
