@@ -179,10 +179,10 @@ export const ForumDetail = () => {
                             onChange={(e) => setContent(e.target.value)}
                         />
                     </div>
-                    <button className="btn me-3" style={{background:"var(--secondary-color)",color:"var(--text-color)"}} onClick={handleEdit}>
+                    <button type="button" className="btn me-3" style={{background:"var(--secondary-color)",color:"var(--text-color)"}} onClick={handleEdit}>
                         Guardar Cambios
                     </button>
-                    <button className="btn btn-secondary" onClick={() => setIsEditing(false)}>
+                    <button type="button" className="btn btn-secondary" onClick={() => setIsEditing(false)}>
                         Cancelar
                     </button>
                 </form>
