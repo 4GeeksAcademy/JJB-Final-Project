@@ -419,48 +419,106 @@ const getState = ({ getStore, getActions, setStore }) => {
             },
 
 			deleteAdvertising: async (id_advertising) => {
-				console.log("-----------deleteAdvertising----------------")
-				console.log("id_advertising", id_advertising)
-                try {
+				console.log("-----------deleteAdvertising----------------");
+				console.log("id_advertising", id_advertising);
+				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
 						return { error: "No autorizado" };
 					}
-                    const response = await fetch(`${process.env.BACKEND_URL}api/advertising`, {
-                        method: "DELETE",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`,
-                        },
+					const response = await fetch(`${process.env.BACKEND_URL}/api/advertising`, {
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`,
+						},
 						body: JSON.stringify({
-							id_advertising: id_advertising
+							id_advertising: id_advertising,
 						}),
-                    });
+					});
 					const data = await response.json();
-					console.log("data", data)
-
-                    if (!response.ok) {return { error: `${data.error}`}; }
-
+					console.log("data", data);
+			
+					if (!response.ok) {
+						return { error: `${data.error}` };
+					}
+			
 					const store = getStore();
-
-					
+			
 					const updatedAdvertising = store.advertising.filter(
 						(advertising) => advertising.id_advertising !== id_advertising
 					);
 			
 					// Actualizar el store
 					setStore({
-						advertising: {
-							...store.advertising,
-							comments: updatedAdvertising,
-						},
+						advertising: updatedAdvertising,
 					});
-                    return data;
-                } catch (error) {
-                    console.error("Error al elimimar el comentario:", error);
-                    return { error: error.message };
-                }
-            },
+					return data;
+				} catch (error) {
+					console.error("Error al eliminar la publicidad:", error);
+					return { error: error.message };
+				}
+			},
+
+			updateAdvertising: async (id_advertising, title, content) => {
+				console.log("-----------updateAdvertising----------------");
+				console.log("id_advertising", id_advertising, "title", title, "content", content);
+			
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+			
+					const response = await fetch(`${process.env.BACKEND_URL}api/advertising`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`,
+						},
+						body: JSON.stringify({
+							id_advertising: id_advertising,
+							title: title,
+							content: content,
+						}),
+					});
+			
+					const data = await response.json();
+					console.log("data", data);
+			
+					if (!response.ok) {
+						return { error: data.error || "Error desconocido" };
+					}
+			
+					const new_advertising = data.new_advertising;
+					console.log("new_advertising", new_advertising);
+			
+					const store = getStore();
+					const actualAdvertising = store.advertising;
+			
+					const index = actualAdvertising.findIndex(
+						(ad) => ad.id_advertising === new_advertising.id_advertising
+					);
+			
+					if (index !== -1) {
+						actualAdvertising[index] = new_advertising;
+			
+						setStore({
+							advertising: actualAdvertising,
+						});
+					}
+			
+					return data;
+				} catch (error) {
+					console.error("Error al actualizar la publicidad:", error);
+					return { error: error.message };
+				}
+			},
+			
+			
+
+			
+			
 			
 		}
 
