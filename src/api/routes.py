@@ -218,6 +218,7 @@ def update_forum(id_foro):
 
         forum.title = data.get('title', forum.title)
         forum.content = data.get('content', forum.content)
+        forum.image_url = data.get('image_url', forum.image_url)
 
         db.session.commit()
         return jsonify(forum.serialize()), 200

@@ -43,6 +43,7 @@ class User(db.Model):
 class Forum(db.Model):
     id_forum = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     title = db.Column(db.String(120), nullable=False)
+    image_url = db.Column(db.String(255), nullable=True)
     content = db.Column(db.Text, nullable=False)
     creation_date = db.Column(db.Date, nullable=False)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)  
@@ -58,6 +59,7 @@ class Forum(db.Model):
         return {
             "id_forum": self.id_forum,
             "title": self.title,
+            "image_url": self.image_url,
             "content": self.content,
             "creation_date": str(self.creation_date),
             "id_user": self.id_user,

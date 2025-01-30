@@ -124,7 +124,7 @@ export const ForumDetail = () => {
 
     // Editar foro
     const handleEdit = async () => {
-        const updatedForum = await actions.updateForum(forum_id, { title, content });
+        const updatedForum = await actions.updateForum(forum_id, { title:title, content:content, image_url:image });
         if (!updatedForum.error) {
             Swal.fire({
                 position: "top",
@@ -222,9 +222,8 @@ export const ForumDetail = () => {
                         />
                     </div>
                     <input type="file" onChange={uploadImage} />
-                    <button className="btn me-3" style={{ background: "var(--secondary-color)", color: "var(--text-color)" }} onClick={handleEdit}>
-                        Guardar Cambios
-                    </button>
+                    <input type="button" value={"Guardar Cambios"} className="btn me-3" style={{ background: "var(--secondary-color)", color: "var(--text-color)" }} onClick={handleEdit}/>
+                        
                     <button className="btn btn-secondary" onClick={() => setIsEditing(false)}>
                         Cancelar
                     </button>
