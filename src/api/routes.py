@@ -423,6 +423,8 @@ def update_advertising():
         id_advertising = request.json.get("id_advertising", None)
         title = request.json.get("title", None)
         content = request.json.get("content", None)
+        image_url = data.get("image_url")
+
 
         print(f"Datos recibidos: id_advertising={id_advertising}, title={title}, content={content}")
         

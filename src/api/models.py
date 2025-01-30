@@ -110,6 +110,7 @@ class Comment(db.Model):
 class Advertising(db.Model):
     id_advertising = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     title = db.Column(db.String(120), nullable=False)
+    image_url = db.Column(db.String(255), nullable=True)
     content = db.Column(db.Text, nullable=False)
     creation_date = db.Column(db.Date, nullable=False)
     active = db.Column(db.Boolean, nullable=False, default=True)
@@ -124,6 +125,7 @@ class Advertising(db.Model):
         return {
             "id_advertising": self.id_advertising,
             "title": self.title,
+            "image_url": self.image_url,
             "content": self.content,
             "creation_date": self.creation_date,
             "active": self.active,
