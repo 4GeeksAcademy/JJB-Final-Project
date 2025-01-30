@@ -14,26 +14,28 @@ export const Navbar = () => {
 	const location = useLocation();
 
 	useEffect(() => {
-		const token = actions.checkAcessToken();
-		if(token) {
-			setTokenExists(true) 
-		}else {
-			setTokenExists(false)
-		}
-	});
+        const verifyToken = async () => {
+            const token = await actions.checkAcessToken();
+            setTokenExists(!!token);
+        };
+
+        verifyToken();
+    });
 
 	useEffect(() => {
-		if(tokenExists) {
-			const loadProfile = async () => {
-				const resp = await actions.loadProfile();
-				if (resp.error_access_token) {
-					console.log("resp:", resp);
-					navigate('/');
-				}
-			};
-			loadProfile();
-		}
-	}, []);
+        const loadProfile = async () => {
+            if (!tokenExists) return;
+
+            const resp = await actions.loadProfile();
+            if (resp.error_access_token) {
+                console.log("resp:", resp);
+                setTokenExists(false);
+                navigate('/');
+            }
+        };
+
+        loadProfile();
+    }, [tokenExists]);
 
 
 	const handleToggle = () => {
@@ -41,7 +43,8 @@ export const Navbar = () => {
 	}
 
 	const handleLogOut = () => {
-		actions.logOut()
+		actions.logOut();
+		setTokenExists(false);
 		Swal.fire({
 			position: "top",
 			icon: "info",

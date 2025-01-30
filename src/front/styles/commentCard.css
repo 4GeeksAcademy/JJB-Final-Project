@@ -30,3 +30,8 @@
   background-color: #0056b3;
   border-color: #003f7f;
 }
+
+.replies {
+  border-left: 2px solid #ddd; 
+  padding-left: 10px;
+}
