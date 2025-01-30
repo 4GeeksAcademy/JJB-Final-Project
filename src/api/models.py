@@ -64,7 +64,7 @@ class Forum(db.Model):
             "creation_date": str(self.creation_date),
             "id_user": self.id_user,
             "nickname": self.user.nickname if self.user else None,
-            "comments": [comment.serialize() for comment in self.comments]  
+            "comments": [comment.serialize() for comment in self.comments if comment.parent_id is None]
 
         }
 
@@ -73,21 +73,38 @@ class Comment(db.Model):
     content = db.Column(db.Text, nullable=False)
     creation_date = db.Column(db.Date, nullable=False)
     modification_date = db.Column(db.Date, nullable=True)
-    id_forum = db.Column(db.Integer, db.ForeignKey('forum.id_forum'), nullable=False) 
-    id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False) 
+    id_forum = db.Column(db.Integer, db.ForeignKey('forum.id_forum'), nullable=False)
+    id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)
+    parent_id = db.Column(db.Integer, db.ForeignKey("comment.id_comment"), nullable=True)
+
+    # Relación con comentarios hijos
+    parent = db.relationship("Comment", remote_side=[id_comment], backref="children")
 
     def __repr__(self):
         return f'<Comment {self.id_comment}>'
 
-    def serialize(self):
+    def serialize(self, visited=None):
+        if visited is None:
+            visited = set()
+
+        if self.id_comment in visited:
+            return None
+
+        visited.add(self.id_comment)
+
         return {
             "id_comment": self.id_comment,
             "content": self.content,
             "creation_date": str(self.creation_date),
-            "modification_date": str(self.modification_date),
-            "id_forum": self.id_forum,
+            "modification_date": str(self.modification_date) if self.modification_date else None,
             "id_user": self.id_user,
+            "id_forum": self.id_forum,
             "nickname": self.user.nickname if self.user else None,
+            "parent_id": self.parent_id,
+            "children": [
+                child.serialize(visited)
+                for child in sorted(self.children, key=lambda x: x.creation_date)
+            ] if self.children else [],
         }
 
 class Advertising(db.Model):
@@ -111,6 +128,7 @@ class Advertising(db.Model):
             "creation_date": self.creation_date,
             "active": self.active,
             "id_user": self.id_user,
+            "nickname": self.user.nickname if self.user else None,
         }
 
 class Favorite(db.Model):
