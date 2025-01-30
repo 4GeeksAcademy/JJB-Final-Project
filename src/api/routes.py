@@ -340,5 +340,120 @@ def delete_comment():
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
+@api.route('/advertising', methods=['GET'])
+@jwt_required()
+def get_advertising():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para publicidad: {email}")  
+        advertising = Advertising.query.all()
+        if not advertising:
+            return jsonify({"error": "No se encontro publicidad"}), 404
+        
+        serialized_advertising = [advertising.serialize() for advertising in advertising]
+        return jsonify(serialized_advertising), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+
+@api.route('/advertising', methods=['POST'])
+@jwt_required()
+def create_advertising():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para create_advertising: {email}")  
+        data = request.get_json()
+        print(data)
+        title = data.get("title")
+        content = data.get("content")
+
+        if not title or not content:
+            return jsonify({"error": "Faltan datos obligatorios (title, content)"}), 400
+        
+        user = User.query.filter_by(email=email).first()
+        if not user: 
+            return jsonify({"error": "Usuario no encontrado"}), 404
+
+        new_advertising = Advertising(
+            title=title,
+            content=content,
+            creation_date=datetime.date.today(),
+            id_user=user.id_user,
+            active=True
+        )
+
+        db.session.add(new_advertising)
+        db.session.commit()
+
+        return jsonify({"msg": "Publicidad creada exitosamente", "advertising": new_advertising.serialize()}), 201
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+    
+@api.route('/advertising', methods=['PUT'])
+@jwt_required()
+def update_advertising():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para update_advertising: {email}")  
+
+        id_advertising = request.json.get("id_advertising", None)
+        title = request.json.get("title", None)
+        content = request.json.get("content", None)
+
+        print(f"Datos recibidos: id_advertising={id_advertising}, title={title}, content={content}")
+        
+        if id_advertising is None or not title or not content:
+            return jsonify({"error": "Faltan datos obligatorios (id_advertising, title, content)"}), 400
+              
+        advertising = Advertising.query.filter_by(id_advertising=id_advertising).first()
+        print(f"advertising: {advertising}") 
+        if not advertising: 
+            return jsonify({"error": "Publicidad no encontrada"}), 404
+
+        advertising.title = title
+        advertising.content = content
+        advertising.creation_date = datetime.date.today()
+
+        db.session.commit()
+
+        return jsonify({"msg": "Publicidad actualizada exitosamente", "new_advertising": advertising.serialize()}), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+    
+
+@api.route('/advertising', methods=['DELETE'])
+@jwt_required()
+def delete_advertising():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para delete_advertising: {email}")  
+
+        id_advertising = request.json.get("id_advertising", None)
+
+        print(f"Datos recibidos: id_advertising={id_advertising}")
+
+        if id_advertising is None:
+            return jsonify({"error": "Faltan datos obligatorios (id_advertising)"}), 400
+              
+        id_advertising = Advertising.query.filter_by(id_advertising=id_advertising).first()
+        print(f"Advertising: {id_advertising}") 
+        if not id_advertising: 
+            return jsonify({"error": "Publicidad no encontrada"}), 404
+
+        db.session.delete(id_advertising)
+        db.session.commit()
+
+        return jsonify({"msg": "Publicidad borrada exitosamente"}), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+
+
+
 
 
