@@ -1,0 +1,62 @@
+.image-upload {
+    height: 200px;
+    width: 200px;
+    border-radius: 15%; /* Hace la imagen redonda */
+    border: 2px dashed #A6763C; /* Borde punteado verde */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa; /* Color de fondo suave */
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .image-upload:hover {
+    background-color: #e8f5e9; /* Color de fondo más claro en hover */
+    border-color: #A6763C;
+    transform: scale(1.05);
+  }
+  
+  .image-upload input[type="file"] {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    cursor: pointer;
+  }
+  
+  
+  
+  .image-upload {
+    height: 200px;
+    width: 200px;
+    border-radius: 15%; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa; 
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  
+  .image-upload input[type="file"] {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    cursor: pointer;
+  }
+  
+  
+  .image-upload:hover::before {
+    color: #A6763C
+  }
+  
+  

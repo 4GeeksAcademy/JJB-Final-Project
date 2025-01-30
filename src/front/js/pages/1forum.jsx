@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { CommentCard } from "../component/commentCard.jsx";
 import Swal from "sweetalert2";
 import "../../styles/colors.css";
+import "../../styles/1forum.css";
 
 export const ForumDetail = () => {
     const { store, actions } = useContext(Context);
@@ -190,7 +191,7 @@ export const ForumDetail = () => {
                 <div>
                     <h2>{title}</h2>
                     <p>{content}</p>
-                    <img src={image} />
+                    <img className="img-fluid image-upload" src={image} alt="Uploaded Image" />
                     <p>Creado por: {store.forumDetails.nickname}</p>
                     <p>Fecha: {new Date(store.forumDetails.creation_date).toLocaleDateString()}</p>
                     <button className="btn me-3" style={{ background: "var(--accent-color)", color: "var(--text-color)" }} onClick={() => setIsEditing(true)}>
@@ -221,7 +222,7 @@ export const ForumDetail = () => {
                             onChange={(e) => setContent(e.target.value)}
                         />
                     </div>
-                    <input type="file" onChange={uploadImage} />
+                    <input  type="file" onChange={uploadImage} />
                     <input type="button" value={"Guardar Cambios"} className="btn me-3" style={{ background: "var(--secondary-color)", color: "var(--text-color)" }} onClick={handleEdit}/>
                         
                     <button className="btn btn-secondary" onClick={() => setIsEditing(false)}>
