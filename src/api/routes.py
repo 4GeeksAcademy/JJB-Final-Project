@@ -423,7 +423,7 @@ def update_advertising():
         id_advertising = request.json.get("id_advertising", None)
         title = request.json.get("title", None)
         content = request.json.get("content", None)
-        image_url = data.get("image_url")
+        image_url = request.json.get("image", None)
 
 
         print(f"Datos recibidos: id_advertising={id_advertising}, title={title}, content={content}")
@@ -438,6 +438,8 @@ def update_advertising():
 
         advertising.title = title
         advertising.content = content
+        advertising.image.url = image_url
+
         advertising.creation_date = datetime.date.today()
 
         db.session.commit()

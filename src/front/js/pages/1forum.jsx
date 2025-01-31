@@ -18,7 +18,7 @@ export const ForumDetail = () => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [comment, setComment] = useState("");
-     const [image,setImage] = useState("")
+    const [image,setImage] = useState("")
     const [commentChanged, setCommentChanged] = useState(false);
 
     const uploadImage = async (e) => {
