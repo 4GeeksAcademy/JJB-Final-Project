@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 export const Profile = (props) => {
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
+    const [image,setImage] = useState("")
 	  console.log(store.profile);
 
     useEffect( () => {
@@ -19,6 +20,32 @@ export const Profile = (props) => {
         loadProfile();
 
     }, []);
+
+    const uploadImage = async (e) => {
+      console.log(e.target.files[0]);
+      const formData = new FormData()
+
+      formData.append('image', e.target.files[0])
+      console.log(formData.get("image"));
+      
+      const response = await fetch(process.env.BACKEND_URL + "api/upload",{
+        method: "POST",
+        body: formData,
+        header: {
+          "Content-Type":"multipart/formdata"
+        }
+      })
+
+      const data = await response.json()
+      if (data){
+        setImage(data)
+      }
+      console.log(data);
+      
+  
+      
+
+    }
 
     return (
         <div className="container-fluid">
@@ -99,6 +126,8 @@ export const Profile = (props) => {
               </div>
             </div>
           </div>
+          <input type="file" onChange={uploadImage}/>
+          <img src={image}/>
         </div>
       );
 };

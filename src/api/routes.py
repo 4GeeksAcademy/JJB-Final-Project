@@ -7,12 +7,21 @@ from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re , datetime
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
+import os, cloudinary, cloudinary.uploader
 
 
 api = Blueprint('api', __name__)
 
 # Allow CORS requests to this API
 CORS(api)
+
+cloudinary.config(
+    cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.environ.get("CLOUDINARY_API_KEY"),
+    api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
+
+
+)
 
 
 @api.route('/hello', methods=['POST', 'GET'])
@@ -209,6 +218,7 @@ def update_forum(id_foro):
 
         forum.title = data.get('title', forum.title)
         forum.content = data.get('content', forum.content)
+        forum.image_url = data.get('image_url', forum.image_url)
 
         db.session.commit()
         return jsonify(forum.serialize()), 200
@@ -340,6 +350,18 @@ def delete_comment():
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
+@api.route('/upload', methods=['POST'])
+def upload_image():
+    image = request.files["image"]
+
+    if not image:
+        return jsonify({"error":"The image is required"}),400
+
+    result = cloudinary.uploader.upload(image)
+
+    return jsonify(result["secure_url"]), 200
+
+        
 @api.route('/advertising', methods=['GET'])
 @jwt_required()
 def get_advertising():
@@ -367,6 +389,7 @@ def create_advertising():
         print(data)
         title = data.get("title")
         content = data.get("content")
+        image_url = data.get("image_url")
 
         if not title or not content:
             return jsonify({"error": "Faltan datos obligatorios (title, content)"}), 400
@@ -380,6 +403,7 @@ def create_advertising():
             content=content,
             creation_date=datetime.date.today(),
             id_user=user.id_user,
+            image_url=image_url,
             active=True
         )
 
@@ -401,6 +425,8 @@ def update_advertising():
         id_advertising = request.json.get("id_advertising", None)
         title = request.json.get("title", None)
         content = request.json.get("content", None)
+        image_url = request.json.get("image", None)
+
 
         print(f"Datos recibidos: id_advertising={id_advertising}, title={title}, content={content}")
         
@@ -414,6 +440,8 @@ def update_advertising():
 
         advertising.title = title
         advertising.content = content
+        advertising.image.url = image_url
+
         advertising.creation_date = datetime.date.today()
 
         db.session.commit()

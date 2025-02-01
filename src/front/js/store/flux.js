@@ -107,6 +107,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const store = getStore();
 					const updatedForums = store.forums.map(forum => 
 						forum.id_forum === id_forum ? data : forum
+						
 					);
 					setStore({ forums: updatedForums });
 			
@@ -314,7 +315,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			sendFormAdvertising: async (advertisingName, advertisingContent) => {
+			sendFormAdvertising: async (advertisingName, advertisingContent, image ) => {
 				console.log("-----------sendFormAdvertising----------------")
 				try {
 					const token = getActions().checkAcessToken();
@@ -326,7 +327,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						method: "POST",
 						body: JSON.stringify({
 							title: advertisingName,
-							content: advertisingContent
+							content: advertisingContent,
+							image_url: image
 						}),
 						headers: {
 						  "Content-Type": "application/json",

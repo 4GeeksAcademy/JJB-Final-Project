@@ -13,7 +13,38 @@ export const Advertising = () => {
     const [advertisingContent, setAdvertisingContent] = useState('');
     const [advertisingNameChanged, setAdvertisingNameChanged] = useState(false);
     const [advertisingContentChanged, setAdvertisingContentChanged] = useState(false);
+    const [image, setImage] = useState("")
+
     const [key, setKey] = useState(0);
+
+
+    const uploadImage = async (e) => {
+        console.log(e.target.files[0]);
+        const formData = new FormData()
+
+        formData.append('image', e.target.files[0])
+        console.log(formData.get("image"));
+
+        const response = await fetch(process.env.BACKEND_URL + "api/upload", {
+            method: "POST",
+            body: formData,
+            header: {
+                "Content-Type": "multipart/formdata"
+            }
+        })
+
+        const data = await response.json()
+        if (data) {
+            setImage(data)
+        }
+        console.log(data);
+
+
+
+
+    }
+
+
 
     useEffect(() => {
         const loadAdvertising = async () => {
@@ -62,6 +93,7 @@ export const Advertising = () => {
         setAdvertisingContentChanged(true)
     }
 
+
     const toggleModal = () => {
         console.log("toggleModal:", modalShows)
         setModalShows(!modalShows)
@@ -75,10 +107,12 @@ export const Advertising = () => {
         console.log("Se manda formulario creacion publicidad")
         console.log("advertisingName:", advertisingName)
         console.log("advertisingContent:", advertisingContent)
+        console.log("advertisingImage_url:", image)
 
-        const response = await actions.sendFormAdvertising(advertisingName, advertisingContent);
+
+        const response = await actions.sendFormAdvertising(advertisingName, advertisingContent, image );
         console.log(store.Advertising);
-        
+
 
         if (response.error) {
             console.error("FRONT Error al crear una publicidad:", response.error);
@@ -158,6 +192,8 @@ export const Advertising = () => {
 
                             <div className="mb-3">
                                 <label htmlFor="contentForum" className="form-label">Descripción</label>
+
+
                                 <textarea
                                     className="form-control"
                                     id="contentForum"
@@ -169,15 +205,19 @@ export const Advertising = () => {
                                     style={{ overflow: "hidden", resize: "none" }}
                                     onChange={AdvertisingContentChanged}
                                 ></textarea>
+                                <img className="img-fluid image-upload" src={image} alt="Uploaded Image" />
                             </div>
-
+                            <input type="file" onChange={uploadImage} />
                             <div className="d-grid">
                                 <button type="button"
                                     style={{ background: 'var( --primary-color)', color: 'var(--text-color)' }}
                                     className="btn btn-primary btn-block"
                                     disabled={!advertisingFormChanged}
                                     onClick={sendFormAdvertising}
+
                                 >
+
+
                                     Crear Publicidad
                                 </button>
                             </div>
