@@ -110,7 +110,7 @@ export const Advertising = () => {
         console.log("advertisingImage_url:", image)
 
 
-        const response = await actions.sendFormAdvertising(advertisingName, advertisingContent, {image_url:image} );
+        const response = await actions.sendFormAdvertising(advertisingName, advertisingContent, image );
         console.log(store.Advertising);
 
 

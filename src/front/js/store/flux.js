@@ -107,6 +107,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const store = getStore();
 					const updatedForums = store.forums.map(forum => 
 						forum.id_forum === id_forum ? data : forum
+						
 					);
 					setStore({ forums: updatedForums });
 			

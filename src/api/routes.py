@@ -389,6 +389,7 @@ def create_advertising():
         print(data)
         title = data.get("title")
         content = data.get("content")
+        image_url = data.get("image_url")
 
         if not title or not content:
             return jsonify({"error": "Faltan datos obligatorios (title, content)"}), 400
@@ -402,6 +403,7 @@ def create_advertising():
             content=content,
             creation_date=datetime.date.today(),
             id_user=user.id_user,
+            image_url=image_url,
             active=True
         )
 
