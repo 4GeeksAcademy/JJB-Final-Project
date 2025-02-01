@@ -142,7 +142,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			
 					// Elimina el foro del estado global.
 					const store = getStore();
-					const updatedForums = store.forums.filter(forum => forum.id_forum !== id_forum);
+					const updatedForums = store.forums.filter(forum => forum.id_forum !== Number(id_forum));
 					setStore({ forums: updatedForums });
 			
 					console.log("Foro eliminado exitosamente:", data.message);
