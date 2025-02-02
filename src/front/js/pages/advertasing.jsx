@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { AdvertisingCard } from "../component/advertisingCard.jsx";
 import Swal from 'sweetalert2'
 import "../../styles/colors.css";
+import "../../styles/advertasing.css";
+
 
 export const Advertising = () => {
     const { store, actions } = useContext(Context);
@@ -205,8 +207,8 @@ export const Advertising = () => {
                                     style={{ overflow: "hidden", resize: "none" }}
                                     onChange={AdvertisingContentChanged}
                                 ></textarea>
-                                <img className="img-fluid image-upload" src={image} alt="Uploaded Image" />
-                            </div>
+                    <img className="img-fluid image-upload" src={image} alt="Uploaded Image" />
+                    </div>
                             <input type="file" onChange={uploadImage} />
                             <div className="d-grid">
                                 <button type="button"

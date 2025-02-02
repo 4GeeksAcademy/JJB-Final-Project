@@ -71,7 +71,7 @@ export const AdvertisingCard = () => {
                                 {editedIdAdvertising === item.id_advertising ? (
                                     <>
                                         <input
-                                
+
                                             type="text"
                                             className="form-control mb-2"
                                             value={editedTitle}
@@ -87,7 +87,7 @@ export const AdvertisingCard = () => {
                                     </>
                                 ) : (
                                     <>
-                                        <img src={item.image_url} alt="" />
+                                        <img className="advertising-image img-fluid" src={item.image_url} alt="Publicidad" />
                                         <h5 className="card-title">{item.title}</h5>
                                         <p className="card-text">{item.content}</p>
                                     </>

@@ -54,6 +54,8 @@ export const Profile = (props) => {
             <div className="col-md-3 sidebar">
               <div className="text-center mb-4">
                 <div className="profile-icon">
+                <img src={image} alt="Avatar" className="profile-avatar" />
+
                   <span className="icon-initial">A</span>
                 </div>
                 <p className="nickname">{store.profile.nickname}</p>
