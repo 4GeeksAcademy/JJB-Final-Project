@@ -138,6 +138,31 @@ def get_profile():
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+#Trabajando aqui
+@api.route('/profile', methods=['PUT'])
+@jwt_required()
+def update_profile():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado: {email}")  
+        user = User.query.filter_by(email=email).first()
+        if not user: 
+            return jsonify({"error": "Usuario no encontrado"}), 404
+        
+        #Editamos avatar_url, name, lastname, birthday y nickname
+        avatar_url = request.json.get("avatar_url", None)
+        name = request.json.get("name", None)
+        lastname = request.json.get("lastname", None)
+        birthday = request.json.get("birthday", None)
+        nickname = request.json.get("nickname", None)
+
+        db.session.commit()
+
+        return jsonify(user.serialize()), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
     
     
 #Jessica get foros
