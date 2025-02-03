@@ -9,11 +9,11 @@ export const Account = () => {
     const [image, setImage] = useState("");
     const [isEditing, setIsEditing] = useState({});
     const [formData, setFormData] = useState({
-        avatar_url: "",
-        name: "",
-        lastname: "",
-        birthdate: "",
-        nickname: ""
+        image_url: store.profile.image_url,
+        name: store.profile.name,
+        lastname: store.profile.lastname ,
+        birthdate: store.profile.birthdate ,
+        nickname: store.profile.nickname ,
 
     });
 
@@ -40,12 +40,6 @@ export const Account = () => {
         const resp = await actions.updateProfile(formData);
 
         toggleEdit(field);
-        setFormData({
-            name: "",
-            lastname: "",
-            nickname: "",
-            birthdate: ""
-        });
         if (resp.error) {
             console.error("FRONT Error al crear un foro:", response.error);
             Swal.fire({
@@ -57,11 +51,12 @@ export const Account = () => {
             });
 
         } else {
+            actions.loadProfile();
             console.log("FRONT:", resp);
             Swal.fire({
                 position: "top",
                 icon: "success",
-                title: "Usuario actualizado exitosamente:",
+                title: "Usuario actualizado exitosamente",
                 showConfirmButton: false,
                 timer: 2000
             });
@@ -78,7 +73,12 @@ export const Account = () => {
                 {/* Main Content */}
                 <div className="col-md-9">
                     <div className="row mb-3">
-                        <h2>Membresia {store.profile.membership === "free" ? (<span className="badge text-bg-primary">New</span>) : (<span className="badge text-bg-primary">noNew</span>) }</h2>
+                        <h2>Membresia 
+                            {store.profile.membership?.trim().toLowerCase() === "free" ? 
+                                (<span className="badge rounded-pill bg-primary">Mejora tu plan</span>) : 
+                                (<span className="badge rounded-pill bg-warning">Plan premium+</span>)
+                            }
+                        </h2>
                         <p>{store.profile.membership || "N/A"}</p>
                     </div>
                     <div className="row">
@@ -119,7 +119,9 @@ export const Account = () => {
                                         {isEditing.name ? (
                                             <button onClick={() => handleSave("name")}>Guardar</button>
                                         ) : (
-                                            <button onClick={() => toggleEdit("name")}><i class="fa-solid fa-pencil"></i></button>
+                                            <button onClick={() => toggleEdit("name")}
+                                            className="edit btn btn-outline-secondary p-2 d-flex align-items-center justify-content-center rounded-circle shadow-sm"
+                                            ><i className="fa-solid fa-pencil text-primary"></i></button>
                                         )}
                                     </div>
                                 </div>
@@ -151,11 +153,15 @@ export const Account = () => {
                                             </>
                                         )}
                                     </div>
-                                    <div className="d-flex justify-content-center align-items-center">
+                                    <div className="d-flex justify-content-center ">
                                         {isEditing.nickname ? (
-                                            <button onClick={() => handleSave("nickname")}>Guardar</button>
+                                            <button onClick={() => handleSave("nickname")}
+                                            className="edit btn btn-outline-secondary p-2 d-flex align-items-center justify-content-center rounded-circle shadow-sm"
+                                            ><i class="fa-regular fa-floppy-disk text-primary"></i></button>
                                         ) : (
-                                            <button onClick={() => toggleEdit("nickname")}><i class="fa-solid fa-pencil"></i></button>
+                                            <button onClick={() => toggleEdit("nickname")}
+                                            className="edit btn btn-outline-secondary p-2 d-flex align-items-center justify-content-center rounded-circle shadow-sm"
+                                            ><i className="fa-solid fa-pencil text-primary"></i></button>
                                         )}
                                     </div>
                                 </div>
@@ -189,7 +195,9 @@ export const Account = () => {
                                         {isEditing.lastname ? (
                                             <button onClick={() => handleSave("lastname")}>Guardar</button>
                                         ) : (
-                                            <button onClick={() => toggleEdit("lastname")}><i class="fa-solid fa-pencil"></i></button>
+                                            <button onClick={() => toggleEdit("lastname")}
+                                            className="edit btn btn-outline-secondary p-2 d-flex align-items-center justify-content-center rounded-circle shadow-sm"
+                                            ><i className="fa-solid fa-pencil text-primary"></i></button>
                                         )}
                                     </div>
                                 </div>
@@ -220,7 +228,9 @@ export const Account = () => {
                                         {isEditing.birthdate ? (
                                             <button onClick={() => handleSave("birthdate")}>Guardar</button>
                                         ) : (
-                                            <button onClick={() => toggleEdit("birthdate")}><i class="fa-solid fa-pencil"></i></button>
+                                            <button onClick={() => toggleEdit("birthdate")}
+                                            className="edit btn btn-outline-secondary p-2 d-flex align-items-center justify-content-center rounded-circle shadow-sm"
+                                            ><i className="fa-solid fa-pencil text-primary"></i></button>
                                         )}
                                     </div>
                                 </div>

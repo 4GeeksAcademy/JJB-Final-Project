@@ -7,6 +7,28 @@
     height: 300px;
  }
 
- i {
-   color: black;
+ .fa-pencil{
+   color: red;
+   
  }
+
+.edit {
+   width: 32px;
+   height: 32px;
+}
+
+.edit-btn {
+   transition: background-color 0.3s, transform 0.2s ease-in-out;
+}
+
+.edit-btn:hover {
+   background-color: #007bff;
+   transform: scale(1.1);
+}
+
+input[type="text"] {
+   border: 1px solid #ced4da;
+   border-radius: 5px;
+   padding: 5px 10px;
+   width: 100%;
+}
