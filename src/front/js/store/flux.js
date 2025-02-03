@@ -49,6 +49,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
+			updateProfile: async (UserData) => {
+				console.log("-----------updateProfile----------------");
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+			
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/profile`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`
+						},
+						body: JSON.stringify(UserData)
+					});
+			
+					const data = await resp.json();
+			
+					if (!resp.ok) {
+						console.error("Error al actualizar el foro:", data.error);
+						return { error: `${data.error}` }; 
+					}
+			
+					// Actualiza el estado global del user modificado.
+					setStore({ profile: data });
+			
+					console.log("Usuario actualizado exitosamente:", data);
+					return data;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
 
 			loadForums: async () => {
 				console.log("-----------loadForums----------------")
