@@ -31,7 +31,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
-						return { error_access_token: "No autorizado" };
+						return { error: "No autorizado" };
 					}
 					const response = await fetch(`${process.env.BACKEND_URL}api/profile`, {
 						method: "GET",
@@ -51,6 +51,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			updateProfile: async (UserData) => {
 				console.log("-----------updateProfile----------------");
+				console.log("UserData", UserData);
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {

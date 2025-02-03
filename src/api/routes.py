@@ -157,6 +157,22 @@ def update_profile():
         birthday = request.json.get("birthday", None)
         nickname = request.json.get("nickname", None)
 
+        if avatar_url:
+            print(f"avatar_url exists: {avatar_url}") 
+            user.avatar_url = avatar_url;
+        if name:
+            print(f"name exists: {name}") 
+            user.name = name;
+        if lastname:
+            print(f"lastname exists: {lastname}") 
+            user.lastname = lastname;
+        if birthday:
+            print(f"birthday exists: {birthday}") 
+            user.birthday = birthday;
+        if nickname:
+            print(f"nickname exists: {nickname}") 
+            user.nickname = nickname;
+
         db.session.commit()
 
         return jsonify(user.serialize()), 200
