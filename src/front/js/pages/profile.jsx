@@ -10,14 +10,6 @@ export const Profile = (props) => {
 	  console.log(store.profile);
 
     useEffect( () => {
-        const loadProfile = async () => {
-            const resp = await actions.loadProfile();
-            if (resp.error_access_token) {
-                console.log("resp:", resp);
-                navigate('/');
-            }
-        };
-        loadProfile();
 
     }, []);
 
@@ -42,38 +34,40 @@ export const Profile = (props) => {
       }
       console.log(data);
       
-  
-      
-
     }
 
     return (
         <div className="container-fluid">
           <div className="row">
             {/* Sidebar */}
-            <div className="col-md-3 sidebar">
-              <div className="text-center mb-4">
-                <div className="profile-icon">
-                  <span className="icon-initial">A</span>
-                </div>
-                <p className="nickname">{store.profile.nickname}</p>
-                <p className="email">{store.profile.email}</p>
-              </div>
-              <ul className="menu-list">
+            <div className="col-md-3 sidebar d-flex flex-column" style={{ height: '100vh' }}>
+              <ul className="menu-list flex-grow-1">
+                <li className="d-flex align-items-center mb-3">
+                  <div className="me-2">
+                    <img className="sidebar-profile-image" src={image} alt="Profile" />
+                  </div>
+                  <div className="flex-grow-1">
+                    <p className="nickname mb-0">{store.profile.nickname}</p>
+                    <p className="email mb-0">{store.profile.email}</p>
+                  </div>
+                </li>
                 <li>Favoritos</li>
                 <li>Pagos</li>
-                <li>Suscripción</li>
-                <li>Editar Perfil</li>
-                <li>Cuenta</li>
+              </ul>
+
+              <ul className="menu-list">
+                <li className="mb-1">Cuenta / Editar perfil</li>
               </ul>
             </div>
+
     
             {/* Main Content */}
             <div className="col-md-9 main-content">
               <div className="row align-items-center">
                 <div className="col-md-4">
                   <div className="profile-image">
-                    <svg
+                    <img className="sidebar-profile-image" src={image} alt="Profile" />
+                    {/* <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="80"
                       height="80"
@@ -86,7 +80,7 @@ export const Profile = (props) => {
                         fillRule="evenodd"
                         d="M8 9a5 5 0 0 0-4.546 2.914C4.99 13.14 6.346 14 8 14s3.01-.86 4.546-2.086A5 5 0 0 0 8 9zm0 1c-1.657 0-3 1.343-3 3 0 .795.316 1.519.828 2.047.527.544 1.236.953 2.172.953.937 0 1.645-.41 2.172-.953.512-.528.828-1.252.828-2.047 0-1.657-1.343-3-3-3z"
                       />
-                    </svg>
+                    </svg> */}
                   </div>
                 </div>
                 <div className="col-md-8">
@@ -127,7 +121,7 @@ export const Profile = (props) => {
             </div>
           </div>
           <input type="file" onChange={uploadImage}/>
-          <img src={image}/>
+          
         </div>
       );
 };
