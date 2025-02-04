@@ -5,11 +5,11 @@ import "../../styles/forum.css";
 
 export const Invoices = () => {
     const { store, actions } = useContext(Context);
-    const invoices = [
-        { id: 656465, amount: "$5.00", concept: "Membership May", status: "Paid", paymentDate: "01/05/2024", isPaid: true },
-        { id: 694168, amount: "$5.00", concept: "Membership June", status: "Paid", paymentDate: "01/06/2024", isPaid: true },
-        { id: 484561, amount: "$5.00", concept: "Membership July", status: "Pending", paymentDate: "-", isPaid: false },
-      ];
+    // const invoices = [
+    //     { id: 656465, amount: "$5.00", concept: "Membership May", status: "Paid", paymentDate: "01/05/2024", isPaid: true },
+    //     { id: 694168, amount: "$5.00", concept: "Membership June", status: "Paid", paymentDate: "01/06/2024", isPaid: true },
+    //     { id: 484561, amount: "$5.00", concept: "Membership July", status: "Pending", paymentDate: "-", isPaid: false },
+    //   ];
 
       return (
         <div className="container mt-4">
@@ -25,17 +25,17 @@ export const Invoices = () => {
               </tr>
             </thead>
             <tbody>
-              {invoices.map((invoice) => (
-                <tr key={invoice.id}>
-                  <td>{invoice.id}</td>
-                  <td>{invoice.amount}</td>
-                  <td>{invoice.concept}</td>
-                  <td>{invoice.status}</td>
-                  <td>{invoice.paymentDate}</td>
+              {store.invoices?.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.id_invoice}</td>
+                  <td>{item.amount}</td>
+                  <td>{item.concept}</td>
+                  <td>{item.status}</td>
+                  <td>{item.payment_date}</td>
                   <td>
                     <button
-                      className={`btn btn-${invoice.isPaid ? "secondary" : "danger"} btn-sm`}
-                      disabled={invoice.isPaid}
+                      className={`btn btn-${item.status == false ? "secondary" : "danger"} btn-sm`}
+                      disabled={item.status}
                     >
                       Pay
                     </button>
