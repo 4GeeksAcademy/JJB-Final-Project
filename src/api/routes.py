@@ -481,6 +481,23 @@ def delete_advertising():
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
+@api.route('/invoices', methods=['GET'])
+@jwt_required()
+def get_advertising():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para las facturas: {email}")  
+        invoice = invoice.query.all()
+        if not invoice:
+            return jsonify({"error": "No se encontraron facturas"}), 404
+        
+        serialized_invoice = [invoice.serialize() for invoice in invoice]
+        return jsonify(serialized_invoice), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+
 
 
 
