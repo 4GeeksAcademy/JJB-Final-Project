@@ -533,6 +533,42 @@ def create_invoices():
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
+@api.route('/invoices', methods=['PUT'])
+@jwt_required()
+def update_invoices():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para update_invoices: {email}")  
+
+        id_invoce = request.json.get("id_invoce", None)
+        amount = request.json.get("amount", None)
+        concept = request.json.get("concept", None)
+        status = request.json.get("status", None)
+        payment_date = request.json.get("payment_date", None)
+
+
+        print(f"Datos recibidos: id_invoce={id_invoce}, amount={amount}, concept={concept}, status={status}, payment_date={payment_date}")
+        
+        if id_invoce is None or not amount or not concept or not status or not payment_date:
+            return jsonify({"error": "Faltan datos obligatorios (id_invoce, amount, concept, status, payment_date)"}), 400
+              
+        invoices = Invoice.query.filter_by(id_invoce=id_invoce).first()
+        print(f"invoices: {invoices}") 
+        if not invoices: 
+            return jsonify({"error": "Factura no encontrada"}), 404
+
+        invoices.amount = amount
+        invoices.concept = concept
+        invoices.status = status
+        invoices.payment_date = payment_date
+
+        db.session.commit()
+
+        return jsonify({"msg": "factura actualizada exitosamente", "new_invoices": invoices.serialize()}), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
 
 
 
