@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/forum.css";
 
-export const Invoices = () => {
+export const InvoicesTable = () => {
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
@@ -39,7 +39,7 @@ export const Invoices = () => {
                                         className={`btn btn-${item.payment_date ? "secondary" : "danger"} btn-sm`}
                                         disabled={!!item.payment_date}
                                     >
-                                        Pay
+                                        Pagar
                                     </button>
                                 </td>
                             </tr>

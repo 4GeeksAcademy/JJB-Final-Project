@@ -26,7 +26,9 @@ export const SideBar = () => {
                     </div>
                 </li>
                 <li>Favoritos</li>
-                <li>Pagos</li>
+                <li className="mb-1"> 
+                    <Link to={"/invoices"}>Pagos</Link>
+                </li>
             </ul>
 
             <ul className="menu-list">

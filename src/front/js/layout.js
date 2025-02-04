@@ -16,7 +16,7 @@ import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
-import { Invoices} from "./component/invoices.jsx";
+import { Invoices} from "./pages/invoices.jsx";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
