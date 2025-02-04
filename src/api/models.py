@@ -151,7 +151,7 @@ class Favorite(db.Model):
         }
 
 class Invoice(db.Model):
-    id_invoce = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    id_invoice = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     amount = db.Column(db.Integer, nullable=True)
     concept = db.Column(db.String(255), nullable=True)  
     status = db.Column(db.String(50), nullable=True)  
