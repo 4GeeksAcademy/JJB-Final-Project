@@ -16,12 +16,12 @@ export const Invoices = () => {
           <table className="table table-bordered text-center">
             <thead className="table-danger">
               <tr>
-                <th>Invoice</th>
-                <th>Amount</th>
-                <th>Concept</th>
+                <th>Factura</th>
+                <th>Monto</th>
+                <th>Concepto</th>
                 <th>Status</th>
-                <th>Payment Date</th>
-                <th>Action</th>
+                <th>Fecha de Pago</th>
+                <th>Acción</th>
               </tr>
             </thead>
             <tbody>
