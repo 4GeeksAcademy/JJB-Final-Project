@@ -3,7 +3,7 @@ import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
 import "../../styles/forum.css";
 
-export const AdvertisingCard = () => {
+export const Invoices = () => {
     const { store, actions } = useContext(Context);
 
     return (

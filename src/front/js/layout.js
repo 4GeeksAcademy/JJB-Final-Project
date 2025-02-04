@@ -15,6 +15,7 @@ import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
+import { Invoices} from "./component/invoices.jsx";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
@@ -43,6 +44,7 @@ const Layout = () => {
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<h1>Not found!</h1>} />
                         <Route element={<ResetPassword />} path="/reset-password" />
+                        <Route element={<Invoices />} path="/invoices" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>
