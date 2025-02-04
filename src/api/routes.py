@@ -520,7 +520,7 @@ def create_invoices():
         new_invoice = Invoice(
             amount=amount,
             concept=concept,
-            status=True,
+            status=False,
             id_user=user.id_user,
         )
 
