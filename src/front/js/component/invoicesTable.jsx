@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/forum.css";
 
-export const Invoices = () => {
+export const InvoicesTable = () => {
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
