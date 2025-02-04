@@ -701,7 +701,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					});
 					const data = await response.json();
-					console.log(data);
+					console.log("loadProfile",data);
 					setStore({ profile: data });
 					return data.profile;
 				} catch (error) {
@@ -875,7 +875,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			uploadPhoto: async (formData) => {
 				console.log("-----------uploadPhoto----------------");
-				console.log("formData", formData);
+				console.log("uploadPhoto formData", formData);
 				try {
 		
 					const response = await fetch(process.env.BACKEND_URL + "api/upload", {

@@ -178,7 +178,7 @@ def update_profile():
             print(f"birthdate exists: {birthdate}") 
             try:
             # Convertir la cadena a un objeto datetime.date
-                user.birthdate = datetime.strptime(birthdate, "%Y-%m-%d").date()
+                user.birthdate = datetime.datetime.strptime(birthdate, "%Y-%m-%d").date()
                 print(f"user.birthdate: {user.birthdate}") 
             except ValueError:
                 return jsonify({"error": "Formato de fecha inválido. Usa YYYY-MM-DD."}), 400
