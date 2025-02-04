@@ -159,11 +159,11 @@ class Invoice(db.Model):
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)  
 
     def __repr__(self):
-        return f'<Invoice {self.id_invoce}>'
+        return f'<Invoice {self.id_invoice}>'
 
     def serialize(self):
         return {
-            "id_invoice": self.id_invoce,
+            "id_invoice": self.id_invoice,
             "amount": self.amount,
             "concept": self.concept,
             "status": self.status,
