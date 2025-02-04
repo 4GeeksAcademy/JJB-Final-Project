@@ -8,14 +8,11 @@
  }
 
 
-.edit {
-   width: 32px;
-   height: 32px;
-}
-
 .edit-btn {
    background-color: var(--primary-color);
    transition: background-color 0.3s, transform 0.2s ease-in-out;
+   width: 32px;
+   height: 32px;
 }
 
 .edit-btn:hover {

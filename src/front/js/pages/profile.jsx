@@ -24,7 +24,7 @@ export const Profile = (props) => {
                           <div className="profile-image">
                               <img
                                   className="sidebar-profile-image"
-                                  src={image || "https://via.placeholder.com/150"}
+                                  src={image}
                                   alt="Profile"
                               />
                           </div>

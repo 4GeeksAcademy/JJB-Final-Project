@@ -5,13 +5,13 @@ import "../../styles/profile.css";
 
 export const SideBar = () => {
     const { store } = useContext(Context);
-    const [profileImage, setProfileImage] = useState(store.profile.image || "https://via.placeholder.com/100");
+    const [profileImage, setProfileImage] = useState(store.profile.avatar_url);
 
     useEffect(() => {
-        if (store.profile.image) {
-            setProfileImage(store.profile.image); 
+        if (store.profile.avatar_url) {
+            setProfileImage(store.profile.avatar_url); 
         }
-    }, [store.profile.image]);
+    }, [store.profile.avatar_url]);
 
     return (
         <div className="sidebar d-flex flex-column" style={{ height: '100vh', width: '100%' }}>

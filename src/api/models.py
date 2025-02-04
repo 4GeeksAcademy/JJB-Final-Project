@@ -9,7 +9,7 @@ class User(db.Model):
     nickname = db.Column(db.String(50), unique=True, nullable=False)
     name = db.Column(db.String(50), nullable=True)
     lastname = db.Column(db.String(50), nullable=True)
-    birthday = db.Column(db.Date, nullable=True)
+    birthdate = db.Column(db.Date, nullable=True)
     role = db.Column(db.String(50), nullable=False, default="usuario")
     avatar_url = db.Column(db.String(255), nullable=False, default="default_avatar_url")
     membership = db.Column(db.String(20), nullable=False, default="free")
@@ -33,7 +33,7 @@ class User(db.Model):
             "nickname": self.nickname,
             "name": self.name,
             "lastname": self.lastname,
-            "birthday": self.birthday.isoformat() if self.birthday else None,
+            "birthdate": self.birthdate.isoformat() if self.birthdate else None,
             "role": self.role,
             "avatar_url": self.avatar_url,
             "membership": self.membership,

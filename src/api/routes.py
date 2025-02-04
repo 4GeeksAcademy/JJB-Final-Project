@@ -8,6 +8,7 @@ from flask_cors import CORS
 import re , datetime
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 import os, cloudinary, cloudinary.uploader
+from datetime import datetime
 
 
 api = Blueprint('api', __name__)
@@ -150,12 +151,13 @@ def update_profile():
         if not user: 
             return jsonify({"error": "Usuario no encontrado"}), 404
         
-        #Editamos avatar_url, name, lastname, birthday y nickname
+        #Editamos avatar_url, name, lastname, birthdate y nickname
         avatar_url = request.json.get("avatar_url", None)
         name = request.json.get("name", None)
         lastname = request.json.get("lastname", None)
-        birthday = request.json.get("birthday", None)
+        birthdate = request.json.get("birthdate", None)
         nickname = request.json.get("nickname", None)
+        print(f"Datos recibidos:\n- avatar_url: {avatar_url}\n- name: {name}\n- lastname: {lastname}\n- birthdate: {birthdate}\n- nickname: {nickname}")
 
         if avatar_url:
             print(f"avatar_url exists: {avatar_url}") 
@@ -166,13 +168,17 @@ def update_profile():
         if lastname:
             print(f"lastname exists: {lastname}") 
             user.lastname = lastname;
-        if birthday:
-            print(f"birthday exists: {birthday}") 
-            user.birthday = birthday;
         if nickname:
             print(f"nickname exists: {nickname}") 
             user.nickname = nickname;
-
+        if birthdate:
+            print(f"birthdate exists: {birthdate}") 
+            try:
+            # Convertir la cadena a un objeto datetime.date
+                user.birthdate = datetime.strptime(birthdate, "%Y-%m-%d").date()
+                print(f"user.birthdate: {user.birthdate}") 
+            except ValueError:
+                return jsonify({"error": "Formato de fecha inválido. Usa YYYY-MM-DD."}), 400
         db.session.commit()
 
         return jsonify(user.serialize()), 200
