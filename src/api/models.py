@@ -163,7 +163,7 @@ class Invoice(db.Model):
 
     def serialize(self):
         return {
-            "id_invoce": self.id_invoce,
+            "id_invoice": self.id_invoce,
             "amount": self.amount,
             "concept": self.concept,
             "status": self.status,
