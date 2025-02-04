@@ -170,7 +170,11 @@ def update_profile():
             user.lastname = lastname;
         if nickname:
             print(f"nickname exists: {nickname}") 
-            user.nickname = nickname;
+            nick = User.query.filter_by(nickname=nickname).first()
+            if nick is None:
+                user.nickname = nickname;
+            else:
+                return jsonify({"error": "Apodo ya esta siendo usado"}), 404
         if birthdate:
             print(f"birthdate exists: {birthdate}") 
             try:

@@ -9,7 +9,7 @@ export const Account = () => {
     const [image, setImage] = useState("");
     const [isEditing, setIsEditing] = useState({});
     const [formData, setFormData] = useState({
-        image_url: store.profile.image_url,
+        image_url: store.profile.avatar_url,
         name: store.profile.name,
         lastname: store.profile.lastname,
         birthdate: store.profile.birthdate,
@@ -38,7 +38,7 @@ export const Account = () => {
         const resp = await actions.updateProfile(formData);
 
         if (!resp.error) {
-            actions.loadProfile();  
+            actions.loadProfile();
             toggleEdit(field);
             console.log("FRONT:", resp);
             Swal.fire({
@@ -49,7 +49,7 @@ export const Account = () => {
                 timer: 2000
             });
         } else {
-            console.error("FRONT Error al crear un foro:", response.error);
+            console.error("FRONT Error al crear un foro:", resp.error);
             Swal.fire({
                 position: "top",
                 icon: "error",
@@ -59,6 +59,21 @@ export const Account = () => {
             });
         }
     };
+
+    const uploadImage = async (e) => {
+        console.log(e.target.files[0]);
+        const formData = new FormData()
+
+        formData.append('image', e.target.files[0])
+        console.log(formData.get("image"));
+
+        const response = await actions.uploadPhoto(formData)
+
+        if (response) {
+            setImage(response)
+        }
+        console.log(response);
+    }
 
     return (
         <div className="container-fluid">
@@ -83,12 +98,12 @@ export const Account = () => {
                         <div className="col-md-4 d-flex justify-content-center align-items-center flex-column">
                             <img
                                 className="profile"
-                                src={image || store.profile.image_url}
+                                src={image || store.profile.avatar_url}
                                 alt="Profile"
                             />
                             <label className="btn p-1 rounded-circle shadow-sm edit-btn" title="Subir foto">
                                 <i className="fa-solid fa-upload"></i>
-                                <input type="file" className="d-none" />
+                                <input type="file" className="d-none" onChange={uploadImage} />
                             </label>
                         </div>
 

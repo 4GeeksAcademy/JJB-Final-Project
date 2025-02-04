@@ -681,10 +681,39 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
+			uploadPhoto: async (formData) => {
+				console.log("-----------uploadPhoto----------------");
+				console.log("formData", formData);
+				try {
+		
+					const response = await fetch(process.env.BACKEND_URL + "api/upload", {
+						method: "POST",
+						body: formData,
+						header: {
+							"Content-Type": "multipart/formdata"
+						}
+					})
 			
-			
+					const data = await response.json()
 
-			
+					if (data) {
+						setStore((prev) => ({
+							...prev, 
+							profile: {
+								...prev.profile, 
+								image_url: data, 
+							},
+						}));
+						getActions().updateProfile({avatar_url: data})				
+					}
+					console.log(data);
+					
+					return data;
+				} catch (error) {
+					console.error("Error al actualizar la publicidad:", error);
+					return { error: error.message };
+				}
+			},
 			
 			
 		}
