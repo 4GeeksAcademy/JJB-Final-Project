@@ -70,10 +70,7 @@ export const Account = () => {
 
         if (response) {
             setImage(response)
-            const loadProfile = async (response) => {
-                const resp = actions.updateProfile({avatar_url: response})
-            }
-            loadProfile(response);
+            await actions.updateProfile({ avatar_url: response });
         }
         console.log(response);
     }
