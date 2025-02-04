@@ -230,6 +230,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error loading message from backend", error)
 				}
 			},
+
 			changeColor: (index, color) => {
 				//get the store
 				const store = getStore();
@@ -402,6 +403,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return { error: error.message };
                 }
             },
+
 			addCommentToComment: async (id_forum, content, replyTo) => {
 				console.log("-----------addCommentToComment----------------")
                 try {
@@ -429,6 +431,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     return { error: error.message };
                 }
             },
+
 			addCommentToComment: async (id_forum, content, replyTo) => {
 				console.log("-----------addCommentToComment----------------")
                 try {
@@ -644,6 +647,59 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return data;
 				} catch (error) {
 					console.error("Error al actualizar la publicidad:", error);
+					return { error: error.message };
+				}
+			},
+
+						loadProfile: async () => {
+				console.log("-----------loadProfile----------------")
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
+					}
+					const response = await fetch(`${process.env.BACKEND_URL}api/profile`, {
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${token}`, 
+							"Content-Type": "application/json"
+						}
+					});
+					const data = await response.json();
+					console.log(data);
+					setStore({ profile: data});
+					return data.profile;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+
+			loadInvoices: async () => {
+				console.log("-----------loadInvoices----------------")
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
+					}
+					const resp = await fetch(`${process.env.BACKEND_URL}api/invoices`,{
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							"accept": "application/json",
+						  	"Authorization": `Bearer ${token}`, 
+							"Content-Type": "application/json"
+						}
+					});
+					const data = await resp.json();
+					console.log(data);
+					if (!resp.ok) {
+						return { error: `${data.error}` }; 
+					}
+					setStore({ invoices: data});
+					return data;
+				} catch (error) {
+					console.error("Error en fetch:", error);
 					return { error: error.message };
 				}
 			},
