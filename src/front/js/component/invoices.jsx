@@ -26,7 +26,7 @@ export const Invoices = () => {
             <tbody>
               {store.invoices?.map((item, index) => (
                 <tr key={index}>
-                  <td>{item.id_invoce}</td>
+                  <td>{item.id_invoice}</td>
                   <td>{item.amount}</td>
                   <td>{item.concept}</td>
                   <td>{item.status ? "Pagado" : "Pendiente"}</td>
