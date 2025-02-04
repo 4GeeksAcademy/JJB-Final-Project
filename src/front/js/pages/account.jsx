@@ -9,15 +9,14 @@ export const Account = () => {
     const [image, setImage] = useState("");
     const [isEditing, setIsEditing] = useState({});
     const [formData, setFormData] = useState({
-        image_url: store.profile.avatar_url,
-        name: store.profile.name,
-        lastname: store.profile.lastname,
-        birthdate: store.profile.birthdate,
-        nickname: store.profile.nickname,
-
+        image_url: "",
+        name: "",
+        lastname: "",
+        birthdate: "",
+        nickname: ""
     });
 
-    // Función para activar/desactivar edición
+  
     const toggleEdit = (field) => {
         setIsEditing((prev) => ({
             ...prev,
@@ -32,9 +31,27 @@ export const Account = () => {
         });
     };
 
-    // Simular guardado
+
     const handleSave = async (field) => {
+        const updatedFields = {};
+
+        for (const key in formData) {
+            if (formData[key] && formData[key] !== store.profile[key]) {
+                updatedFields[key] = formData[key];
+            }
+        }
         console.log("formData:", formData);
+        console.log("updatedFields:", updatedFields);
+        if (Object.keys(updatedFields).length === 0) {
+            Swal.fire({
+                position: "top",
+                icon: "info",
+                title: "No se realizaron cambios",
+                showConfirmButton: false,
+                timer: 2000
+            });
+            return;
+        }
         const resp = await actions.updateProfile(formData);
 
         if (!resp.error) {
@@ -47,6 +64,13 @@ export const Account = () => {
                 title: "Usuario actualizado exitosamente",
                 showConfirmButton: false,
                 timer: 2000
+            });
+            setFormData({
+                image_url: "",
+                name: "",
+                lastname: "",
+                birthdate: "",
+                nickname: ""
             });
         } else {
             console.error("FRONT Error al crear un foro:", resp.error);
@@ -71,6 +95,7 @@ export const Account = () => {
 
         if (response) {
             setImage(response)
+            await actions.updateProfile({ avatar_url: response });
         }
         console.log(response);
     }

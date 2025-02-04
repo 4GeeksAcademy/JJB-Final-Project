@@ -701,7 +701,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						}
 					});
 					const data = await response.json();
-					console.log(data);
+					console.log("loadProfile",data);
 					setStore({ profile: data });
 					return data.profile;
 				} catch (error) {
@@ -873,14 +873,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-
-
-
-
-
 			uploadPhoto: async (formData) => {
 				console.log("-----------uploadPhoto----------------");
-				console.log("formData", formData);
+				console.log("uploadPhoto formData", formData);
 				try {
 		
 					const response = await fetch(process.env.BACKEND_URL + "api/upload", {
@@ -893,17 +888,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			
 					const data = await response.json()
 
-					if (data) {
-						setStore((prev) => ({
-							...prev, 
-							profile: {
-								...prev.profile, 
-								image_url: data, 
-							},
-						}));
-						getActions().updateProfile({avatar_url: data})				
-					}
-					console.log(data);
+					console.log("uploadPhoto data:",data);
 					
 					return data;
 				} catch (error) {
