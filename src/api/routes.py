@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
-from api.models import db, User,Forum,Comment,Advertising
+from api.models import db, User,Forum,Comment,Advertising,Invoice
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re , datetime
@@ -483,7 +483,7 @@ def delete_advertising():
 
 @api.route('/invoices', methods=['GET'])
 @jwt_required()
-def get_advertising():
+def get_invoices():
     try:
         email = get_jwt_identity()
         print(f"Usuario autenticado para las facturas: {email}")  
@@ -493,6 +493,41 @@ def get_advertising():
         
         serialized_invoice = [invoice.serialize() for invoice in invoice]
         return jsonify(serialized_invoice), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+    
+@api.route('/invoices', methods=['POST'])
+@jwt_required()
+def create_invoices():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para create_invoices: {email}")  
+        data = request.get_json()
+        print(data)
+        amount = data.get("amount")
+        concept = data.get("concept")
+        status = data.get("status")
+
+        if not amount or not concept or not status:
+            return jsonify({"error": "Faltan datos obligatorios (amount, concept, status)"}), 400
+        
+        user = User.query.filter_by(email=email).first()
+        if not user: 
+            return jsonify({"error": "Usuario no encontrado"}), 404
+
+        new_invoice = Invoice(
+            amount=amount,
+            concept=concept,
+            status=False,
+            creation_date=datetime.date.today(),
+            id_user=user.id_user,
+        )
+
+        db.session.add(new_invoice)
+        db.session.commit()
+
+        return jsonify({"msg": "Factura creada exitosamente", "advertising": new_invoice.serialize()}), 201
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
