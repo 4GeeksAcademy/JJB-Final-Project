@@ -520,7 +520,7 @@ def create_invoices():
             amount=amount,
             concept=concept,
             status=False,
-            creation_date=datetime.date.today(),
+            payment_date=datetime.date.today(),
             id_user=user.id_user,
         )
 
