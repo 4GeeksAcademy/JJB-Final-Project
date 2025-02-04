@@ -9,12 +9,11 @@ export const Account = () => {
     const [image, setImage] = useState("");
     const [isEditing, setIsEditing] = useState({});
     const [formData, setFormData] = useState({
-        image_url: store.profile.avatar_url,
-        name: store.profile.name,
-        lastname: store.profile.lastname,
-        birthdate: store.profile.birthdate,
-        nickname: store.profile.nickname,
-
+        image_url: store.profile.avatar_url || "",
+        name: store.profile.name || "",
+        lastname: store.profile.lastname || "",
+        birthdate: store.profile.birthdate || "",
+        nickname: store.profile.nickname || ""
     });
 
     // Función para activar/desactivar edición

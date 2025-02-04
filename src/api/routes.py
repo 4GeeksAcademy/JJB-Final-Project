@@ -8,7 +8,6 @@ from flask_cors import CORS
 import re , datetime
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 import os, cloudinary, cloudinary.uploader
-from datetime import datetime
 
 
 api = Blueprint('api', __name__)
@@ -235,9 +234,10 @@ def create_forum():
         content = data.get("content")
 
         if not title or not content:
-            return jsonify({"error": "Faltan datos obligatorios (title, content)"}), 400
+            return jsonify({"error": "Faltan datos obligatorios (title, content)"}), 400 
         
         user = User.query.filter_by(email=email).first()
+
         if not user: 
             return jsonify({"error": "Usuario no encontrado"}), 404
 
