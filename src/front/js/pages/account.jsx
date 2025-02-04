@@ -25,7 +25,6 @@ export const Account = () => {
         }));
     };
 
-    // Manejar cambios en el input
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -38,24 +37,9 @@ export const Account = () => {
         console.log("formData:", formData);
         const resp = await actions.updateProfile(formData);
 
-        toggleEdit(field);
-        setFormData({
-            name: "",
-            lastname: "",
-            nickname: "",
-            birthdate: ""
-        });
-        if (resp.error) {
-            console.error("FRONT Error al crear un foro:", response.error);
-            Swal.fire({
-                position: "top",
-                icon: "error",
-                title: "Error: " + resp.error,
-                showConfirmButton: false,
-                timer: 3500
-            });
-
-        } else {
+        if (!resp.error) {
+            actions.loadProfile();  
+            toggleEdit(field);
             console.log("FRONT:", resp);
             Swal.fire({
                 position: "top",
@@ -63,6 +47,15 @@ export const Account = () => {
                 title: "Usuario actualizado exitosamente",
                 showConfirmButton: false,
                 timer: 2000
+            });
+        } else {
+            console.error("FRONT Error al crear un foro:", response.error);
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: "Error: " + resp.error,
+                showConfirmButton: false,
+                timer: 3500
             });
         }
     };
@@ -93,7 +86,10 @@ export const Account = () => {
                                 src={image || store.profile.image_url}
                                 alt="Profile"
                             />
-                            <input type="file" />
+                            <label className="btn p-1 rounded-circle shadow-sm edit-btn" title="Subir foto">
+                                <i className="fa-solid fa-upload"></i>
+                                <input type="file" className="d-none" />
+                            </label>
                         </div>
 
                         {/* Columna 2 */}
@@ -126,13 +122,15 @@ export const Account = () => {
                                                     <button
                                                         onClick={() => toggleEdit("name")}
                                                         className={`btn p-1 rounded-circle shadow-sm edit-btn ${isEditing.name ? "" : "d-none"}`}
+                                                        title="Cancelar"
                                                     >
                                                         <i className="fa-solid fa-x"></i>
                                                     </button>
                                                     <button onClick={() => handleSave("name")}
                                                         className="btn p-1 rounded-circle shadow-sm edit-btn mt-2"
+                                                        title="Guardar"
                                                     >
-                                                        <i class="fa-solid fa-floppy-disk"></i>
+                                                        <i className="fa-solid fa-floppy-disk"></i>
                                                     </button>
                                                 </div>
 
@@ -140,6 +138,7 @@ export const Account = () => {
                                         ) : (
                                             <button onClick={() => toggleEdit("name")}
                                                 className="edit btn p-2 d-flex align-items-center justify-content-center rounded-circle shadow-sm edit-btn"
+                                                title="Editar"
                                             ><i className="fa-solid fa-pencil "></i></button>
                                         )}
                                     </div>
@@ -177,20 +176,23 @@ export const Account = () => {
                                             <>
                                                 <div className="d-flex flex-column">
                                                     <button
+                                                        title="Cancelar"
                                                         onClick={() => toggleEdit("nickname")}
                                                         className={`btn p-1 rounded-circle shadow-sm edit-btn ${isEditing.nickname ? "" : "d-none"}`}
                                                     >
                                                         <i className="fa-solid fa-x"></i>
                                                     </button>
                                                     <button onClick={() => handleSave("nickname")}
+                                                        title="Guardar"
                                                         className="btn p-1 rounded-circle shadow-sm edit-btn mt-2"
                                                     >
-                                                        <i class="fa-solid fa-floppy-disk"></i>
+                                                        <i className="fa-solid fa-floppy-disk"></i>
                                                     </button>
                                                 </div>
                                             </>
                                         ) : (
                                             <button onClick={() => toggleEdit("nickname")}
+                                                title="Editar"
                                                 className="edit btn btn-outline-secondary p-2 d-flex align-items-center justify-content-center rounded-circle shadow-sm edit-btn "
                                             ><i className="fa-solid fa-pencil "></i></button>
                                         )}
@@ -227,20 +229,23 @@ export const Account = () => {
                                             <>
                                                 <div className="d-flex flex-column">
                                                     <button
+                                                        title="Cancelar"
                                                         onClick={() => toggleEdit("lastname")}
                                                         className={`btn p-1 rounded-circle shadow-sm edit-btn ${isEditing.lastname ? "" : "d-none"}`}
                                                     >
                                                         <i className="fa-solid fa-x"></i>
                                                     </button>
                                                     <button onClick={() => handleSave("lastname")}
+                                                        title="Guardar"
                                                         className="btn p-1 rounded-circle shadow-sm edit-btn mt-2"
                                                     >
-                                                        <i class="fa-solid fa-floppy-disk"></i>
+                                                        <i className="fa-solid fa-floppy-disk"></i>
                                                     </button>
                                                 </div>
                                             </>
                                         ) : (
                                             <button onClick={() => toggleEdit("lastname")}
+                                                title="Editar"
                                                 className="edit btn btn-outline-secondary p-2 d-flex align-items-center justify-content-center rounded-circle shadow-sm edit-btn "
                                             ><i className="fa-solid fa-pencil "></i></button>
                                         )}
@@ -274,20 +279,23 @@ export const Account = () => {
                                             <>
                                                 <div className="d-flex flex-column">
                                                     <button
+                                                        title="Cancelar"
                                                         onClick={() => toggleEdit("birthdate")}
                                                         className={`btn p-1 rounded-circle shadow-sm edit-btn ${isEditing.birthdate ? "" : "d-none"}`}
                                                     >
                                                         <i className="fa-solid fa-x"></i>
                                                     </button>
                                                     <button onClick={() => handleSave("birthdate")}
+                                                        title="Guardar"
                                                         className="btn p-1 rounded-circle shadow-sm edit-btn mt-2"
                                                     >
-                                                        <i class="fa-solid fa-floppy-disk"></i>
+                                                        <i className="fa-solid fa-floppy-disk"></i>
                                                     </button>
                                                 </div>
                                             </>
                                         ) : (
                                             <button onClick={() => toggleEdit("birthdate")}
+                                                title="Editar"
                                                 className="edit btn btn-outline-secondary p-2 d-flex align-items-center justify-content-center rounded-circle shadow-sm edit-btn "
                                             ><i className="fa-solid fa-pencil "></i></button>
                                         )}
