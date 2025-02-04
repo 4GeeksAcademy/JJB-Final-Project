@@ -39,7 +39,7 @@ export const InvoicesTable = () => {
                                         className={`btn btn-${item.payment_date ? "secondary" : "danger"} btn-sm`}
                                         disabled={!!item.payment_date}
                                     >
-                                        Pay
+                                        Pagar
                                     </button>
                                 </td>
                             </tr>
