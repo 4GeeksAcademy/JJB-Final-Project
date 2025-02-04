@@ -35,6 +35,7 @@ export const Account = () => {
 
     // Simular guardado
     const handleSave = async (field) => {
+        // if field
         console.log(`Guardando ${field}:`, formData[field]);
         console.log(`formData:`, formData);
         const resp = await actions.updateProfile(formData);
@@ -63,6 +64,36 @@ export const Account = () => {
         }
     };
 
+    const EditableField = ({ label, name, value }) => (
+        <div className="d-flex align-items-center">
+            <div className="flex-grow-1">
+                <h6>{label}</h6>
+                {isEditing[name] ? (
+                    <>
+                    {console.log("formData", formData[name])}
+                    <input type={`${name === 'birthdate' ? "date": "text"}`} name={name} value={formData[name]} onChange={handleChange} />
+                    </>
+                ) : (
+                    <p>{value || "N/A"}</p>
+                )}
+            </div>
+            <div className="d-flex flex-column">
+                <button
+                    onClick={() =>toggleEdit(name)}
+                    className={`btn p-2 rounded-circle shadow-sm edit-btn ${isEditing[name] ? "" : "d-none"}`}
+                >
+                    <i className="fa-solid fa-x"></i>
+                </button>
+                <button
+                    onClick={() => isEditing[name] ? handleSave(name) : toggleEdit(name)}
+                    className={`btn p-2 rounded-circle shadow-sm edit-btn mt-2`}
+                >
+                    <i className={`fa-solid fa-${isEditing[name] ? "floppy-disk" : "pencil"}`}></i>
+                </button>
+            </div>
+        </div>
+    );
+    
     return (
         <div className="container-fluid">
             <div className="row">
@@ -91,151 +122,28 @@ export const Account = () => {
                             />
                             <input type="file" />
                         </div>
-
                         {/* Columna 2 */}
                         <div className="col-md-4">
                             <div className="row">
-                                <div className="d-flex">
-                                    <div className="flex-grow-1">
-                                        <h6>Nombre</h6>
-                                        {isEditing.name ? (
-                                            <>
-                                                <input
-                                                    type="text"
-                                                    name="name"
-                                                    value={formData.name}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </>
-                                        ) : (
-                                            <>
-                                                <p>{store.profile.name || "N/A"}</p>
-
-                                            </>
-                                        )}
-                                    </div>
-                                    <div className="d-flex justify-content-center align-items-center">
-                                        {isEditing.name ? (
-                                            <button onClick={() => handleSave("name")}>Guardar</button>
-                                        ) : (
-                                            <button onClick={() => toggleEdit("name")}
-                                            className="edit btn btn-outline-secondary p-2 d-flex align-items-center justify-content-center rounded-circle shadow-sm"
-                                            ><i className="fa-solid fa-pencil text-primary"></i></button>
-                                        )}
-                                    </div>
-                                </div>
+                                <EditableField label="Nombre" name="name" value={store.profile.name} />
                             </div>
-
                             <div className="row">
                                 <h6>Correo</h6>
                                 <p>{store.profile.email || "N/A"}</p>
                             </div>
-
                             <div className="row">
-                                <div className="d-flex">
-                                    <div className="flex-grow-1">
-                                        <h6>Apodo</h6>
-                                        {isEditing.nickname ? (
-                                            <>
-                                                <input
-                                                    type="text"
-                                                    name="nickname"
-                                                    value={formData.nickname}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </>
-                                        ) : (
-                                            <>
-                                                <p>{store.profile.nickname || "N/A"}</p>
-
-                                            </>
-                                        )}
-                                    </div>
-                                    <div className="d-flex justify-content-center ">
-                                        {isEditing.nickname ? (
-                                            <button onClick={() => handleSave("nickname")}
-                                            className="edit btn btn-outline-secondary p-2 d-flex align-items-center justify-content-center rounded-circle shadow-sm"
-                                            ><i class="fa-regular fa-floppy-disk text-primary"></i></button>
-                                        ) : (
-                                            <button onClick={() => toggleEdit("nickname")}
-                                            className="edit btn btn-outline-secondary p-2 d-flex align-items-center justify-content-center rounded-circle shadow-sm"
-                                            ><i className="fa-solid fa-pencil text-primary"></i></button>
-                                        )}
-                                    </div>
-                                </div>
+                                <EditableField label="Apodo" name="nickname" value={store.profile.nickname} />
                             </div>
                         </div>
 
                         {/* Columna 3 */}
                         <div className="col-md-4">
                             <div className="row">
-                                <div className="d-flex">
-                                    <div className="flex-grow-1">
-                                        <h6>Apellido</h6>
-                                        {isEditing.lastname ? (
-                                            <>
-                                                <input
-                                                    type="text"
-                                                    name="lastname"
-                                                    value={formData.lastname}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </>
-                                        ) : (
-                                            <>
-                                                <p>{store.profile.lastname || "N/A"}</p>
-
-                                            </>
-                                        )}
-                                    </div>
-                                    <div className="d-flex justify-content-center align-items-center">
-                                        {isEditing.lastname ? (
-                                            <button onClick={() => handleSave("lastname")}>Guardar</button>
-                                        ) : (
-                                            <button onClick={() => toggleEdit("lastname")}
-                                            className="edit btn btn-outline-secondary p-2 d-flex align-items-center justify-content-center rounded-circle shadow-sm"
-                                            ><i className="fa-solid fa-pencil text-primary"></i></button>
-                                        )}
-                                    </div>
-                                </div>
+                                <EditableField label="Apellido" name="lastname" value={store.profile.lastname} />
                             </div>
-
                             <div className="row">
-                                <div className="d-flex">
-                                    <div className="flex-grow-1">
-                                        <h6>Cumpleaños</h6>
-                                        {isEditing.birthdate ? (
-                                            <>
-                                                <input
-                                                    type="text"
-                                                    name="birthdate"
-                                                    value={formData.birthdate}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </>
-                                        ) : (
-                                            <>
-                                                <p>{store.profile.birthdate || "N/A"}</p>
-
-                                            </>
-                                        )}
-                                    </div>
-                                    <div className="d-flex justify-content-center align-items-center">
-                                        {isEditing.birthdate ? (
-                                            <button onClick={() => handleSave("birthdate")}>Guardar</button>
-                                        ) : (
-                                            <button onClick={() => toggleEdit("birthdate")}
-                                            className="edit btn btn-outline-secondary p-2 d-flex align-items-center justify-content-center rounded-circle shadow-sm"
-                                            ><i className="fa-solid fa-pencil text-primary"></i></button>
-                                        )}
-                                    </div>
-                                </div>
+                                <EditableField label="Cumpleaños" name="birthdate" value={store.profile.birthdate} />
                             </div>
-
                             <div className="row">
                                 <h6>Rol</h6>
                                 <p>{store.profile.role || "N/A"}</p>
@@ -247,3 +155,4 @@ export const Account = () => {
         </div>
     );
 };
+

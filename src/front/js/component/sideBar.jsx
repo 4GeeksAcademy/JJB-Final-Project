@@ -9,9 +9,9 @@ export const SideBar = () => {
 
     useEffect(() => {
         if (store.profile.image) {
-            setProfileImage(store.profile.image); // Actualiza la imagen cuando cambie en el store
+            setProfileImage(store.profile.image); 
         }
-    }, [store.profile.image]); // Escucha cambios en la imagen
+    }, [store.profile.image]);
 
     return (
         <div className="sidebar d-flex flex-column" style={{ height: '100vh', width: '100%' }}>
