@@ -781,9 +781,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			updateInvoices: async (id_invoice, amount, concept, status) => {
+			updateInvoices: async (id_invoice, amount, concept, status, payment_date) => {
 				console.log("-----------updateInvoices----------------");
-				console.log("id_invoice", id_invoice, "amount", amount, "concept", concept, "status", status);
+				console.log("id_invoice", id_invoice, "amount", amount, "concept", concept, "status", status, "payment_date", payment_date);
 
 				try {
 					const token = getActions().checkAcessToken();
@@ -801,7 +801,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 							id_invoice: id_invoice,
 							amount: amount,
 							concept: concept,
-							status: status
+							status: status,
+							payment_date: payment_date
 						}),
 					});
 
