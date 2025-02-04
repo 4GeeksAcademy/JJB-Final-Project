@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
-from api.models import db, User,Forum,Comment,Advertising
+from api.models import db, User,Forum,Comment,Advertising,Invoice
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re , datetime
@@ -530,7 +530,94 @@ def delete_advertising():
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+    
 
+@api.route('/invoices', methods=['GET'])
+@jwt_required()
+def get_invoices():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para las facturas: {email}")  
+        invoices = Invoice.query.all()
+        if not invoices:
+            return jsonify({"error": "No se encontraron facturas"}), 404
+        
+        serialized_invoices = [invoices.serialize() for invoices in invoices]
+        return jsonify(serialized_invoices), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+    
+@api.route('/invoices', methods=['POST'])
+@jwt_required()
+def create_invoices():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para create_invoices: {email}")  
+        data = request.get_json()
+        print(data)
+        amount = data.get("amount")
+        concept = data.get("concept")
+        status = data.get("status")
+
+        if not amount or not concept:
+            return jsonify({"error": "Faltan datos obligatorios (amount, concept, status)"}), 400
+        
+        user = User.query.filter_by(email=email).first()
+        if not user: 
+            return jsonify({"error": "Usuario no encontrado"}), 404
+
+        new_invoice = Invoice(
+            amount=amount,
+            concept=concept,
+            status=False,
+            id_user=user.id_user,
+        )
+
+        db.session.add(new_invoice)
+        db.session.commit()
+
+        return jsonify({"msg": "Factura creada exitosamente", "advertising": new_invoice.serialize()}), 201
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+
+@api.route('/invoices/<int:id_invoice>', methods=['PUT'])
+@jwt_required()
+def update_invoices(id_invoice):
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para update_invoices: {email}")  
+
+        amount = request.json.get("amount", None)
+        concept = request.json.get("concept", None)
+        status = request.json.get("status", None)
+        payment_date = request.json.get("payment_date", None)
+
+
+        print(f"Datos recibidos: id_invoice={id_invoice}, amount={amount}, concept={concept}, status={status}, payment_date={payment_date}")
+        
+        if id_invoice is None or not amount or not concept or not status or not payment_date:
+            return jsonify({"error": "Faltan datos obligatorios (id_invoice, amount, concept, status, payment_date)"}), 400
+              
+        invoices = Invoice.query.filter_by(id_invoice=id_invoice).first()
+        print(f"invoices: {invoices}") 
+        if not invoices: 
+            return jsonify({"error": "Factura no encontrada"}), 404
+
+        invoices.amount = amount
+        invoices.concept = concept
+        invoices.status = status
+        invoices.payment_date = payment_date
+
+        db.session.commit()
+
+        return jsonify({"msg": "factura actualizada exitosamente", "new_invoices": invoices.serialize()}), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
 
