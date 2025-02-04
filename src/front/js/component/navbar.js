@@ -27,7 +27,7 @@ export const Navbar = () => {
             if (!tokenExists) return;
 
             const resp = await actions.loadProfile();
-            if (resp.error_access_token) {
+            if (resp.error) {
                 console.log("resp:", resp);
                 setTokenExists(false);
                 navigate('/');

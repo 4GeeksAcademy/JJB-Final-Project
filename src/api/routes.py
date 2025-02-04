@@ -8,6 +8,7 @@ from flask_cors import CORS
 import re , datetime
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 import os, cloudinary, cloudinary.uploader
+from datetime import datetime
 
 
 api = Blueprint('api', __name__)
@@ -133,6 +134,56 @@ def get_profile():
         user = User.query.filter_by(email=email).first()
         if not user: 
             return jsonify({"error": "Usuario no encontrado"}), 404
+
+        return jsonify(user.serialize()), 200
+
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+#Trabajando aqui
+@api.route('/profile', methods=['PUT'])
+@jwt_required()
+def update_profile():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado: {email}")  
+        user = User.query.filter_by(email=email).first()
+        if not user: 
+            return jsonify({"error": "Usuario no encontrado"}), 404
+        
+        #Editamos avatar_url, name, lastname, birthdate y nickname
+        avatar_url = request.json.get("avatar_url", None)
+        name = request.json.get("name", None)
+        lastname = request.json.get("lastname", None)
+        birthdate = request.json.get("birthdate", None)
+        nickname = request.json.get("nickname", None)
+        print(f"Datos recibidos:\n- avatar_url: {avatar_url}\n- name: {name}\n- lastname: {lastname}\n- birthdate: {birthdate}\n- nickname: {nickname}")
+
+        if avatar_url:
+            print(f"avatar_url exists: {avatar_url}") 
+            user.avatar_url = avatar_url;
+        if name:
+            print(f"name exists: {name}") 
+            user.name = name;
+        if lastname:
+            print(f"lastname exists: {lastname}") 
+            user.lastname = lastname;
+        if nickname:
+            print(f"nickname exists: {nickname}") 
+            nick = User.query.filter_by(nickname=nickname).first()
+            if nick is None:
+                user.nickname = nickname;
+            else:
+                return jsonify({"error": "Apodo ya esta siendo usado"}), 404
+        if birthdate:
+            print(f"birthdate exists: {birthdate}") 
+            try:
+            # Convertir la cadena a un objeto datetime.date
+                user.birthdate = datetime.strptime(birthdate, "%Y-%m-%d").date()
+                print(f"user.birthdate: {user.birthdate}") 
+            except ValueError:
+                return jsonify({"error": "Formato de fecha inválido. Usa YYYY-MM-DD."}), 400
+        db.session.commit()
 
         return jsonify(user.serialize()), 200
 
