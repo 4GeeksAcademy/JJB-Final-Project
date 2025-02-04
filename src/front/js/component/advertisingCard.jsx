@@ -10,13 +10,22 @@ export const AdvertisingCard = () => {
     const [editedContent, setEditedContent] = useState("");
     const [editedImage_url, setEditedImage_url] = useState("");
 
-
     const handleEditClick = (id_advertising, currentTitle, currentContent, currentImage_url) => {
         setEditedIdAdvertising(id_advertising);
         setEditedTitle(currentTitle);
         setEditedContent(currentContent);
         setEditedImage_url(currentImage_url);
+    };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setEditedImage_url(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
     const handleSaveClick = async (id_advertising) => {
@@ -26,7 +35,6 @@ export const AdvertisingCard = () => {
         setEditedTitle("");
         setEditedContent("");
         setEditedImage_url(""); 
-
     };
 
     const handleDeleteClick = async (id_advertising) => {
@@ -77,7 +85,6 @@ export const AdvertisingCard = () => {
                                 {editedIdAdvertising === item.id_advertising ? (
                                     <>
                                         <input
-
                                             type="text"
                                             className="form-control mb-2"
                                             value={editedTitle}
@@ -85,19 +92,28 @@ export const AdvertisingCard = () => {
                                             placeholder="Editar título"
                                         />
                                         <textarea
-                                            className="form-control"
+                                            className="form-control mb-2"
                                             value={editedContent}
                                             onChange={(e) => setEditedContent(e.target.value)}
                                             placeholder="Editar contenido"
                                         />
-                                        <input
-                                            type="text"
-                                            className="form-control mb-2"
-                                            value={editedImage_url}
-                                            onChange={(e) => setEditedImage_url(e.target.value)}
-                                            placeholder="Editar URL de la imagen"
-                                        />
-
+                                        <div className="mb-2">
+                                            <label htmlFor="editImage" className="form-label">Editar Imagen</label>
+                                            <input
+                                                type="file"
+                                                className="form-control"
+                                                id="editImage"
+                                                onChange={handleImageChange}
+                                            />
+                                            {editedImage_url && (
+                                                <img
+                                                    src={editedImage_url}
+                                                    alt="Vista previa"
+                                                    className="img-fluid mt-2"
+                                                    style={{ maxHeight: "150px", objectFit: "cover" }}
+                                                />
+                                            )}
+                                        </div>
                                     </>
                                 ) : (
                                     <>
