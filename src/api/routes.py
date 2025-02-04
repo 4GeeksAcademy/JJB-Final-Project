@@ -510,7 +510,7 @@ def create_invoices():
         concept = data.get("concept")
         status = data.get("status")
 
-        if not amount or not concept or not status:
+        if not amount or not concept:
             return jsonify({"error": "Faltan datos obligatorios (amount, concept, status)"}), 400
         
         user = User.query.filter_by(email=email).first()
@@ -520,8 +520,7 @@ def create_invoices():
         new_invoice = Invoice(
             amount=amount,
             concept=concept,
-            status=False,
-            payment_date=datetime.date.today(),
+            status=True,
             id_user=user.id_user,
         )
 

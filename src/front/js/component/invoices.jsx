@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
-import Swal from "sweetalert2";
 import "../../styles/forum.css";
 
 export const Invoices = () => {
@@ -12,37 +11,40 @@ export const Invoices = () => {
 
     return (
         <div className="container mt-4">
-          <table className="table table-bordered text-center">
-            <thead className="table-danger">
-              <tr>
-                <th>Factura</th>
-                <th>Monto</th>
-                <th>Concepto</th>
-                <th>Status</th>
-                <th>Fecha de Pago</th>
-                <th>Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              {store.invoices?.map((item, index) => (
-                <tr key={index}>
-                  <td>{item.id_invoice}</td>
-                  <td>{item.amount}</td>
-                  <td>{item.concept}</td>
-                  <td>{item.status ? "Pagado" : "Pendiente"}</td>
-                  <td>{item.payment_date}</td>
-                  <td>
-                    <button
-                      className={`btn btn-${item.status == false ? "secondary" : "danger"} btn-sm`}
-                      disabled={item.status}
-                    >
-                      Pay
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            <div className="table-responsive">
+                <table className="table table-bordered text-center">
+                    <thead className="table-danger">
+                        <tr>
+                            <th>Factura</th>
+                            <th className="d-none d-md-table-cell">Monto</th> {/* Oculto en móviles */}
+                            <th>Concepto</th>
+                            <th className="d-none d-md-table-cell">Status</th> {/* Oculto en móviles */}
+                            <th className="d-none d-md-table-cell">Fecha de Pago</th> {/* Oculto en móviles */}
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {store.invoices?.map((item, index) => (
+                            <tr key={index}>
+                                <td>{item.id_invoice}</td>
+                                <td className="d-none d-md-table-cell">{item.amount}</td>
+                                <td>{item.concept}</td>
+                                <td className="d-none d-md-table-cell">{item.status ? "Pagado" : "Pendiente"}</td>
+                                <td className="d-none d-md-table-cell">{item.payment_date || "N/A"}</td>
+                                <td>
+                                    <button
+                                        className={`btn btn-${item.payment_date ? "secondary" : "danger"} btn-sm`}
+                                        disabled={!!item.payment_date}
+                                    >
+                                        Pay
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 };
+
