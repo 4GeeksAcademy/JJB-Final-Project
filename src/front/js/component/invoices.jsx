@@ -9,6 +9,9 @@ export const Invoices = () => {
         actions.loadInvoices(); // Llamamos a la acción que obtiene las facturas
     }, []);
 
+    console.log(store.Invoices);
+    
+
     return (
         <div className="container mt-4">
             <div className="table-responsive">
@@ -29,7 +32,7 @@ export const Invoices = () => {
                                 <td>{item.id_invoice}</td>
                                 <td className="d-none d-md-table-cell">{item.amount}</td>
                                 <td>{item.concept}</td>
-                                <td className="d-none d-md-table-cell">{item.status ? "Pagado" : "Pendiente"}</td>
+                                <td className="d-none d-md-table-cell">{item.status == false? "Pagado" : "Pendiente"}</td>
                                 <td className="d-none d-md-table-cell">{item.payment_date || "N/A"}</td>
                                 <td>
                                     <button
