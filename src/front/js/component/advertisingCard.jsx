@@ -8,19 +8,25 @@ export const AdvertisingCard = () => {
     const [editedIdAdvertising, setEditedIdAdvertising] = useState(null);
     const [editedTitle, setEditedTitle] = useState("");
     const [editedContent, setEditedContent] = useState("");
+    const [editedImage_url, setEditedImage_url] = useState("");
 
-    const handleEditClick = (id_advertising, currentTitle, currentContent) => {
+
+    const handleEditClick = (id_advertising, currentTitle, currentContent, currentImage_url) => {
         setEditedIdAdvertising(id_advertising);
         setEditedTitle(currentTitle);
         setEditedContent(currentContent);
+        setEditedImage_url(currentImage_url);
+
     };
 
     const handleSaveClick = async (id_advertising) => {
-        const resp = await actions.updateAdvertising(id_advertising, editedTitle, editedContent);
+        const resp = await actions.updateAdvertising(id_advertising, editedTitle, editedContent, editedImage_url);
         handleResponse(resp);
         setEditedIdAdvertising(null);
         setEditedTitle("");
         setEditedContent("");
+        setEditedImage_url(""); 
+
     };
 
     const handleDeleteClick = async (id_advertising) => {
@@ -84,10 +90,18 @@ export const AdvertisingCard = () => {
                                             onChange={(e) => setEditedContent(e.target.value)}
                                             placeholder="Editar contenido"
                                         />
+                                        <input
+                                            type="text"
+                                            className="form-control mb-2"
+                                            value={editedImage_url}
+                                            onChange={(e) => setEditedImage_url(e.target.value)}
+                                            placeholder="Editar URL de la imagen"
+                                        />
+
                                     </>
                                 ) : (
                                     <>
-                                        <img className="advertising-image img-fluid" src={item.image_url} alt="Publicidad" />
+                                        <img className="advertising-image img-fluid" src={item.image_url} alt={item.title} />
                                         <h5 className="card-title">{item.title}</h5>
                                         <p className="card-text">{item.content}</p>
                                     </>
@@ -109,7 +123,7 @@ export const AdvertisingCard = () => {
                                                 <button
                                                     className="btn btn-secondary me-2"
                                                     onClick={() =>
-                                                        handleEditClick(item.id_advertising, item.title, item.content)
+                                                        handleEditClick(item.id_advertising, item.title, item.content, item.image_url)
                                                     }
                                                 >
                                                     Editar

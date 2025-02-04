@@ -183,6 +183,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
+			sendFormAdvertising: async (advertisingName, advertisingContent, image ) => {
+				console.log("-----------sendFormAdvertising----------------")
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+					console.log("id_user", getStore().profile.id_user);
+					const resp = await fetch(`${process.env.BACKEND_URL}api/advertising`,{
+						method: "POST",
+						body: JSON.stringify({
+							title: advertisingName,
+							content: advertisingContent,
+							image_url: image
+						}),
+						headers: {
+						  "Content-Type": "application/json",
+						  "accept": "application/json",
+						  "Authorization": `Bearer ${token}`, 
+						  "Content-Type": "application/json"
+						}
+					});
+					const data = await resp.json();
+					if (!resp.ok) {
+						return { error: `${data.error}`}; 
+					}
+					console.log("BACK Datos devueltos:", data);
+					setStore({ advertising: [...getStore().advertising, data.advertising]});
+					return data;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
 			
 			registerUser: async (email, password, nickname, checkbox) => {
 				console.log("-----------registerUser----------------")
@@ -592,9 +626,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			updateAdvertising: async (id_advertising, title, content) => {
+			updateAdvertising: async (id_advertising, title, content, image) => {
 				console.log("-----------updateAdvertising----------------");
-				console.log("id_advertising", id_advertising, "title", title, "content", content);
+				console.log("id_advertising", id_advertising, "title", title, "content", content, "image_url", image);
 			
 				try {
 					const token = getActions().checkAcessToken();
@@ -612,6 +646,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							id_advertising: id_advertising,
 							title: title,
 							content: content,
+							image_url: image,
 						}),
 					});
 			

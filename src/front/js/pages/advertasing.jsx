@@ -95,27 +95,25 @@ export const Advertising = () => {
         setAdvertisingContentChanged(true)
     }
 
-
     const toggleModal = () => {
-        console.log("toggleModal:", modalShows)
-        setModalShows(!modalShows)
+        console.log("toggleModal:", modalShows);
+        setModalShows(!modalShows);
         setAdvertisingName("");
         setAdvertisingContent("");
         setAdvertisingNameChanged(false);
         setAdvertisingContentChanged(false);
     }
-
+    
     const sendFormAdvertising = async () => {
-        console.log("Se manda formulario creacion publicidad")
-        console.log("advertisingName:", advertisingName)
-        console.log("advertisingContent:", advertisingContent)
-        console.log("advertisingImage_url:", image)
+        console.log("Se manda formulario creacion publicidad");
+        console.log("advertisingName:", advertisingName);
+        console.log("advertisingContent:", advertisingContent);
+        console.log("advertisingImage_url:", image); // La URL de la imagen
 
-
-        const response = await actions.sendFormAdvertising(advertisingName, advertisingContent, image );
+    
+        const response = await actions.sendFormAdvertising(advertisingName, advertisingContent, image); 
         console.log(store.Advertising);
-
-
+    
         if (response.error) {
             console.error("FRONT Error al crear una publicidad:", response.error);
             Swal.fire({
@@ -125,7 +123,6 @@ export const Advertising = () => {
                 showConfirmButton: false,
                 timer: 3500
             });
-
         } else {
             console.log("FRONT:", response);
             Swal.fire({
@@ -143,6 +140,7 @@ export const Advertising = () => {
             setModalShows(false);
         }
     }
+    
 
     const resetAdvertisingCard = () => {
         setKey(prevKey => prevKey + 1);
@@ -218,9 +216,8 @@ export const Advertising = () => {
                                     onClick={sendFormAdvertising}
 
                                 >
-
-
                                     Crear Publicidad
+
                                 </button>
                             </div>
                         </form>
