@@ -6,7 +6,7 @@ export const Invoices = () => {
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
-        actions.loadInvoices(); // Llamamos a la acción que obtiene las facturas
+        actions.loadInvoices();
     }, []);
 
     console.log(store.Invoices);
@@ -19,10 +19,10 @@ export const Invoices = () => {
                     <thead className="table-danger">
                         <tr>
                             <th>Factura</th>
-                            <th className="d-none d-md-table-cell">Monto</th> {/* Oculto en móviles */}
+                            <th className="d-none d-md-table-cell">Monto</th> 
                             <th>Concepto</th>
-                            <th className="d-none d-md-table-cell">Status</th> {/* Oculto en móviles */}
-                            <th className="d-none d-md-table-cell">Fecha de Pago</th> {/* Oculto en móviles */}
+                            <th className="d-none d-md-table-cell">Status</th> 
+                            <th className="d-none d-md-table-cell">Fecha de Pago</th>
                             <th>Acción</th>
                         </tr>
                     </thead>
@@ -32,7 +32,7 @@ export const Invoices = () => {
                                 <td>{item.id_invoice}</td>
                                 <td className="d-none d-md-table-cell">{item.amount}</td>
                                 <td>{item.concept}</td>
-                                <td className="d-none d-md-table-cell">{item.status == false? "Pagado" : "Pendiente"}</td>
+                                <td className="d-none d-md-table-cell">{item.status}</td>
                                 <td className="d-none d-md-table-cell">{item.payment_date || "N/A"}</td>
                                 <td>
                                     <button
