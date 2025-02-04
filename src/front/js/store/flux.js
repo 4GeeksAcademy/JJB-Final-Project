@@ -783,7 +783,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			updateInvoices: async (id_invoice, amount, concept, status) => {
 				console.log("-----------updateInvoices----------------");
-				console.log("id_invoice", id_invoice, "amount", amount, "concept", concept,"status", status);
+				console.log("id_invoice", id_invoice, "amount", amount, "concept", concept, "status", status);
 
 				try {
 					const token = getActions().checkAcessToken();
