@@ -16,7 +16,7 @@ export const Account = () => {
         nickname: store.profile.nickname || ""
     });
 
-    // Función para activar/desactivar edición
+  
     const toggleEdit = (field) => {
         setIsEditing((prev) => ({
             ...prev,
@@ -31,7 +31,7 @@ export const Account = () => {
         });
     };
 
-    // Simular guardado
+
     const handleSave = async (field) => {
         console.log("formData:", formData);
         const resp = await actions.updateProfile(formData);
@@ -70,6 +70,10 @@ export const Account = () => {
 
         if (response) {
             setImage(response)
+            const loadProfile = async (response) => {
+                const resp = actions.updateProfile({avatar_url: response})
+            }
+            loadProfile(response);
         }
         console.log(response);
     }
