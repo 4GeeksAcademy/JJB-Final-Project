@@ -32,7 +32,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
-						return { error_access_token: "No autorizado" };
+						return { error: "No autorizado" };
 					}
 					const response = await fetch(`${process.env.BACKEND_URL}api/profile`, {
 						method: "GET",
@@ -45,6 +45,41 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(data);
 					setStore({ profile: data });
 					return data.profile;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+			updateProfile: async (UserData) => {
+				console.log("-----------updateProfile----------------");
+				console.log("UserData", UserData);
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+			
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/profile`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`
+						},
+						body: JSON.stringify(UserData)
+					});
+			
+					const data = await resp.json();
+			
+					if (!resp.ok) {
+						console.error("Error al actualizar el foro:", data.error);
+						return { error: `${data.error}` }; 
+					}
+			
+					// Actualiza el estado global del user modificado.
+					setStore({ profile: data });
+			
+					console.log("Usuario actualizado exitosamente:", data);
+					return data;
 				} catch (error) {
 					console.error("Error en fetch:", error);
 					return { error: error.message };
@@ -843,6 +878,41 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 
 
+			uploadPhoto: async (formData) => {
+				console.log("-----------uploadPhoto----------------");
+				console.log("formData", formData);
+				try {
+		
+					const response = await fetch(process.env.BACKEND_URL + "api/upload", {
+						method: "POST",
+						body: formData,
+						header: {
+							"Content-Type": "multipart/formdata"
+						}
+					})
+			
+					const data = await response.json()
+
+					if (data) {
+						setStore((prev) => ({
+							...prev, 
+							profile: {
+								...prev.profile, 
+								image_url: data, 
+							},
+						}));
+						getActions().updateProfile({avatar_url: data})				
+					}
+					console.log(data);
+					
+					return data;
+				} catch (error) {
+					console.error("Error al actualizar la publicidad:", error);
+					return { error: error.message };
+				}
+			},
+			
+			
 		}
 
 

@@ -7,6 +7,7 @@ import { ResetPassword } from "./pages/reset-password.jsx";
 import { Register } from "./pages/register.jsx";
 import { Profile } from "./pages/profile.jsx";
 import { ForumDetail } from "./pages/1forum.jsx";
+import { Account } from "./pages/account.jsx";
 
 import { Login } from "./pages/login.jsx";
 import { Forums } from "./pages/forum.jsx";
@@ -35,6 +36,7 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Profile />} path="/profile" />
+                        <Route element={<Account />} path="/account" />
                         <Route element={<Forums />} path="/forums" />
                         <Route element={<Advertising />} path="/advertising" />
                         <Route element={<ForumDetail />} path="/forum/:forum_id" />
