@@ -112,7 +112,7 @@ export const Register = () => {
 
                                     <div className="form-check mb-3 d-flex justify-content-center">
                                         <input className="form-check-input fs-5 me-2" type="checkbox" value="" id="flexCheckDefault" onChange={CheckboxChanged}/>
-                                            <label className="form-check-label fs-5" for="flexCheckDefault">
+                                            <label className="form-check-label fs-5" htmlFor="flexCheckDefault">
                                                 Soy mayor de edad
                                             </label>
                                     </div>
