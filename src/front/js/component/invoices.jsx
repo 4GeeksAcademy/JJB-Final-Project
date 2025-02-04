@@ -1,17 +1,16 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
 import "../../styles/forum.css";
 
 export const Invoices = () => {
     const { store, actions } = useContext(Context);
-    // const invoices = [
-    //     { id: 656465, amount: "$5.00", concept: "Membership May", status: "Paid", paymentDate: "01/05/2024", isPaid: true },
-    //     { id: 694168, amount: "$5.00", concept: "Membership June", status: "Paid", paymentDate: "01/06/2024", isPaid: true },
-    //     { id: 484561, amount: "$5.00", concept: "Membership July", status: "Pending", paymentDate: "-", isPaid: false },
-    //   ];
 
-      return (
+    useEffect(() => {
+        actions.loadInvoices(); // Llamamos a la acción que obtiene las facturas
+    }, []);
+
+    return (
         <div className="container mt-4">
           <table className="table table-bordered text-center">
             <thead className="table-danger">
@@ -30,11 +29,11 @@ export const Invoices = () => {
                   <td>{item.id_invoice}</td>
                   <td>{item.amount}</td>
                   <td>{item.concept}</td>
-                  <td>{item.status}</td>
+                  <td>{item.status ? "Pagado" : "Pendiente"}</td>
                   <td>{item.payment_date}</td>
                   <td>
                     <button
-                      className={`btn btn-${item.status == false ? "secondary" : "danger"} btn-sm`}
+                      className={`btn btn-${item.status ? "secondary" : "danger"} btn-sm`}
                       disabled={item.status}
                     >
                       Pay
@@ -45,5 +44,5 @@ export const Invoices = () => {
             </tbody>
           </table>
         </div>
-      );
-    };
+    );
+};
