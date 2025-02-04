@@ -7,10 +7,6 @@
     height: 300px;
  }
 
- .fa-pencil{
-   color: red;
-   
- }
 
 .edit {
    width: 32px;
@@ -18,17 +14,21 @@
 }
 
 .edit-btn {
+   background-color: var(--primary-color);
    transition: background-color 0.3s, transform 0.2s ease-in-out;
 }
 
 .edit-btn:hover {
-   background-color: #007bff;
+   background-color: var(--secondary-color);
+   color: var(--text-color);
    transform: scale(1.1);
 }
+
+
 
 input[type="text"] {
    border: 1px solid #ced4da;
    border-radius: 5px;
    padding: 5px 10px;
-   width: 100%;
+   width: 95%;
 }
