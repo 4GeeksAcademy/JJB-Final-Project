@@ -7,6 +7,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			forums : [],
 			advertising : [],
 			forumDetails: {},
+			invoices:[]
 		},
 
 		actions: {
