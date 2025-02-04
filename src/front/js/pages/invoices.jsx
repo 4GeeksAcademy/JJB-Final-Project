@@ -18,7 +18,7 @@ export const Invoices = (props) => {
         </div>
         {/* Main Content */}
         <div className="col-md-9 main-content">
-          <InvoicesTable />
+          <InvoicesTable/>
         </div>
       </div>
     </div>
