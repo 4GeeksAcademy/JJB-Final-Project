@@ -112,7 +112,7 @@ export const Account = () => {
                     <div className="row mb-3">
                         <h2>Membresia
                             {store.profile.membership?.trim().toLowerCase() === "free" ?
-                                (<span className="badge rounded-pill bg-primary">Mejora tu plan</span>) :
+                            (<button className="badge rounded-pill bg-primary">Mejora tu plan</button>):
                                 (<span className="badge rounded-pill bg-warning">Plan premium+</span>)
                             }
                         </h2>
