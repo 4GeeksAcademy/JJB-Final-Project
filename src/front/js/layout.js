@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
+import { ForgotPassword } from "./pages/forgot-password.jsx";
 import { ResetPassword } from "./pages/reset-password.jsx";
 import { Register } from "./pages/register.jsx";
 import { Profile } from "./pages/profile.jsx";
@@ -46,6 +47,7 @@ const Layout = () => {
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<h1>Not found!</h1>} />
                         <Route element={<ResetPassword />} path="/reset-password" />
+                        <Route element={<ForgotPassword />} path="/forgot-password" />
                         <Route element={<Invoices />} path="/invoices" />
                     </Routes>
                     <Footer />

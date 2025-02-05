@@ -4,7 +4,7 @@ import "../../styles/home.css";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
-export const ResetPassword = () => {
+export const ForgotPassword = () => {
     const { store, actions } = useContext(Context);
     const [email, setEmail] = useState('');
     const [emailChanged, setEmailChanged] = useState(false);
@@ -45,7 +45,7 @@ export const ResetPassword = () => {
 
     return (
         <>
-            {/* <div className="container">
+            <div className="container">
                 <div className="row m-5 border p-md-5">
                     <div className="col-12 col-md-6 d-flex justify-content-md-end justify-content-center mb-3">
                         <div className="card p-md-3" style={{ width: "18rem" }}>
@@ -88,7 +88,7 @@ export const ResetPassword = () => {
                         </div>
                     </div>
                 </div>
-            </div> */}
+            </div>
         </>
 
     );
