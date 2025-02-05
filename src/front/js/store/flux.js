@@ -631,10 +631,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			updateAdvertising: async (id_advertising, title, content, image) => {
+			updateAdvertising: async (formData) => {
 				console.log("-----------updateAdvertising----------------");
-				console.log("id_advertising", id_advertising, "title", title, "content", content, "image_url", image);
-			
+				console.log("updateAdvertising - formData:", formData);
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
@@ -647,12 +646,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json",
 							"Authorization": `Bearer ${token}`,
 						},
-						body: JSON.stringify({
-							id_advertising: id_advertising,
-							title: title,
-							content: content,
-							image_url: image,
-						}),
+						body: JSON.stringify(formData)
 					});
 
 					const data = await response.json();

@@ -180,80 +180,80 @@ export const Advertising = () => {
                         </div>
 
                         <form className="p-3">
-    <div className="mb-3">
-        <label htmlFor="nameForum" className="form-label">Publicidad</label>
-        <input 
-            type="text"
-            className="form-control"
-            id="nameForum"
-            onChange={AdvertisingNameChanged}
-            value={advertisingName}
-        />
-    </div>
+                            <div className="mb-3">
+                                <label htmlFor="nameForum" className="form-label">Publicidad</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="nameForum"
+                                    onChange={AdvertisingNameChanged}
+                                    value={advertisingName}
+                                />
+                            </div>
 
-    <div className="mb-3">
-        <label htmlFor="contentForum" className="form-label">Descripción</label>
-        <textarea
-            className="form-control"
-            id="contentForum"
-            rows="1"
-            onInput={(e) => {
-                e.target.style.height = "auto";
-                e.target.style.height = `${e.target.scrollHeight}px`;
-            }}
-            style={{ overflow: "hidden", resize: "none" }}
-            onChange={AdvertisingContentChanged}
-        ></textarea>
-    </div>
+                            <div className="mb-3">
+                                <label htmlFor="contentForum" className="form-label">Descripción</label>
+                                <textarea
+                                    className="form-control"
+                                    id="contentForum"
+                                    rows="1"
+                                    onInput={(e) => {
+                                        e.target.style.height = "auto";
+                                        e.target.style.height = `${e.target.scrollHeight}px`;
+                                    }}
+                                    style={{ overflow: "hidden", resize: "none" }}
+                                    onChange={AdvertisingContentChanged}
+                                ></textarea>
+                            </div>
 
-    {/* Sección de carga de imagen */}
-    <div className="mb-3">
-        <label htmlFor="imageInput" className="form-label">Imagen</label>
-        
-        {/* Input para cargar imagen */}
-        <input 
-            type="file"
-            className="form-control"
-            id="imageInput"
-            onChange={uploadImage}
-        />
-    </div>
+                            {/* Sección de carga de imagen */}
+                            <div className="mb-3">
+                                <label htmlFor="imageInput" className="form-label">Imagen</label>
 
-    {/* Si ya existe una imagen, muestra la vista previa */}
-    {image && image.secure_url && (
-        <div className="mb-3">
-            <label className="form-label">Imagen Actual:</label>
-            <img 
-                className="img-fluid" 
-                src={image.secure_url} 
-                alt="Vista previa de la imagen"
-                style={{ maxHeight: '200px', objectFit: 'cover' }}
-            />
-            {/* Botón para cambiar la imagen */}
-            <div className="mt-2">
-                <button 
-                    type="button"
-                    className="btn btn-secondary"
-                    onClick={() => setImage(null)} // Esto borra la imagen actual para reemplazarla
-                >
-                    Cambiar Imagen
-                </button>
-            </div>
-        </div>
-    )}
+                                {/* Input para cargar imagen */}
+                                <input
+                                    type="file"
+                                    className="form-control"
+                                    id="imageInput"
+                                    onChange={uploadImage}
+                                />
+                            </div>
 
-    <div className="d-grid">
-        <button 
-            type="button"
-            style={{ background: 'var(--primary-color)', color: 'var(--text-color)' }}
-            className="btn btn-primary btn-block"
-            disabled={!advertisingFormChanged}
-            onClick={sendFormAdvertising}
-        >
-            {store.advertising ? "Actualizar Publicidad" : "Crear Publicidad"}
-        </button>
-    </div>
-</form>
+                            {/* Si ya existe una imagen, muestra la vista previa */}
+                            {image && image.secure_url && (
+                                <div className="mb-3">
+                                    <label className="form-label">Imagen Actual:</label>
+                                    <img
+                                        className="img-fluid"
+                                        src={image.secure_url}
+                                        alt="Vista previa de la imagen"
+                                        style={{ maxHeight: '200px', objectFit: 'cover' }}
+                                    />
+                                    {/* Botón para cambiar la imagen */}
+                                    <div className="mt-2">
+                                        <button
+                                            type="button"
+                                            className="btn btn-secondary"
+                                            onClick={() => setImage(null)} // Esto borra la imagen actual para reemplazarla
+                                        >
+                                            Cambiar Imagen
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="d-grid">
+                                <button
+                                    type="button"
+                                    style={{ background: 'var(--primary-color)', color: 'var(--text-color)' }}
+                                    className="btn btn-primary btn-block"
+                                    disabled={!advertisingFormChanged}
+                                    onClick={sendFormAdvertising}
+                                >
+                                    {store.advertising ? "Actualizar Publicidad" : "Crear Publicidad"}
+                                </button>
+                            </div>
+                        </form>
 
 
                     </div>

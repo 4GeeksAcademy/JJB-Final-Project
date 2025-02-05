@@ -472,14 +472,15 @@ def update_advertising():
     try:
         email = get_jwt_identity()
         print(f"Usuario autenticado para update_advertising: {email}")  
-
+        print(f"Request JSON: {request.json}")
+        print(f"Claves recibidas: {list(request.json.keys())}")
         id_advertising = request.json.get("id_advertising", None)
         title = request.json.get("title", None)
         content = request.json.get("content", None)
         image_url = request.json.get("image", None)
 
 
-        print(f"Datos recibidos: id_advertising={id_advertising}, title={title}, content={content}")
+        print(f"Datos recibidos: id_advertising={id_advertising}, title={title}, content={content}, image_url={image_url}")
         
         if id_advertising is None or not title or not content:
             return jsonify({"error": "Faltan datos obligatorios (id_advertising, title, content)"}), 400
@@ -494,8 +495,14 @@ def update_advertising():
         advertising.image_url = image_url
 
         advertising.creation_date = datetime.date.today()
-
-        db.session.commit()
+        print(f"advertising.image_url: {advertising.image_url}")  
+        try:
+            db.session.commit()
+            print("Cambios guardados en la base de datos")
+        except Exception as db_error:
+            db.session.rollback()
+            print(f"Error al guardar en la base de datos: {db_error}")
+            return jsonify({"error": "Error al actualizar la base de datos", "message": str(db_error)}), 500
 
         return jsonify({"msg": "Publicidad actualizada exitosamente", "new_advertising": advertising.serialize()}), 200
 
