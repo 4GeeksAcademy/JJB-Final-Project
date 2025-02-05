@@ -895,7 +895,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error al actualizar la publicidad:", error);
 					return { error: error.message };
 				}
-			},
+			},	
 			
 		}
 
@@ -903,8 +903,5 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 	};
 };
-
-
-
 
 export default getState;

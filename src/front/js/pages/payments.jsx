@@ -16,7 +16,7 @@ export const Payments = () => {
         </div>
         {/* Main Content */}
         <div className="col-md-9 main-content">
-          <PayPalButton/>
+          <PayPalButton />
         </div>
       </div>
     </div>

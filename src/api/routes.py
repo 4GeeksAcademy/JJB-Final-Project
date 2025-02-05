@@ -615,3 +615,5 @@ def update_invoices(id_invoice):
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+    
+
