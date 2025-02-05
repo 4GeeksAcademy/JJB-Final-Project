@@ -17,6 +17,7 @@ import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
 import { Invoices} from "./pages/invoices.jsx";
+import { Payments} from "./pages/payments.jsx";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
@@ -47,6 +48,7 @@ const Layout = () => {
                         <Route element={<h1>Not found!</h1>} />
                         <Route element={<ResetPassword />} path="/reset-password" />
                         <Route element={<Invoices />} path="/invoices" />
+                        <Route element={<Payments />} path="/payments" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>
