@@ -8,7 +8,6 @@ from flask_cors import CORS
 import re , datetime
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 import os, cloudinary, cloudinary.uploader
-import requests
 
 
 api = Blueprint('api', __name__)
@@ -624,52 +623,3 @@ def update_invoices(id_invoice):
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
-
-
-
-@api.route('/create-paypal-order', methods=['POST'])
-@jwt_required()
-def create_paypal_order():
-    try:
-        data = request.get_json()
-        amount = data.get("amount")
-
-        if not amount:
-            return jsonify({"error": "El monto es obligatorio"}), 400
-
-        auth = (PAYPAL_CLIENT_ID, PAYPAL_SECRET)
-        headers = {"Content-Type": "application/json"}
-        order_data = {
-            "intent": "CAPTURE",
-            "purchase_units": [{"amount": {"currency_code": "USD", "value": str(amount)}}],
-            "application_context": {"return_url": "https://tuweb.com/success", "cancel_url": "https://tuweb.com/cancel"}
-        }
-
-        response = requests.post(f"{PAYPAL_API_URL}/v2/checkout/orders", json=order_data, auth=auth, headers=headers)
-        order = response.json()
-
-        if response.status_code != 201:
-            return jsonify({"error": "Error al crear la orden de PayPal", "details": order}), 400
-
-        return jsonify(order), 201
-
-    except Exception as e:
-        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
-
-
-@api.route('/capture-paypal-order/<order_id>', methods=['POST'])
-@jwt_required()
-def capture_paypal_order(order_id):
-    try:
-        auth = (PAYPAL_CLIENT_ID, PAYPAL_SECRET)
-        response = requests.post(f"{PAYPAL_API_URL}/v2/checkout/orders/{order_id}/capture", auth=auth)
-        capture_data = response.json()
-
-        if response.status_code != 201:
-            return jsonify({"error": "Error al capturar el pago", "details": capture_data}), 400
-
-        return jsonify(capture_data), 200
-
-    except Exception as e:
-        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
-
