@@ -3,10 +3,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			message: null,
 			userToken: "",
-			profile: {}, 
-			forums : [],
-			advertising : [],
+			profile: {},
+			forums: [],
+			advertising: [],
 			forumDetails: {},
+			invoices: []
 		},
 
 		actions: {
@@ -31,19 +32,54 @@ const getState = ({ getStore, getActions, setStore }) => {
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
-						return { error_access_token: "No autorizado" };
+						return { error: "No autorizado" };
 					}
 					const response = await fetch(`${process.env.BACKEND_URL}api/profile`, {
 						method: "GET",
 						headers: {
-							"Authorization": `Bearer ${token}`, 
+							"Authorization": `Bearer ${token}`,
 							"Content-Type": "application/json"
 						}
 					});
 					const data = await response.json();
 					console.log(data);
-					setStore({ profile: data});
+					setStore({ profile: data });
 					return data.profile;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+			updateProfile: async (UserData) => {
+				console.log("-----------updateProfile----------------");
+				console.log("UserData", UserData);
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+			
+					const resp = await fetch(`${process.env.BACKEND_URL}/api/profile`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`
+						},
+						body: JSON.stringify(UserData)
+					});
+			
+					const data = await resp.json();
+			
+					if (!resp.ok) {
+						console.error("Error al actualizar el foro:", data.error);
+						return { error: `${data.error}` }; 
+					}
+			
+					// Actualiza el estado global del user modificado.
+					setStore({ profile: data });
+			
+					console.log("Usuario actualizado exitosamente:", data);
+					return data;
 				} catch (error) {
 					console.error("Error en fetch:", error);
 					return { error: error.message };
@@ -57,21 +93,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (token === null) {
 						return { error_access_token: "No autorizado" };
 					}
-					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`,{
+					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`, {
 						method: "GET",
 						headers: {
 							"Content-Type": "application/json",
 							"accept": "application/json",
-						  	"Authorization": `Bearer ${token}`, 
+							"Authorization": `Bearer ${token}`,
 							"Content-Type": "application/json"
 						}
 					});
 					const data = await resp.json();
 					console.log(data);
 					if (!resp.ok) {
-						return { error: `${data.error}` }; 
+						return { error: `${data.error}` };
 					}
-					setStore({ forums: data});
+					setStore({ forums: data });
 					return data;
 				} catch (error) {
 					console.error("Error en fetch:", error);
@@ -86,7 +122,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (token === null) {
 						return { error: "No autorizado" };
 					}
-			
+
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/forum/${id_forum}`, {
 						method: "PUT",
 						headers: {
@@ -95,22 +131,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(forumData)
 					});
-			
+
 					const data = await resp.json();
-			
+
 					if (!resp.ok) {
 						console.error("Error al actualizar el foro:", data.error);
 						return { error: `${data.error}` }; // Retorna el mensaje de error.
 					}
-			
+
 					// Actualiza el estado global del foro modificado.
 					const store = getStore();
-					const updatedForums = store.forums.map(forum => 
+					const updatedForums = store.forums.map(forum =>
 						forum.id_forum === id_forum ? data : forum
-						
+
 					);
 					setStore({ forums: updatedForums });
-			
+
 					console.log("Foro actualizado exitosamente:", data);
 					return data;
 				} catch (error) {
@@ -118,7 +154,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
-			
+
 			deleteForum: async (id_forum) => {
 				console.log("-----------deleteForum----------------");
 				try {
@@ -126,26 +162,26 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (token === null) {
 						return { error: "No autorizado" };
 					}
-			
+
 					const resp = await fetch(`${process.env.BACKEND_URL}/api/forum/${id_forum}`, {
 						method: "DELETE",
 						headers: {
 							"Authorization": `Bearer ${token}`
 						}
 					});
-			
+
 					const data = await resp.json();
-			
+
 					if (!resp.ok) {
 						console.error("Error al eliminar el foro:", data.error);
 						return { error: `${data.error}` }; // Retorna el mensaje de error.
 					}
-			
+
 					// Elimina el foro del estado global.
 					const store = getStore();
 					const updatedForums = store.forums.filter(forum => forum.id_forum !== Number(id_forum));
 					setStore({ forums: updatedForums });
-			
+
 					console.log("Foro eliminado exitosamente:", data.message);
 					return { success: true };
 				} catch (error) {
@@ -153,7 +189,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
-			
+
 
 			loadAdvertising: async () => {
 				console.log("-----------loadAdvertising----------------")
@@ -162,107 +198,74 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (token === null) {
 						return { error_access_token: "No autorizado" };
 					}
-					const resp = await fetch(`${process.env.BACKEND_URL}api/advertising`,{
+					const resp = await fetch(`${process.env.BACKEND_URL}api/advertising`, {
 						method: "GET",
 						headers: {
 							"Content-Type": "application/json",
 							"accept": "application/json",
-						  	"Authorization": `Bearer ${token}`, 
+							"Authorization": `Bearer ${token}`,
 							"Content-Type": "application/json"
 						}
 					});
 					const data = await resp.json();
 					console.log(data);
 					if (!resp.ok) {
-						return { error: `${data.error}` }; 
+						return { error: `${data.error}` };
 					}
-					setStore({ advertising: data});
+					setStore({ advertising: data });
 					return data;
 				} catch (error) {
 					console.error("Error en fetch:", error);
 					return { error: error.message };
 				}
 			},
-			sendFormAdvertising: async (advertisingName, advertisingContent, image ) => {
-				console.log("-----------sendFormAdvertising----------------")
-				try {
-					const token = getActions().checkAcessToken();
-					if (token === null) {
-						return { error: "No autorizado" };
-					}
-					console.log("id_user", getStore().profile.id_user);
-					const resp = await fetch(`${process.env.BACKEND_URL}api/advertising`,{
-						method: "POST",
-						body: JSON.stringify({
-							title: advertisingName,
-							content: advertisingContent,
-							image_url: image
-						}),
-						headers: {
-						  "Content-Type": "application/json",
-						  "accept": "application/json",
-						  "Authorization": `Bearer ${token}`, 
-						  "Content-Type": "application/json"
-						}
-					});
-					const data = await resp.json();
-					if (!resp.ok) {
-						return { error: `${data.error}`}; 
-					}
-					console.log("BACK Datos devueltos:", data);
-					setStore({ advertising: [...getStore().advertising, data.advertising]});
-					return data;
-				} catch (error) {
-					console.error("Error en fetch:", error);
-					return { error: error.message };
-				}
-			},
-			
+
 			registerUser: async (email, password, nickname, checkbox) => {
 				console.log("-----------registerUser----------------")
 				try {
-					const resp = await fetch(`${process.env.BACKEND_URL}api/register`,{
+					const resp = await fetch(`${process.env.BACKEND_URL}api/register`, {
 						method: "POST",
 						headers: { "Content-Type": "application/json", "accept": "application/json" },
 						body: JSON.stringify({
 							email: email,
 							password: password,
 							nickname: nickname,
-							es_mayor:checkbox
+							es_mayor: checkbox
 						})
 					})
 
-				const data = await resp.json();
-				console.log("BACK Datos devueltos:", data);
+					const data = await resp.json();
+					console.log("BACK Datos devueltos:", data);
 
-				if (!resp.ok) {
-					if (resp.status == 400) {
-						console.error("BACK Error en la solicitud:", data.error);
-						return { error: `${data.error}` };
+					if (!resp.ok) {
+						if (resp.status == 400) {
+							console.error("BACK Error en la solicitud:", data.error);
+							return { error: `${data.error}` };
+						}
+						return { error: `${data.msg}` };
 					}
-					return { error: `${data.msg}` }; 
-				}
 
-				return { data: `${data}`,status:`${resp.ok}` }; 
-					
+					return { data: `${data}`, status: `${resp.ok}` };
+
 				} catch (error) {
 					console.error("Error en fetch:", error);
 					return { error: error.message };
-				} 
+				}
 			},
 
 			getMessage: async () => {
-				try{
+				try {
 					// fetching data from the backend
 					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
 					const data = await resp.json()
 					setStore({ message: data.message })
 					// don't forget to return something, that is how the async resolves
 					return data;
-				}catch(error){
+				} catch (error) {
 					console.log("Error loading message from backend", error)
 				}
 			},
+
 			changeColor: (index, color) => {
 				//get the store
 				const store = getStore();
@@ -281,18 +284,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 			sendFormLogin: async (email, password) => {
 				console.log("-----------sendFormLogIn----------------")
 				try {
-					const resp = await fetch(`${process.env.BACKEND_URL}api/login`,{
+					const resp = await fetch(`${process.env.BACKEND_URL}api/login`, {
 						method: "POST",
 						body: JSON.stringify({
 							email: email,
 							password: password,
 						}),
 						headers: {
-						  "Content-Type": "application/json",
-						  "accept": "application/json"
+							"Content-Type": "application/json",
+							"accept": "application/json"
 						}
 					});
-					
+
 					const data = await resp.json();
 					console.log("BACK Datos devueltos:", data);
 
@@ -301,20 +304,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 							console.error("BACK Error en la solicitud:", data.error);
 							return { error: `${data.error}`, status: `${resp.status}` };
 						}
-						return { error: `${data.msg}`, status: `${resp.status}` }; 
+						return { error: `${data.msg}`, status: `${resp.status}` };
 					}
 
 
 					sessionStorage.setItem("accessToken", data.access_token);
 					console.log("Token guardado en el localStore.");
-			
+
 					return { data: data, ok: true };
 				} catch (error) {
 					console.error("Error en fetch:", error);
 					return { error: error.message };
 				}
 			},
-			
+
 			sendFormForum: async (forumName, forumContent) => {
 				console.log("-----------sendFormForum----------------")
 				try {
@@ -323,25 +326,25 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return { error: "No autorizado" };
 					}
 					console.log("id_user", getStore().profile.id_user);
-					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`,{
+					const resp = await fetch(`${process.env.BACKEND_URL}api/forum`, {
 						method: "POST",
 						body: JSON.stringify({
 							title: forumName,
 							content: forumContent
 						}),
 						headers: {
-						  "Content-Type": "application/json",
-						  "accept": "application/json",
-						  "Authorization": `Bearer ${token}`, 
-						  "Content-Type": "application/json"
+							"Content-Type": "application/json",
+							"accept": "application/json",
+							"Authorization": `Bearer ${token}`,
+							"Content-Type": "application/json"
 						}
 					});
 					const data = await resp.json();
 					if (!resp.ok) {
-						return { error: `${data.error}`}; 
+						return { error: `${data.error}` };
 					}
 					console.log("BACK Datos devueltos:", data);
-					setStore({ forums: [...getStore().forums, data.forum]});
+					setStore({ forums: [...getStore().forums, data.forum] });
 					return data;
 				} catch (error) {
 					console.error("Error en fetch:", error);
@@ -349,7 +352,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			sendFormAdvertising: async (advertisingName, advertisingContent, image ) => {
+			sendFormAdvertising: async (advertisingName, advertisingContent, image) => {
 				console.log("-----------sendFormAdvertising----------------")
 				try {
 					const token = getActions().checkAcessToken();
@@ -357,7 +360,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return { error: "No autorizado" };
 					}
 					console.log("id_user", getStore().profile.id_user);
-					const resp = await fetch(`${process.env.BACKEND_URL}api/advertising`,{
+					const resp = await fetch(`${process.env.BACKEND_URL}api/advertising`, {
 						method: "POST",
 						body: JSON.stringify({
 							title: advertisingName,
@@ -365,18 +368,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 							image_url: image
 						}),
 						headers: {
-						  "Content-Type": "application/json",
-						  "accept": "application/json",
-						  "Authorization": `Bearer ${token}`, 
-						  "Content-Type": "application/json"
+							"Content-Type": "application/json",
+							"accept": "application/json",
+							"Authorization": `Bearer ${token}`,
+							"Content-Type": "application/json"
 						}
 					});
 					const data = await resp.json();
 					if (!resp.ok) {
-						return { error: `${data.error}`}; 
+						return { error: `${data.error}` };
 					}
 					console.log("BACK Datos devueltos:", data);
-					setStore({ advertising: [...getStore().advertising, data.advertising]});
+					setStore({ advertising: [...getStore().advertising, data.advertising] });
 					return data;
 				} catch (error) {
 					console.error("Error en fetch:", error);
@@ -386,146 +389,148 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			loadForumDetails: async (forum_title) => {
 				console.log("-----------loadForumDetails----------------")
-                try {
+				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
 						return { error: "No autorizado" };
 					}
-                    const response = await fetch(`${process.env.BACKEND_URL}api/forum/${forum_title}`,{
+					const response = await fetch(`${process.env.BACKEND_URL}api/forum/${forum_title}`, {
 						method: "GET",
 						headers: {
-							"Authorization": `Bearer ${token}`, 
+							"Authorization": `Bearer ${token}`,
 							"Content-Type": "application/json"
 						}
 					});
 					const data = await response.json();
-                    if (!response.ok) {return { error: `${data.error}`}; }
+					if (!response.ok) { return { error: `${data.error}` }; }
 					setStore({ forumDetails: data });
 					console.log("data", data)
-                    return data; 
-                } catch (error) {
-                    console.error("Error cargando los detalles del foro:", error);
+					return data;
+				} catch (error) {
+					console.error("Error cargando los detalles del foro:", error);
 					return { error: error.message };
-                }
-            },
+				}
+			},
 
-            addCommentToForum: async (id_forum, content) => {
+			addCommentToForum: async (id_forum, content) => {
 				console.log("-----------addCommentToForum----------------")
-                try {
+				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
 						return { error: "No autorizado" };
 					}
-                    const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`,
-                        },
+					const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`,
+						},
 						body: JSON.stringify({
 							id_forum: id_forum,
 							content: content,
 						}),
-                    });
+					});
 					const data = await response.json();
-                    if (!response.ok) {return { error: `${data.error}`}; }
-                    return data;
-                } catch (error) {
-                    console.error("Error al agregar el comentario:", error);
-                    return { error: error.message };
-                }
-            },
-			addCommentToComment: async (id_forum, content, replyTo) => {
-				console.log("-----------addCommentToComment----------------")
-                try {
-					const token = getActions().checkAcessToken();
-					if (token === null) {
-						return { error: "No autorizado" };
-					}
-                    const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`,
-                        },
-						body: JSON.stringify({
-							id_forum: id_forum,
-							content: content,
-							parent_id: replyTo,
-						}),
-                    });
-					const data = await response.json();
-                    if (!response.ok) {return { error: `${data.error}`}; }
-                    return data;
-                } catch (error) {
-                    console.error("Error al agregar el comentario:", error);
-                    return { error: error.message };
-                }
-            },
-			addCommentToComment: async (id_forum, content, replyTo) => {
-				console.log("-----------addCommentToComment----------------")
-                try {
-					const token = getActions().checkAcessToken();
-					if (token === null) {
-						return { error: "No autorizado" };
-					}
-                    const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`,
-                        },
-						body: JSON.stringify({
-							id_forum: id_forum,
-							content: content,
-							parent_id: replyTo,
-						}),
-                    });
-					const data = await response.json();
-                    if (!response.ok) {return { error: `${data.error}`}; }
-                    return data;
-                } catch (error) {
-                    console.error("Error al agregar el comentario:", error);
-                    return { error: error.message };
-                }
-            },
+					if (!response.ok) { return { error: `${data.error}` }; }
+					return data;
+				} catch (error) {
+					console.error("Error al agregar el comentario:", error);
+					return { error: error.message };
+				}
+			},
 
-            updateComment: async (id_comment, content, forum) => {
-				console.log("-----------updateComment----------------")
-				console.log("id_comment", id_comment, "content", content, "forum",  forum)
-                try {
+			addCommentToComment: async (id_forum, content, replyTo) => {
+				console.log("-----------addCommentToComment----------------")
+				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
 						return { error: "No autorizado" };
 					}
-                    const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`,
-                        },
+					const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`,
+						},
+						body: JSON.stringify({
+							id_forum: id_forum,
+							content: content,
+							parent_id: replyTo,
+						}),
+					});
+					const data = await response.json();
+					if (!response.ok) { return { error: `${data.error}` }; }
+					return data;
+				} catch (error) {
+					console.error("Error al agregar el comentario:", error);
+					return { error: error.message };
+				}
+			},
+
+			addCommentToComment: async (id_forum, content, replyTo) => {
+				console.log("-----------addCommentToComment----------------")
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+					const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`,
+						},
+						body: JSON.stringify({
+							id_forum: id_forum,
+							content: content,
+							parent_id: replyTo,
+						}),
+					});
+					const data = await response.json();
+					if (!response.ok) { return { error: `${data.error}` }; }
+					return data;
+				} catch (error) {
+					console.error("Error al agregar el comentario:", error);
+					return { error: error.message };
+				}
+			},
+
+			updateComment: async (id_comment, content, forum) => {
+				console.log("-----------updateComment----------------")
+				console.log("id_comment", id_comment, "content", content, "forum", forum)
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+					const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`,
+						},
 						body: JSON.stringify({
 							comment_index: id_comment,
 							id_forum: forum,
 							content: content,
 						}),
-                    });
+					});
 					const data = await response.json();
 					console.log("data", data)
 
-                    if (!response.ok) {return { error: `${data.error}`}; }
+					if (!response.ok) { return { error: `${data.error}` }; }
 
 					const new_comment = data.new_comment;
 					console.log("new_comment", new_comment)
 
 					const store = getStore();
 					const actualComments = store.forumDetails.comments;
-					
+
 					const index = actualComments.findIndex(comment => comment.id_comment === new_comment.id_comment);
 
 					if (index !== -1) {
 						actualComments[index] = new_comment;
-					
+
 						setStore({
 							forumDetails: {
 								...store.forumDetails,
@@ -533,43 +538,43 @@ const getState = ({ getStore, getActions, setStore }) => {
 							},
 						});
 					}
-                    return data;
-                } catch (error) {
-                    console.error("Error al agregar el comentario:", error);
-                    return { error: error.message };
-                }
-            },
+					return data;
+				} catch (error) {
+					console.error("Error al agregar el comentario:", error);
+					return { error: error.message };
+				}
+			},
 
 			deleteComment: async (id_comment) => {
 				console.log("-----------deleteComment----------------")
 				console.log("id_comment", id_comment)
-                try {
+				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
 						return { error: "No autorizado" };
 					}
-                    const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
-                        method: "DELETE",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Authorization": `Bearer ${token}`,
-                        },
+					const response = await fetch(`${process.env.BACKEND_URL}api/comment`, {
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`,
+						},
 						body: JSON.stringify({
 							comment_index: id_comment
 						}),
-                    });
+					});
 					const data = await response.json();
 					console.log("data", data)
 
-                    if (!response.ok) {return { error: `${data.error}`}; }
+					if (!response.ok) { return { error: `${data.error}` }; }
 
 					const store = getStore();
 
-					
+
 					const updatedComments = store.forumDetails.comments.filter(
 						(comment) => comment.id_comment !== id_comment
 					);
-			
+
 					// Actualizar el store
 					setStore({
 						forumDetails: {
@@ -577,12 +582,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 							comments: updatedComments,
 						},
 					});
-                    return data;
-                } catch (error) {
-                    console.error("Error al agregar el comentario:", error);
-                    return { error: error.message };
-                }
-            },
+					return data;
+				} catch (error) {
+					console.error("Error al agregar el comentario:", error);
+					return { error: error.message };
+				}
+			},
 
 			deleteAdvertising: async (id_advertising) => {
 				console.log("-----------deleteAdvertising----------------");
@@ -604,17 +609,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 					});
 					const data = await response.json();
 					console.log("data", data);
-			
+
 					if (!response.ok) {
 						return { error: `${data.error}` };
 					}
-			
+
 					const store = getStore();
-			
+
 					const updatedAdvertising = store.advertising.filter(
 						(advertising) => advertising.id_advertising !== id_advertising
 					);
-			
+
 					// Actualizar el store
 					setStore({
 						advertising: updatedAdvertising,
@@ -635,7 +640,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (token === null) {
 						return { error: "No autorizado" };
 					}
-			
+
 					const response = await fetch(`${process.env.BACKEND_URL}api/advertising`, {
 						method: "PUT",
 						headers: {
@@ -649,32 +654,243 @@ const getState = ({ getStore, getActions, setStore }) => {
 							image_url: image,
 						}),
 					});
-			
+
 					const data = await response.json();
 					console.log("data", data);
-			
+
 					if (!response.ok) {
 						return { error: data.error || "Error desconocido" };
 					}
-			
+
 					const new_advertising = data.new_advertising;
 					console.log("new_advertising", new_advertising);
-			
+
 					const store = getStore();
 					const actualAdvertising = store.advertising;
-			
+
 					const index = actualAdvertising.findIndex(
 						(ad) => ad.id_advertising === new_advertising.id_advertising
 					);
-			
+
 					if (index !== -1) {
 						actualAdvertising[index] = new_advertising;
-			
+
 						setStore({
 							advertising: actualAdvertising,
 						});
 					}
+
+					return data;
+				} catch (error) {
+					console.error("Error al actualizar la publicidad:", error);
+					return { error: error.message };
+				}
+			},
+
+			loadProfile: async () => {
+				console.log("-----------loadProfile----------------")
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
+					}
+					const response = await fetch(`${process.env.BACKEND_URL}api/profile`, {
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${token}`,
+							"Content-Type": "application/json"
+						}
+					});
+					const data = await response.json();
+					console.log("loadProfile",data);
+					setStore({ profile: data });
+					return data.profile;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+
+			loadInvoices: async () => {
+				console.log("-----------loadInvoices----------------")
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
+					}
+					const resp = await fetch(`${process.env.BACKEND_URL}api/invoices`, {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							"accept": "application/json",
+							"Authorization": `Bearer ${token}`,
+							"Content-Type": "application/json"
+						}
+					});
+					const data = await resp.json();
+					console.log(data);
+					if (!resp.ok) {
+						return { error: `${data.error}` };
+					}
+					setStore({ invoices: data });
+					return data;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+
+			sendInvoices: async (amount, concept, status) => {
+				console.log("-----------sendInvoices----------------")
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+					console.log("id_user", getStore().profile.id_user);
+					const resp = await fetch(`${process.env.BACKEND_URL}api/invoices`, {
+						method: "POST",
+						body: JSON.stringify({
+							amount: amount,
+							concept: concept,
+							status: status
+						}),
+						headers: {
+							"Content-Type": "application/json",
+							"accept": "application/json",
+							"Authorization": `Bearer ${token}`,
+							"Content-Type": "application/json"
+						}
+					});
+					const data = await resp.json();
+					if (!resp.ok) {
+						return { error: `${data.error}` };
+					}
+					console.log("BACK Datos devueltos:", data);
+					setStore({ invoices: [...getStore().invoices, data.invoices] });
+					return data;
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+
+			deleteInvoices: async (id_invoice) => {
+				console.log("-----------deleteInvoices----------------");
+				console.log("id_invoice", id_invoice);
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+					const response = await fetch(`${process.env.BACKEND_URL}/api/invoices`, {
+						method: "DELETE",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`,
+						},
+						body: JSON.stringify({
+							id_invoice: id_invoice,
+						}),
+					});
+					const data = await response.json();
+					console.log("data", data);
+
+					if (!response.ok) {
+						return { error: `${data.error}` };
+					}
+
+					const store = getStore();
+
+					const updatedInvoices = store.invoices.filter(
+						(invoices) => invoices.id_invoice !== id_invoice
+					);
+
+					// Actualizar el store
+					setStore({
+						invoices: updatedInvoices,
+					});
+					return data;
+				} catch (error) {
+					console.error("Error al eliminar la factura:", error);
+					return { error: error.message };
+				}
+			},
+
+			updateInvoices: async (id_invoice, amount, concept, status, payment_date) => {
+				console.log("-----------updateInvoices----------------");
+				console.log("id_invoice", id_invoice, "amount", amount, "concept", concept, "status", status, "payment_date", payment_date);
+
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error: "No autorizado" };
+					}
+
+					const response = await fetch(`${process.env.BACKEND_URL}api/invoices`, {
+						method: "PUT",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`,
+						},
+						body: JSON.stringify({
+							id_invoice: id_invoice,
+							amount: amount,
+							concept: concept,
+							status: status,
+							payment_date: payment_date
+						}),
+					});
+
+					const data = await response.json();
+					console.log("data", data);
+
+					if (!response.ok) {
+						return { error: data.error || "Error desconocido" };
+					}
+
+					const new_invoice = data.new_invoice;
+					console.log("new_invoice", new_invoice);
+
+					const store = getStore();
+					const actualInvoice = store.invoices;
+
+					const index = actualInvoice.findIndex(
+						(ad) => ad.id_invoice === new_invoice.id_invoice
+					);
+
+					if (index !== -1) {
+						actualInvoice[index] = new_invoice;
+
+						setStore({
+							invoices: actualInvoice,
+						});
+					}
+
+					return data;
+				} catch (error) {
+					console.error("Error al actualizar la factura:", error);
+					return { error: error.message };
+				}
+			},
+
+			uploadPhoto: async (formData) => {
+				console.log("-----------uploadPhoto----------------");
+				console.log("uploadPhoto formData", formData);
+				try {
+		
+					const response = await fetch(process.env.BACKEND_URL + "api/upload", {
+						method: "POST",
+						body: formData,
+						header: {
+							"Content-Type": "multipart/formdata"
+						}
+					})
 			
+					const data = await response.json()
+
+					console.log("uploadPhoto data:",data);
+					
 					return data;
 				} catch (error) {
 					console.error("Error al actualizar la publicidad:", error);
@@ -683,13 +899,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			
 			
-
-			
-			
-			
 		}
 
-		
+
 
 	};
 };

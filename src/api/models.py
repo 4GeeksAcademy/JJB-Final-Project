@@ -9,7 +9,7 @@ class User(db.Model):
     nickname = db.Column(db.String(50), unique=True, nullable=False)
     name = db.Column(db.String(50), nullable=True)
     lastname = db.Column(db.String(50), nullable=True)
-    birthday = db.Column(db.Date, nullable=True)
+    birthdate = db.Column(db.Date, nullable=True)
     role = db.Column(db.String(50), nullable=False, default="usuario")
     avatar_url = db.Column(db.String(255), nullable=False, default="default_avatar_url")
     membership = db.Column(db.String(20), nullable=False, default="free")
@@ -33,7 +33,7 @@ class User(db.Model):
             "nickname": self.nickname,
             "name": self.name,
             "lastname": self.lastname,
-            "birthday": self.birthday.isoformat() if self.birthday else None,
+            "birthdate": self.birthdate.isoformat() if self.birthdate else None,
             "role": self.role,
             "avatar_url": self.avatar_url,
             "membership": self.membership,
@@ -151,19 +151,19 @@ class Favorite(db.Model):
         }
 
 class Invoice(db.Model):
-    id_invoce = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    id_invoice = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     amount = db.Column(db.Integer, nullable=True)
     concept = db.Column(db.String(255), nullable=True)  
-    status = db.Column(db.String(50), nullable=True)  
-    payment_date = db.Column(db.Date, nullable=False)
+    status = db.Column(db.String(50), nullable=False)  
+    payment_date = db.Column(db.Date, nullable=True)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)  
 
     def __repr__(self):
-        return f'<Invoice {self.id_invoce}>'
+        return f'<Invoice {self.id_invoice}>'
 
     def serialize(self):
         return {
-            "id_invoce": self.id_invoce,
+            "id_invoice": self.id_invoice,
             "amount": self.amount,
             "concept": self.concept,
             "status": self.status,

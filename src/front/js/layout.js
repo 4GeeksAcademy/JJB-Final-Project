@@ -7,6 +7,7 @@ import { ResetPassword } from "./pages/reset-password.jsx";
 import { Register } from "./pages/register.jsx";
 import { Profile } from "./pages/profile.jsx";
 import { ForumDetail } from "./pages/1forum.jsx";
+import { Account } from "./pages/account.jsx";
 
 import { Login } from "./pages/login.jsx";
 import { Forums } from "./pages/forum.jsx";
@@ -15,6 +16,7 @@ import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
+import { Invoices} from "./pages/invoices.jsx";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
@@ -34,6 +36,7 @@ const Layout = () => {
                     <Navbar />
                     <Routes>
                         <Route element={<Profile />} path="/profile" />
+                        <Route element={<Account />} path="/account" />
                         <Route element={<Forums />} path="/forums" />
                         <Route element={<Advertising />} path="/advertising" />
                         <Route element={<ForumDetail />} path="/forum/:forum_id" />
@@ -43,6 +46,7 @@ const Layout = () => {
                         <Route element={<Single />} path="/single/:theid" />
                         <Route element={<h1>Not found!</h1>} />
                         <Route element={<ResetPassword />} path="/reset-password" />
+                        <Route element={<Invoices />} path="/invoices" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>
