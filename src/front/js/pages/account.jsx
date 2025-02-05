@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/account.css";
 import { SideBar } from "../component/sideBar.jsx";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const Account = () => {
@@ -112,7 +113,7 @@ export const Account = () => {
                     <div className="row mb-3">
                         <h2>Membresia
                             {store.profile.membership?.trim().toLowerCase() === "free" ?
-                            (<button className="badge rounded-pill bg-primary">Mejora tu plan</button>):
+                            (<Link to={"/payments"}><button className="badge rounded-pill bg-primary">Mejora tu plan</button></Link>):
                                 (<span className="badge rounded-pill bg-warning">Plan premium+</span>)
                             }
                         </h2>
