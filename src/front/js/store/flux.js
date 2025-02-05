@@ -875,7 +875,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			uploadPhoto: async (formData) => {
 				console.log("-----------uploadPhoto----------------");
-				console.log("uploadPhoto formData", formData);
+				console.log("uploadPhoto formData");
+				for (let pair of formData.entries()) {
+					console.log(pair[0] + ':', pair[1]);
+				}
 				try {
 		
 					const response = await fetch(process.env.BACKEND_URL + "api/upload", {

@@ -85,11 +85,14 @@ export const Account = () => {
     };
 
     const uploadImage = async (e) => {
-        console.log(e.target.files[0]);
+        console.log("uploadImage - e.target.files[0]", e.target.files[0]);
         const formData = new FormData()
 
         formData.append('image', e.target.files[0])
-        console.log(formData.get("image"));
+        console.log("uploadImage - formData");
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ':', pair[1]);
+        }
 
         const response = await actions.uploadPhoto(formData)
 

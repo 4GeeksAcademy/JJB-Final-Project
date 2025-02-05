@@ -491,7 +491,7 @@ def update_advertising():
 
         advertising.title = title
         advertising.content = content
-        advertising.image.url = image_url
+        advertising.image_url = image_url
 
         advertising.creation_date = datetime.date.today()
 
