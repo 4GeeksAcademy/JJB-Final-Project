@@ -1,84 +1,101 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const ResetPassword = () => {
     const { store, actions } = useContext(Context);
-    const [email, setEmail] = useState('');
-    const [emailChanged, setEmailChanged] = useState(false);
-    const EmailChanged = (e) => {
-        setEmail(e.target.value);
-        setEmailChanged(true)
-    }
+    const { token } = useParams();
+    console.log("Token recibido:", token);
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
-    const sendForm = async () => {
-        console.log("Se manda formulario reseteo de contrasena")
-        console.log("email:", email)
 
-        const response = await actions.forgotPassword(email);
-
-        if (!response.error) {
-            console.log("FRONT:", response);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log("password", password)
+        console.log("confirmPassword", confirmPassword)
+        if (password !== confirmPassword) {
             Swal.fire({
-                position: "top",
-                icon: "success",
-                title: response.msg,
-                showConfirmButton: false,
-                timer: 2000
-            });
-            // navigate("/profile");
-
-        } else {
-            console.error("FRONT Error al resetear contrasena:", response.error);
-            Swal.fire({
-                position: "top",
                 icon: "error",
-                title: "Error: " + response.error,
+                title: "Las contraseñas no coinciden",
+                timer: 3000,
                 showConfirmButton: false,
-                timer: 3500
+                position: "top"
             });
-            
+            return;
         }
-    }
+
+        // const response = await actions.resetPassword(token, password);
+
+        // if (!response.error) {
+        //     Swal.fire({
+        //         icon: "success",
+        //         title: response.msg,
+        //         timer: 2000,
+        //         showConfirmButton: false,
+        //         position: "top"
+        //     });
+        //     navigate("/login");
+        // } else {
+        //     Swal.fire({
+        //         icon: "error",
+        //         title: "Error: " + response.error,
+        //         timer: 3500,
+        //         showConfirmButton: false,
+        //         position: "top"
+        //     });
+        // }
+    };
 
     return (
         <>
-            {/* <div className="container">
+            <div className="container">
                 <div className="row m-5 border p-md-5">
                     <div className="col-12 col-md-6 d-flex justify-content-md-end justify-content-center mb-3">
                         <div className="card p-md-3" style={{ width: "18rem" }}>
                             <div className="card-body">
-                                <h1 className="text-end">Recupera</h1>
-                                <p className="mb-4 text-end fs-3">tu contraseña</p>
+                                <h1 className="text-end">Introduce</h1>
+                                <p className="mb-4 text-end fs-3">tu nueva contraseña</p>
                             </div>
                         </div>
                     </div>
                     <div className="col-12 col-md-6 d-flex justify-content-md-start justify-content-center">
                         <div className="card p-md-3 border rounded" style={{ width: "18rem" }}>
                             <div className="card-body">
-                                <form>
-                                    <div className="mb-1">
-                                        <label htmlFor="email" className="form-label">Correo:</label>
+                                <form onSubmit={handleSubmit}>
+                                    <div className="mb-3">
+                                        <label htmlFor="password" className="form-label">Nueva Contraseña:</label>
                                         <input
-                                            type="email"
+                                            type="password"
                                             className="form-control"
-                                            id="email"
-                                            placeholder="nombre@ejemplo.com"
-                                            onChange={EmailChanged}
+                                            id="password"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label htmlFor="confirmPassword" className="form-label">Confirmar Contraseña:</label>
+                                        <input
+                                            type="password"
+                                            className="form-control"
+                                            id="confirmPassword"
+                                            value={confirmPassword}
+                                            onChange={(e) => setConfirmPassword(e.target.value)}
                                             required
                                         />
                                     </div>
                                     <div className="d-grid">
                                         <button
                                             className="btn btn-primary"
-                                            type="button"
-                                            disabled={!emailChanged}
-                                            onClick={sendForm}
+                                            type="submit"
+                                            disabled={!password || !confirmPassword}
                                         >
-                                            Recuperar contraseña
+                                            Enviar Contraseña
                                         </button>
+                                        <p>Token: {token}</p>  {/* Muestra el token para verificar */}
                                     </div>
                                 </form>
                             </div>
@@ -88,7 +105,7 @@ export const ResetPassword = () => {
                         </div>
                     </div>
                 </div>
-            </div> */}
+            </div>
         </>
 
     );
