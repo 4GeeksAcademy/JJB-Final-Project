@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { SideBar } from "../component/sideBar.jsx";
 import { PayPalButton } from "../component/payPalButton.jsx";
 
-export const Payments = (props) => {
+export const Payments = () => {
   const { store, actions } = useContext(Context);
   return (
     <div className="container-fluid">
