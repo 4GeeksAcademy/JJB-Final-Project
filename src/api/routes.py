@@ -23,12 +23,6 @@ cloudinary.config(
 
 )
 
-# Configuración de credenciales de PayPal
-PAYPAL_CLIENT_ID = os.getenv("PAYPAL_CLIENT_ID")
-PAYPAL_SECRET = os.getenv("PAYPAL_SECRET")
-PAYPAL_API_URL = "https://api-m.sandbox.paypal.com"  # Cambiar a producción cuando sea necesario
-
-
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
 
