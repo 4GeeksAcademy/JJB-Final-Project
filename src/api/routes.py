@@ -660,11 +660,11 @@ def reset_password(token):
             print(f"user_id: {user_id}") 
         except Exception as e:
             print(f"Error decodificando token: {str(e)}")
-            return jsonify({"msg": "Token inválido o expirado"}), 400
+            return jsonify({"error": "Token inválido o expirado"}), 400
         
         user = User.query.get(user_id)
         if not user:
-            return jsonify({"msg": "Usuario no encontrado"}), 404
+            return jsonify({"error": "Usuario no encontrado"}), 404
         
         data = request.get_json()
         new_password = data.get('new_password')
