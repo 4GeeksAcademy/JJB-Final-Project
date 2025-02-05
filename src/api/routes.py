@@ -8,19 +8,19 @@ from flask_cors import CORS
 import re , datetime
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
 import os, cloudinary, cloudinary.uploader
+from flask_mail import Mail, Message
+
 
 
 api = Blueprint('api', __name__)
-
+backend_url=os.environ.get("BACKEND_URL")
 # Allow CORS requests to this API
 CORS(api)
 
 cloudinary.config(
     cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
     api_key=os.environ.get("CLOUDINARY_API_KEY"),
-    api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
-
-
+    api_secret=os.environ.get("CLOUDINARY_API_SECRET")
 )
 
 
@@ -625,6 +625,30 @@ def update_invoices(id_invoice):
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+    
+@api.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    email = request.json.get("email", None)
+    user = User.query.filter_by(email=email).first()
+    print(f"email: {email}")  
+    if not user:
+        return jsonify({"msg": "Usuario no encontrado"}), 404
+
+    # Generar token JWT
+    reset_token = create_access_token(identity=user.id_user, expires_delta=datetime.timedelta(hours=1))
+    # msg = Message(subject='Hello from the other side!', sender='peter@mailtrap.io', recipients=['paul@mailtrap.io'])
+    # msg.body = "Hey Paul, sending you this email from my Flask app, lmk if it works."
+
+    # Enviar el email
+    reset_link = f"{backend_url}api/reset-password/{reset_token}"
+    msg = Message(subject='Restablecer tu contraseña',
+                  sender='peter@mailtrap.io',
+                  recipients=[email])
+    msg.body = f"Para restablecer tu contraseña, haz clic aquí: {reset_link}"
+    current_app.mail.send(msg)
+
+    
+    return jsonify({"msg": "Correo de reseteo enviado"}), 200
 
 
 
