@@ -896,6 +896,52 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
+
+			createPayPalOrder: async (amount) => {
+				try {
+					const response = await fetch("http://tuapi.com/create-paypal-order", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+							Authorization: "Bearer " + localStorage.getItem("token"),
+						},
+						body: JSON.stringify({ amount }),
+					});
+			
+					const data = await response.json();
+					if (response.ok) {
+						// Redirigir a la URL de aprobación de PayPal
+						const approvalUrl = data.links.find(link => link.rel === "approve").href;
+						window.location.href = approvalUrl;
+					} else {
+						console.error("Error al crear la orden de PayPal:", data);
+					}
+				} catch (error) {
+					console.error("Error en la solicitud:", error);
+				}
+			},
+			
+			capturePayPalOrder: async (orderId) => {
+				try {
+					const response = await fetch(`http://tuapi.com/capture-paypal-order/${orderId}`, {
+						method: "POST",
+						headers: {
+							Authorization: "Bearer " + localStorage.getItem("token"),
+						},
+					});
+			
+					const data = await response.json();
+					if (response.ok) {
+						console.log("Pago capturado con éxito:", data);
+						// Aquí puedes actualizar el estado de la compra en tu app
+					} else {
+						console.error("Error al capturar el pago:", data);
+					}
+				} catch (error) {
+					console.error("Error en la solicitud:", error);
+				}
+			},
+			
 			
 			
 		}
