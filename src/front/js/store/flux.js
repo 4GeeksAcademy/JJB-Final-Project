@@ -891,6 +891,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
+			forgotPassword: async (email) => {
+				console.log("-----------forgotPassword----------------");
+				console.log("forgotPassword email", email);
+				try {
+		
+					const response = await fetch(process.env.BACKEND_URL + "api/forgot-password", {
+						method: "POST",
+						body: JSON.stringify({email}),
+						headers: {
+							"Content-Type": "application/json",
+						}
+					})
+					
+					if (!response.ok) {
+						const data = await response.json();
+						console.log(" forgotPassword data", data);
+						return { error: data.error || "Error desconocido" };
+					}
+
+					const data = await response.json()
+					console.log(" forgotPassword data", data)
+					return data;
+				} catch (error) {
+					console.error("Error al mandar solicitur de contrasena:", error);
+					return { error: error.message };
+				}
+			},
 			
 			
 			

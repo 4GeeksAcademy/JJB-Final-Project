@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export const ResetPassword = () => {
     const { store, actions } = useContext(Context);
@@ -16,46 +17,30 @@ export const ResetPassword = () => {
         console.log("Se manda formulario reseteo de contrasena")
         console.log("email:", email)
 
-        // const response = await actions.sendFormLogin(email, password);
+        const response = await actions.forgotPassword(email);
 
-        // if (response.ok) {
-        //     console.log("FRONT:", response);
-        //     console.log("store.userToken:", store.userToken);
-        //     Swal.fire({
-        //         position: "top",
-        //         icon: "success",
-        //         title: "Inicio de sesión exitoso",
-        //         showConfirmButton: false,
-        //         timer: 2000
-        //     });
-        //     navigate("/profile");
+        if (!response.error) {
+            console.log("FRONT:", response);
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: response.msg,
+                showConfirmButton: false,
+                timer: 2000
+            });
+            // navigate("/profile");
 
-        // } else {
-        //     console.error("FRONT Error al iniciar sesión:", response.error);
-        //     if (response.status == 404) {
-        //         console.log("response.status:", response.status);
-        //         setFailedAttempts((prev) => prev + 1);
-        //         if (failedAttempts + 1 >= 3) {
-        //             triggerResetAlert();
-        //         } else {
-        //             Swal.fire({
-        //                 position: "top",
-        //                 icon: "error",
-        //                 title: "Error: " + response.error,
-        //                 showConfirmButton: false,
-        //                 timer: 3500
-        //             });
-        //         }
-        //     } else {
-        //         Swal.fire({
-        //             position: "top",
-        //             icon: "error",
-        //             title: "Error: " + response.error,
-        //             showConfirmButton: false,
-        //             timer: 3500
-        //         });
-        //     }
-        // }
+        } else {
+            console.error("FRONT Error al resetear contrasena:", response.error);
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: "Error: " + response.error,
+                showConfirmButton: false,
+                timer: 3500
+            });
+            
+        }
     }
 
     return (

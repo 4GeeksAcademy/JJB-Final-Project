@@ -13,7 +13,7 @@ from flask_mail import Mail, Message
 
 
 api = Blueprint('api', __name__)
-backend_url=os.environ.get("BACKEND_URL")
+front_url=os.environ.get("FRONT_URL")
 # Allow CORS requests to this API
 CORS(api)
 
@@ -628,25 +628,27 @@ def update_invoices(id_invoice):
     
 @api.route('/forgot-password', methods=['POST'])
 def forgot_password():
-    email = request.json.get("email", None)
-    user = User.query.filter_by(email=email).first()
-    print(f"email: {email}")  
-    if not user:
-        return jsonify({"msg": "Usuario no encontrado"}), 404
+    try:
+        email = request.json.get("email", None)
+        user = User.query.filter_by(email=email).first()
+        print(f"email: {email}")  
+        if not user:
+            return jsonify({"error": "Usuario no encontrado"}), 404
 
-    # Generar token JWT
-    reset_token = create_access_token(identity=str(user.id_user), expires_delta=datetime.timedelta(hours=1))
+        # Generar token JWT
+        reset_token = create_access_token(identity=str(user.id_user), expires_delta=datetime.timedelta(hours=1))
 
-    # Enviar el email
-    reset_link = f"{backend_url}api/reset-password/{reset_token}"
-    msg = Message(subject='Restablecer tu contraseña',
-                  sender='reset-password@shespace.com',
-                  recipients=[email])
-    msg.body = f"Para restablecer tu contraseña, haz clic aquí: {reset_link}"
-    current_app.mail.send(msg)
-
-    
-    return jsonify({"msg": "Correo de reseteo enviado"}), 200
+        # Enviar el email
+        reset_link = f"{front_url}reset-password/{reset_token}"
+        msg = Message(subject='Restablecer tu contraseña',
+                    sender='reset-password@shespace.com',
+                    recipients=[email])
+        msg.body = f"Para restablecer tu contraseña, haz clic aquí: {reset_link}"
+        current_app.mail.send(msg)
+        
+        return jsonify({"msg": "Correo de reseteo enviado"}), 200
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 @api.route('/reset-password/<token>', methods=['POST'])
 def reset_password(token):
