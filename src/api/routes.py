@@ -6,7 +6,7 @@ from api.models import db, User,Forum,Comment,Advertising,Invoice
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re , datetime
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager, decode_token
 import os, cloudinary, cloudinary.uploader
 from flask_mail import Mail, Message
 
@@ -635,14 +635,12 @@ def forgot_password():
         return jsonify({"msg": "Usuario no encontrado"}), 404
 
     # Generar token JWT
-    reset_token = create_access_token(identity=user.id_user, expires_delta=datetime.timedelta(hours=1))
-    # msg = Message(subject='Hello from the other side!', sender='peter@mailtrap.io', recipients=['paul@mailtrap.io'])
-    # msg.body = "Hey Paul, sending you this email from my Flask app, lmk if it works."
+    reset_token = create_access_token(identity=str(user.id_user), expires_delta=datetime.timedelta(hours=1))
 
     # Enviar el email
     reset_link = f"{backend_url}api/reset-password/{reset_token}"
     msg = Message(subject='Restablecer tu contraseña',
-                  sender='peter@mailtrap.io',
+                  sender='reset-password@shespace.com',
                   recipients=[email])
     msg.body = f"Para restablecer tu contraseña, haz clic aquí: {reset_link}"
     current_app.mail.send(msg)
@@ -650,6 +648,40 @@ def forgot_password():
     
     return jsonify({"msg": "Correo de reseteo enviado"}), 200
 
+@api.route('/reset-password/<token>', methods=['POST'])
+def reset_password(token):
+    try:
+        try:
+            # Decodificar el token para obtener el user_id
+            print(f"token: {token}") 
+            decoded_token = decode_token(token)
+            print(f"decoded_token: {decoded_token}") 
+            user_id = decoded_token['sub']
+            print(f"user_id: {user_id}") 
+        except Exception as e:
+            print(f"Error decodificando token: {str(e)}")
+            return jsonify({"msg": "Token inválido o expirado"}), 400
+        
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({"msg": "Usuario no encontrado"}), 404
+        
+        data = request.get_json()
+        new_password = data.get('new_password')
+        
+        if not new_password or len(new_password) < 6:
+            if not new_password:
+                return jsonify({"error": "Contraseña requerida"}), 400
+            else:
+                return jsonify({"error": "La contraseña debe tener al menos 6 caracteres"}), 400
+        crypt_password = current_app.bcrypt.generate_password_hash(new_password).decode('utf-8')
+        
+        user.password = crypt_password
+        db.session.commit()
+
+        return jsonify({"msg": "Contraseña actualizada con éxito"}), 200
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
 
