@@ -9,7 +9,7 @@ export const InvoicesTable = () => {
         actions.loadInvoices();
     }, []);
 
-    console.log(store.Invoices);
+    console.log(store.invoices);
 
 
     return (

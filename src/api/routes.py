@@ -551,51 +551,32 @@ def get_invoices():
 def create_invoices():
     try:
         email = get_jwt_identity()
-        print(f"✅ Usuario autenticado para create_invoices: {email}")  
-
         data = request.get_json()
-        print(f"📥 Datos recibidos: {data}")
-
         id_order = data.get("id_order")
         amount = data.get("amount")
         concept = data.get("concept")
 
-        # Verificar si los datos obligatorios están presentes
         if not id_order or not amount or not concept:
-            print("⚠️ Faltan datos obligatorios: id_order, amount, concept")
             return jsonify({"error": "Faltan datos obligatorios (id_order, amount, concept)"}), 400
 
-        # Intentar convertir amount a entero
-        try:
-            amount = int(amount)
-        except ValueError:
-            print(f"❌ Error: amount debe ser un número válido. Recibido: {amount}")
-            return jsonify({"error": "El campo 'amount' debe ser un número válido"}), 400
-
-        # Buscar usuario por email
         user = User.query.filter_by(email=email).first()
         if not user: 
-            print(f"❌ Usuario no encontrado: {email}")
             return jsonify({"error": "Usuario no encontrado"}), 404
-        
-        print(f"✅ Usuario encontrado: {user.id_user} ({user.email})")
 
-        # Crear la nueva factura
         new_invoice = Invoice(
             id_order=id_order,
-            amount=amount,
+            amount= amount,
             concept=concept,
+            payment_date=datetime.date.today(),
             id_user=user.id_user,
         )
 
         db.session.add(new_invoice)
         db.session.commit()
-        print(f"✅ Factura creada con éxito: {new_invoice.id_order}")
 
         return jsonify({"msg": "Factura creada exitosamente", "invoice": new_invoice.serialize()}), 201
 
     except Exception as e:
-        print(f"❌ Error interno del servidor: {e}")
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
