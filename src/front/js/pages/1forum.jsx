@@ -113,7 +113,9 @@ export const ForumDetail = () => {
 
     // Editar foro
     const handleEdit = async () => {
-        const updatedForum = await actions.updateForum(forum_id, { title:title, content:content, image_url:image });
+        console.log("handleEdit");
+        console.log(`forum_id: ${forum_id}, title: ${title}, content: ${content}, image: ${image}`);
+        const updatedForum = await actions.updateForum(forum_id, { title:title, content:content, image:image });
         if (!updatedForum.error) {
             Swal.fire({
                 position: "top",
