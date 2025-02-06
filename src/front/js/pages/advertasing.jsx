@@ -249,8 +249,7 @@ export const Advertising = () => {
                                     className="btn btn-primary btn-block"
                                     disabled={!advertisingFormChanged}
                                     onClick={sendFormAdvertising}
-                                >
-                                    {store.advertising ? "Actualizar Publicidad" : "Crear Publicidad"}
+                                > Crear Publicidad
                                 </button>
                             </div>
                         </form>
