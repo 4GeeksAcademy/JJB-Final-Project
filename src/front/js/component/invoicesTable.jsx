@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/forum.css";
+import { Link, useNavigate } from "react-router-dom";
 
 export const InvoicesTable = () => {
     const { store, actions } = useContext(Context);
@@ -37,7 +38,7 @@ export const InvoicesTable = () => {
                                 <td>
                                     {item.payment_date ?
                                         (<button className="btn btn-primary btn-sm w-75">Detalles</button>) :
-                                        (<button className="btn btn-success btn-sm w-75">Pagar</button>)}
+                                        (<Link to={"/payments"}><button className="btn btn-success btn-sm w-75">Pagar</button></Link>)}
                                 </td>
                             </tr>
                         ))}
