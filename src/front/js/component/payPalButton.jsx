@@ -14,7 +14,8 @@ export const PayPalButton = () => {
         {
           amount: {
             currency_code: "USD",
-            value: "8"
+            value: "8",
+            concept: "mensualidad"
           }
         }
       ]
@@ -23,10 +24,16 @@ export const PayPalButton = () => {
 
   const onApprove = (data, actions) => {
     console.log(data);
-    
-    // return actions.order.capture().then(function (details) {
-    //   alert("Transacción completada por " + details.payer.name.given_name)
-    // })
+
+    return actions.order.capture().then(function (details) {
+      console.log(details);
+      console.log(details.purchase_units[0].amount.value);
+      console.log(details.purchase_units[0].amount.concept);
+      // const amount = details.purchase_units[0].amount.value
+      // const concept = details.purchase_units[0].amount.concept
+
+
+    })
   }
 
   return (

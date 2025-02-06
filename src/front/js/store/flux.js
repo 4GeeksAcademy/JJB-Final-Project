@@ -739,7 +739,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			sendInvoices: async (amount, concept, status) => {
+			sendInvoices: async (amount, concept) => {
 				console.log("-----------sendInvoices----------------")
 				try {
 					const token = getActions().checkAcessToken();
@@ -752,7 +752,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 						body: JSON.stringify({
 							amount: amount,
 							concept: concept,
-							status: status
 						}),
 						headers: {
 							"Content-Type": "application/json",
