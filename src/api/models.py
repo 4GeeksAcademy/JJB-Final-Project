@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import Numeric
 
 db = SQLAlchemy()
 
@@ -153,7 +154,7 @@ class Favorite(db.Model):
 class Invoice(db.Model):
     id_invoice = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
     id_order = db.Column(db.String(255), nullable=True)
-    amount = db.Column(db.Integer, nullable=True)
+    amount = amount = db.Column(Numeric(10, 2), nullable=True)
     concept = db.Column(db.String(255), nullable=True)  
     payment_date = db.Column(db.Date, nullable=True)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)  

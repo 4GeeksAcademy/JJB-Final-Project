@@ -565,6 +565,13 @@ def create_invoices():
             print("⚠️ Faltan datos obligatorios: id_order, amount, concept")
             return jsonify({"error": "Faltan datos obligatorios (id_order, amount, concept)"}), 400
 
+        # Intentar convertir amount a entero
+        try:
+            amount = int(amount)
+        except ValueError:
+            print(f"❌ Error: amount debe ser un número válido. Recibido: {amount}")
+            return jsonify({"error": "El campo 'amount' debe ser un número válido"}), 400
+
         # Buscar usuario por email
         user = User.query.filter_by(email=email).first()
         if not user: 
@@ -576,7 +583,7 @@ def create_invoices():
         # Crear la nueva factura
         new_invoice = Invoice(
             id_order=id_order,
-            amount= amount,
+            amount=amount,
             concept=concept,
             id_user=user.id_user,
         )
