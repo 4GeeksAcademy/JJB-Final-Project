@@ -117,6 +117,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			updateForum: async (id_forum, forumData) => {
 				console.log("-----------updateForum----------------");
+				console.log(`id_forum: ${id_forum}, forumData: ${forumData}`);
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
