@@ -739,8 +739,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			sendInvoices: async (amount, concept) => {
+			sendInvoices: async (id_order, amount, concept) => {
+
 				console.log("-----------sendInvoices----------------")
+				console.log(id_order, amount, concept);
+				
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
@@ -750,6 +753,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const resp = await fetch(`${process.env.BACKEND_URL}api/invoices`, {
 						method: "POST",
 						body: JSON.stringify({
+							id_order: id_order,
 							amount: amount,
 							concept: concept,
 						}),

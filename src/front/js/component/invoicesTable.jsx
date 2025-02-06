@@ -29,7 +29,7 @@ export const InvoicesTable = () => {
                     <tbody>
                         {store.invoices?.map((item, index) => (
                             <tr key={index}>
-                                <td>{item.id_invoice}</td>
+                                <td>{item.id_order}</td>
                                 <td className="d-none d-md-table-cell">${item.amount}</td>
                                 <td>{item.concept}</td>
                                 {/* <td className="d-none d-md-table-cell">{item.status}</td> */}
