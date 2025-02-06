@@ -691,34 +691,23 @@ def forgot_password():
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
-@api.route('/reset-password/<token>', methods=['POST'])
-def reset_password(token):
+@api.route('/reset-password', methods=['POST'])
+@jwt_required() 
+def reset_password():
     try:
-        try:
-            # Decodificar el token para obtener el user_id
-            print(f"token: {token}") 
-            decoded_token = decode_token(token)
-            print(f"decoded_token: {decoded_token}") 
-            user_id = decoded_token['sub']
-            print(f"user_id: {user_id}") 
-        except Exception as e:
-            print(f"Error decodificando token: {str(e)}")
-            return jsonify({"error": "Token inválido o expirado"}), 400
+        user_id = get_jwt_identity()  
         
         user = User.query.get(user_id)
         if not user:
             return jsonify({"error": "Usuario no encontrado"}), 404
-        
+
         data = request.get_json()
         new_password = data.get('new_password')
-        
+
         if not new_password or len(new_password) < 6:
-            if not new_password:
-                return jsonify({"error": "Contraseña requerida"}), 400
-            else:
-                return jsonify({"error": "La contraseña debe tener al menos 6 caracteres"}), 400
+            return jsonify({"error": "La contraseña debe tener al menos 6 caracteres" if new_password else "Contraseña requerida"}), 400
+
         crypt_password = current_app.bcrypt.generate_password_hash(new_password).decode('utf-8')
-        
         user.password = crypt_password
         db.session.commit()
 
