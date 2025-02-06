@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext.js";
 import { useParams, useNavigate } from "react-router-dom";
 import { CommentCard } from "../component/commentCard.jsx";
+import { ImageUploader } from "../component/imageUploader.jsx"; 
 import Swal from "sweetalert2";
 import "../../styles/colors.css";
 import "../../styles/1forum.css";
@@ -20,33 +21,7 @@ export const ForumDetail = () => {
     const [comment, setComment] = useState("");
     const [image,setImage] = useState("")
     const [commentChanged, setCommentChanged] = useState(false);
-
-    const uploadImage = async (e) => {
-        console.log(e.target.files[0]);
-        const formData = new FormData()
-
-        formData.append('image', e.target.files[0])
-        console.log(formData.get("image"));
-
-        const response = await fetch(process.env.BACKEND_URL + "api/upload", {
-            method: "POST",
-            body: formData,
-            header: {
-                "Content-Type": "multipart/formdata"
-            }
-        })
-
-        const data = await response.json()
-        if (data) {
-            setImage(data)
-        }
-        console.log(data);
-
-
-
-
-    }
-
+    const [isUploading, setIsUploading] = useState(false); 
 
     // Carga los detalles del foro
     useEffect(() => {
@@ -217,8 +192,18 @@ export const ForumDetail = () => {
                             onChange={(e) => setContent(e.target.value)}
                         />
                     </div>
-                    <input  type="file" onChange={uploadImage} />
-                    <input type="button" value={"Guardar Cambios"} className="btn me-3" style={{ background: "var(--secondary-color)", color: "var(--text-color)" }} onClick={handleEdit}/>
+                    <ImageUploader 
+                        onUploadComplete={(response) => setImage(response)}
+                        uploadFunction={actions.uploadPhoto}
+                        isUploading={isUploading}
+                        setIsUploading={setIsUploading}
+                    />
+
+                    <input type="button" value={"Guardar Cambios"} 
+                        className="btn me-3 mt-2" 
+                        style={{ background: "var(--secondary-color)", color: "var(--text-color)" }} 
+                        onClick={handleEdit}
+                        disabled={isUploading}/>
                         
                     <button className="btn btn-secondary" onClick={() => setIsEditing(false)}>
                         Cancelar
