@@ -266,15 +266,26 @@ def create_forum():
 @jwt_required()
 def update_forum(id_foro):
     try:
+        data = request.get_json()
+        title = data.get('title', None)
+        content = data.get('content', None)
+        image = data.get('image', None)
+
+        print(f"title: {title}-content: {content}-image: {image}")
+            
         forum = Forum.query.filter_by(id_forum=id_foro).first()
         if not forum:
             return jsonify({"error": "Foro no encontrado"}), 404
 
-        data = request.get_json()
-
-        forum.title = data.get('title', forum.title)
-        forum.content = data.get('content', forum.content)
-        forum.image_url = data.get('image_url', forum.image_url)
+        if title:
+            print(f"title{title} exists")
+            forum.title = title
+        if content:
+            print(f"content{content} exists")
+            forum.content = content
+        if image:
+            print(f"image{image} exists")
+            forum.image_url = image
 
         db.session.commit()
         return jsonify(forum.serialize()), 200
