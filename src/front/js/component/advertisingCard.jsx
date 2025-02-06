@@ -44,7 +44,6 @@ export const AdvertisingCard = () => {
 
         if (response) {
             setEditedImage_url(response)
-            // await actions.updateProfile({ avatar_url: response });
         }
         setIsUploading(false);
 
@@ -177,18 +176,18 @@ export const AdvertisingCard = () => {
                                             ) : (
                                                 <>
                                                 <button
+                                                    className="btn btn-danger"
+                                                    onClick={() => handleDeleteClick(item.id_advertising)}
+                                                >
+                                                    Eliminar
+                                                </button>
+                                                <button
                                                     className="btn btn-secondary me-2"
                                                     onClick={() =>
                                                         handleEditClick(item.id_advertising, item.title, item.content, item.image_url)
                                                     }
                                                 >
                                                     Editar
-                                                </button>
-                                                <button
-                                                    className="btn btn-danger"
-                                                    onClick={() => handleDeleteClick(item.id_advertising)}
-                                                >
-                                                    Eliminar
                                                 </button>
                                                 </>
                                             )}
