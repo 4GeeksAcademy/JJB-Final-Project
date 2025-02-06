@@ -15,6 +15,7 @@ export const Forums = () => {
     const [forumNameChanged, setForumNameChanged] = useState(false);
     const [forumContentChanged, setForumContentChanged] = useState(false);
     const [key, setKey] = useState(0);
+    const [image, setImage] = useState("")
 
     
     useEffect( () => {
@@ -76,8 +77,9 @@ export const Forums = () => {
         console.log("Se manda formulario creacion foro")
         console.log("forumName:", forumName)
         console.log("forumContent:", forumContent)
+        console.log("image:", image)
 
-        const response = await actions.sendFormForum(forumName, forumContent);
+        const response = await actions.sendFormForum(forumName, forumContent, image);
 
         if (response.error) {
             console.error("FRONT Error al crear un foro:", response.error);
@@ -110,6 +112,20 @@ export const Forums = () => {
     const resetForumCard = () => {
         setKey(prevKey => prevKey + 1);
     };
+
+    const uploadImage = async (e) => {
+        console.log(e.target.files[0]);
+        const formData = new FormData()
+
+        formData.append('image', e.target.files[0])
+        console.log(formData.get("image"));
+
+        const response = await actions.forgotPassword(formData)
+
+        if (!response.error) {
+            setImage(response)
+        }
+    }
         
     const forumFormChanged = forumNameChanged && forumContentChanged;
     
@@ -161,6 +177,15 @@ export const Forums = () => {
                                     value={forumContent}
                                     />
                             </div> 
+                            <div className="mb-3">
+                                <label htmlFor="imageInput" className="form-label">Imagen</label>
+                                <input
+                                    type="file"
+                                    className="form-control"
+                                    id="imageInput"
+                                    onChange={uploadImage}
+                                />
+                            </div>
                             <div className="d-grid">
                                 <button type="button" 
                                     style={{background: 'var( --primary-color)', color: 'var(--text-color)'}}
