@@ -92,6 +92,7 @@ export const Forums = () => {
             });
 
         } else {
+            
             console.log("FRONT:", response);
             Swal.fire({
                 position: "top",
@@ -106,6 +107,7 @@ export const Forums = () => {
             setForumContentChanged(false);
             resetForumCard(); 
             setModalShows(false);
+            setImage("")
         }
     }
 
@@ -120,7 +122,7 @@ export const Forums = () => {
         formData.append('image', e.target.files[0])
         console.log(formData.get("image"));
 
-        const response = await actions.forgotPassword(formData)
+        const response = await actions.uploadPhoto(formData)
 
         if (!response.error) {
             setImage(response)
@@ -178,7 +180,7 @@ export const Forums = () => {
                                     />
                             </div> 
                             <div className="mb-3">
-                                <label htmlFor="imageInput" className="form-label">Imagen</label>
+                                <label htmlFor="imageInput" className="form-label">Imagen (opcional)</label>
                                 <input
                                     type="file"
                                     className="form-control"
