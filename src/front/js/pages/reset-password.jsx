@@ -1,16 +1,15 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams,useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const ResetPassword = () => {
     const { store, actions } = useContext(Context);
     const { token } = useParams();
-    console.log("Token recibido:", token);
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -27,26 +26,26 @@ export const ResetPassword = () => {
             return;
         }
 
-        // const response = await actions.resetPassword(token, password);
+        const response = await actions.resetPassword(token, password);
 
-        // if (!response.error) {
-        //     Swal.fire({
-        //         icon: "success",
-        //         title: response.msg,
-        //         timer: 2000,
-        //         showConfirmButton: false,
-        //         position: "top"
-        //     });
-        //     navigate("/login");
-        // } else {
-        //     Swal.fire({
-        //         icon: "error",
-        //         title: "Error: " + response.error,
-        //         timer: 3500,
-        //         showConfirmButton: false,
-        //         position: "top"
-        //     });
-        // }
+        if (!response.error) {
+            Swal.fire({
+                icon: "success",
+                title: response.msg,
+                timer: 2000,
+                showConfirmButton: false,
+                position: "top"
+            });
+            navigate("/");
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Error: " + response.error,
+                timer: 3500,
+                showConfirmButton: false,
+                position: "top"
+            });
+        }
     };
 
     return (
@@ -95,7 +94,6 @@ export const ResetPassword = () => {
                                         >
                                             Enviar Contraseña
                                         </button>
-                                        <p>Token: {token}</p>  {/* Muestra el token para verificar */}
                                     </div>
                                 </form>
                             </div>

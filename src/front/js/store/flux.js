@@ -918,8 +918,33 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
-			
-			
+			resetPassword: async (token, password) => {
+				console.log("-----------resetPassword----------------");
+				try {
+		
+					const response = await fetch(process.env.BACKEND_URL + "api/reset-password", {
+						method: "POST",
+						body: JSON.stringify({new_password: password}),
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`
+						}
+					})
+					
+					if (!response.ok) {
+						const data = await response.json();
+						console.log("resetPassword data", data);
+						return { error: data.error || "Error desconocido" };
+					}
+
+					const data = await response.json()
+					console.log(" resetPassword data", data)
+					return data;
+				} catch (error) {
+					console.error("Error al mandar resetear la contrasena:", error);
+					return { error: error.message };
+				}
+			},
 			
 		}
 
