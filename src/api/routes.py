@@ -643,7 +643,48 @@ def forgot_password():
         msg = Message(subject='Restablecer tu contraseña',
                     sender='reset-password@shespace.com',
                     recipients=[email])
-        msg.body = f"Para restablecer tu contraseña, haz clic aquí: {reset_link}"
+        msg.body = msg.html = f"""
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <style>
+                            .container {{
+                                font-family: Arial, sans-serif;
+                                max-width: 600px;
+                                margin: auto;
+                                padding: 20px;
+                                border: 1px solid #ddd;
+                                border-radius: 8px;
+                                background-color: #f9f9f9;
+                                text-align: center;
+                            }}
+                            .button {{
+                                display: inline-block;
+                                padding: 10px 20px;
+                                margin-top: 20px;
+                                font-size: 16px;
+                                color: white;
+                                background-color: #007bff;
+                                text-decoration: none;
+                                border-radius: 5px;
+                            }}
+                            .footer {{
+                                margin-top: 20px;
+                                font-size: 12px;
+                                color: #555;
+                            }}
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <h2>Restablecimiento de Contraseña</h2>
+                            <p>Para restablecer tu contraseña, haz clic en el siguiente botón:</p>
+                            <a href="{reset_link}" class="button">Restablecer Contraseña</a>
+                            <p class="footer">Si no solicitaste este cambio, ignora este correo.</p>
+                        </div>
+                    </body>
+                    </html>
+                    """
         current_app.mail.send(msg)
         
         return jsonify({"msg": "Correo de reseteo enviado"}), 200
