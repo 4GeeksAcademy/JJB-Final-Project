@@ -58,6 +58,7 @@ export const ForumDetail = () => {
             } else {
                 setTitle(resp.title);
                 setContent(resp.content);
+                setImage(resp.image_url)
             }
         };
         loadForumDetails();

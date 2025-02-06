@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { AdvertisingCard } from "../component/advertisingCard.jsx";
 import Swal from 'sweetalert2'
 import "../../styles/colors.css";
+import "../../styles/advertasing.css";
+
 
 export const Advertising = () => {
     const { store, actions } = useContext(Context);
@@ -93,10 +95,9 @@ export const Advertising = () => {
         setAdvertisingContentChanged(true)
     }
 
-
     const toggleModal = () => {
-        console.log("toggleModal:", modalShows)
-        setModalShows(!modalShows)
+        console.log("toggleModal:", modalShows);
+        setModalShows(!modalShows);
         setAdvertisingName("");
         setAdvertisingContent("");
         setAdvertisingNameChanged(false);
@@ -104,15 +105,14 @@ export const Advertising = () => {
     }
 
     const sendFormAdvertising = async () => {
-        console.log("Se manda formulario creacion publicidad")
-        console.log("advertisingName:", advertisingName)
-        console.log("advertisingContent:", advertisingContent)
-        console.log("advertisingImage_url:", image)
+        console.log("Se manda formulario creacion publicidad");
+        console.log("advertisingName:", advertisingName);
+        console.log("advertisingContent:", advertisingContent);
+        console.log("advertisingImage_url:", image); // La URL de la imagen
 
 
-        const response = await actions.sendFormAdvertising(advertisingName, advertisingContent, image );
+        const response = await actions.sendFormAdvertising(advertisingName, advertisingContent, image);
         console.log(store.Advertising);
-
 
         if (response.error) {
             console.error("FRONT Error al crear una publicidad:", response.error);
@@ -123,7 +123,6 @@ export const Advertising = () => {
                 showConfirmButton: false,
                 timer: 3500
             });
-
         } else {
             console.log("FRONT:", response);
             Swal.fire({
@@ -141,6 +140,7 @@ export const Advertising = () => {
             setModalShows(false);
         }
     }
+
 
     const resetAdvertisingCard = () => {
         setKey(prevKey => prevKey + 1);
@@ -182,7 +182,8 @@ export const Advertising = () => {
                         <form className="p-3">
                             <div className="mb-3">
                                 <label htmlFor="nameForum" className="form-label">Publicidad</label>
-                                <input type="text"
+                                <input
+                                    type="text"
                                     className="form-control"
                                     id="nameForum"
                                     onChange={AdvertisingNameChanged}
@@ -192,8 +193,6 @@ export const Advertising = () => {
 
                             <div className="mb-3">
                                 <label htmlFor="contentForum" className="form-label">Descripción</label>
-
-
                                 <textarea
                                     className="form-control"
                                     id="contentForum"
@@ -205,23 +204,58 @@ export const Advertising = () => {
                                     style={{ overflow: "hidden", resize: "none" }}
                                     onChange={AdvertisingContentChanged}
                                 ></textarea>
-                                <img className="img-fluid image-upload" src={image} alt="Uploaded Image" />
                             </div>
-                            <input type="file" onChange={uploadImage} />
+
+                            {/* Sección de carga de imagen */}
+                            <div className="mb-3">
+                                <label htmlFor="imageInput" className="form-label">Imagen</label>
+
+                                {/* Input para cargar imagen */}
+                                <input
+                                    type="file"
+                                    className="form-control"
+                                    id="imageInput"
+                                    onChange={uploadImage}
+                                />
+                            </div>
+
+                            {/* Si ya existe una imagen, muestra la vista previa */}
+                            {image && image.secure_url && (
+                                <div className="mb-3">
+                                    <label className="form-label">Imagen Actual:</label>
+                                    <img
+                                        className="img-fluid"
+                                        src={image.secure_url}
+                                        alt="Vista previa de la imagen"
+                                        style={{ maxHeight: '200px', objectFit: 'cover' }}
+                                    />
+                                    {/* Botón para cambiar la imagen */}
+                                    <div className="mt-2">
+                                        <button
+                                            type="button"
+                                            className="btn btn-secondary"
+                                            onClick={() => setImage(null)} // Esto borra la imagen actual para reemplazarla
+                                        >
+                                            Cambiar Imagen
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="d-grid">
-                                <button type="button"
-                                    style={{ background: 'var( --primary-color)', color: 'var(--text-color)' }}
+                                <button
+                                    type="button"
+                                    style={{ background: 'var(--primary-color)', color: 'var(--text-color)' }}
                                     className="btn btn-primary btn-block"
                                     disabled={!advertisingFormChanged}
                                     onClick={sendFormAdvertising}
-
                                 >
-
-
-                                    Crear Publicidad
+                                    {store.advertising ? "Actualizar Publicidad" : "Crear Publicidad"}
                                 </button>
                             </div>
                         </form>
+
+
                     </div>
                 </div>
             </div>

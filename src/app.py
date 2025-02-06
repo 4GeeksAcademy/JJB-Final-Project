@@ -12,6 +12,7 @@ from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_jwt_extended import JWTManager
 from flask_bcrypt import Bcrypt
+from flask_mail import Mail, Message
 
 # from models import Person
 
@@ -40,6 +41,18 @@ bcrypt = Bcrypt(app)
 app.bcrypt = bcrypt
 
 # end Bcrypt setup
+
+# Setup mail
+
+app.config['MAIL_SERVER']= 'sandbox.smtp.mailtrap.io'
+app.config['MAIL_PORT'] = 2525
+app.config['MAIL_USERNAME'] = '9d27ec62bf3d02'
+app.config['MAIL_PASSWORD'] = '1782bb334918b6'
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_SSL'] = False
+mail = Mail(app)
+app.mail = mail
+# end mail
 
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)

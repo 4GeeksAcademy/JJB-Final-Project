@@ -11,6 +11,8 @@ export const ForumCard = () => {
                     <div key={index} className="col-md-4">
                         <div className="card h-100">
                             <div className="card-body">
+                            <img className=" img-fluid" src={item.image_url} alt={item.title} />
+
                                 <h5 className="card-title">{item.title}</h5>
                                 <p className="card-text">
                                     {item.content}

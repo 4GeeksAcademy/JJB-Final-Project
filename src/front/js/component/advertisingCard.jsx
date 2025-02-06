@@ -8,19 +8,55 @@ export const AdvertisingCard = () => {
     const [editedIdAdvertising, setEditedIdAdvertising] = useState(null);
     const [editedTitle, setEditedTitle] = useState("");
     const [editedContent, setEditedContent] = useState("");
+    const [editedImage_url, setEditedImage_url] = useState("");
+    const [editedPreviewImage_url, seteditedPreviewImage_url] = useState("");
 
-    const handleEditClick = (id_advertising, currentTitle, currentContent) => {
+    const handleEditClick = (id_advertising, currentTitle, currentContent, currentImage_url) => {
         setEditedIdAdvertising(id_advertising);
         setEditedTitle(currentTitle);
         setEditedContent(currentContent);
+        setEditedImage_url(currentImage_url);
+    };
+
+    const handleImageChange = async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                seteditedPreviewImage_url(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+        const formData = new FormData()
+
+        formData.append('image', file)
+        console.log(formData.get("image"));
+
+        const response = await actions.uploadPhoto(formData)
+
+        if (response) {
+            setEditedImage_url(response)
+            // await actions.updateProfile({ avatar_url: response });
+        }
+        console.log(response);
+
     };
 
     const handleSaveClick = async (id_advertising) => {
-        const resp = await actions.updateAdvertising(id_advertising, editedTitle, editedContent);
+        const formData = {
+            id_advertising: id_advertising,
+            title: editedTitle,
+            content: editedContent,
+            image: editedImage_url
+        }
+        console.log("handleSaveClick - formData:", formData);
+        const resp = await actions.updateAdvertising(formData);  // Enviar FormData
         handleResponse(resp);
         setEditedIdAdvertising(null);
         setEditedTitle("");
         setEditedContent("");
+        setEditedImage_url(""); 
+        seteditedPreviewImage_url(""); 
     };
 
     const handleDeleteClick = async (id_advertising) => {
@@ -71,7 +107,6 @@ export const AdvertisingCard = () => {
                                 {editedIdAdvertising === item.id_advertising ? (
                                     <>
                                         <input
-                                
                                             type="text"
                                             className="form-control mb-2"
                                             value={editedTitle}
@@ -79,15 +114,32 @@ export const AdvertisingCard = () => {
                                             placeholder="Editar título"
                                         />
                                         <textarea
-                                            className="form-control"
+                                            className="form-control mb-2"
                                             value={editedContent}
                                             onChange={(e) => setEditedContent(e.target.value)}
                                             placeholder="Editar contenido"
                                         />
+                                        <div className="mb-2">
+                                            <label htmlFor="editImage" className="form-label">Editar Imagen</label>
+                                            <input
+                                                type="file"
+                                                className="form-control"
+                                                id="editImage"
+                                                onChange={handleImageChange}
+                                            />
+                                            {editedImage_url && (
+                                                <img
+                                                    src={editedPreviewImage_url}
+                                                    alt="Vista previa"
+                                                    className="img-fluid mt-2"
+                                                    style={{ maxHeight: "150px", objectFit: "cover" }}
+                                                />
+                                            )}
+                                        </div>
                                     </>
                                 ) : (
                                     <>
-                                        <img src={item.image_url} alt="" />
+                                        <img className="advertising-image img-fluid" src={item.image_url} alt={item.title} />
                                         <h5 className="card-title">{item.title}</h5>
                                         <p className="card-text">{item.content}</p>
                                     </>
@@ -109,7 +161,7 @@ export const AdvertisingCard = () => {
                                                 <button
                                                     className="btn btn-secondary me-2"
                                                     onClick={() =>
-                                                        handleEditClick(item.id_advertising, item.title, item.content)
+                                                        handleEditClick(item.id_advertising, item.title, item.content, item.image_url)
                                                     }
                                                 >
                                                     Editar
