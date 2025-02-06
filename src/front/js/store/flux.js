@@ -749,7 +749,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					if (token === null) {
 						return { error: "No autorizado" };
 					}
-					console.log("id_user", getStore().profile.id_user);
+					
 					const resp = await fetch(`${process.env.BACKEND_URL}api/invoices`, {
 						method: "POST",
 						body: JSON.stringify({
@@ -899,62 +899,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},	
-
-			updateMembership: async () => {
-				console.log("-----------updateMembership----------------");
-				console.log(getStore().profile.id_user);
-
-				const user = getStore().profile
-
-				try {
-					const token = getActions().checkAcessToken();
-					if (token === null) {
-						return { error: "No autorizado" };
-					}
-
-					const response = await fetch(`${process.env.BACKEND_URL}api/profile`, {
-						method: "PUT",
-						headers: {
-							"Content-Type": "application/json",
-							"Authorization": `Bearer ${token}`,
-						},
-						body: JSON.stringify({
-							id_user: user.id_user,
-							membership: "paid"
-						}),
-					});
-
-					const data = await response.json();
-					console.log("data", data);
-
-					if (!response.ok) {
-						return { error: data.error || "Error desconocido" };
-					}
-
-					const new_profile = data.new_profile;
-					console.log("new_profile", new_profile);
-
-					const store = getStore();
-					const actualProfile = store.profile;
-
-					const index = actualProfile.findIndex(
-						(ad) => ad.id_user === new_profile.id_id_user
-					);
-
-					if (index !== -1) {
-						actualProfile[index] = new_profile;
-
-						setStore({
-							profile: actualProfile,
-						});
-					}
-
-					return data;
-				} catch (error) {
-					console.error("Error al actualizar la membresia:", error);
-					return { error: error.message };
-				}
-			},
 			
 		}
 
