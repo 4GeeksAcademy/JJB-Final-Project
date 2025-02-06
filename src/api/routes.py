@@ -563,21 +563,29 @@ def create_invoices():
         if not user: 
             return jsonify({"error": "Usuario no encontrado"}), 404
 
+        # Crear nueva factura
         new_invoice = Invoice(
             id_order=id_order,
-            amount= amount,
+            amount=amount,
             concept=concept,
             payment_date=datetime.date.today(),
             id_user=user.id_user,
         )
 
         db.session.add(new_invoice)
+
+        # Verificar si el usuario tiene membresía "free" y actualizar a "paid"
+        if user.membership == "free":
+            user.membership = "paid"
+
+        # Guardar cambios en la base de datos
         db.session.commit()
 
         return jsonify({"msg": "Factura creada exitosamente", "invoice": new_invoice.serialize()}), 201
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
 
 
 
