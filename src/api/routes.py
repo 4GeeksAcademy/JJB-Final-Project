@@ -232,12 +232,14 @@ def create_forum():
         print(data)
         title = data.get("title")
         content = data.get("content")
+        image = data.get("image", None)
+
+        print(f"Title: {title}, Content: {content}, Image: {image}")
 
         if not title or not content:
             return jsonify({"error": "Faltan datos obligatorios (title, content)"}), 400 
         
         user = User.query.filter_by(email=email).first()
-
         if not user: 
             return jsonify({"error": "Usuario no encontrado"}), 404
 
@@ -247,6 +249,9 @@ def create_forum():
             creation_date=datetime.date.today(),
             id_user=user.id_user
         )
+        if image:
+            new_forum.image_url = image
+
 
         db.session.add(new_forum)
         db.session.commit()
