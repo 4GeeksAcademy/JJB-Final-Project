@@ -574,11 +574,9 @@ def create_invoices():
 
         db.session.add(new_invoice)
 
-        # Verificar si el usuario tiene membresía "free" y actualizar a "paid"
         if user.membership == "free":
             user.membership = "paid"
 
-        # Guardar cambios en la base de datos
         db.session.commit()
 
         return jsonify({"msg": "Factura creada exitosamente", "invoice": new_invoice.serialize()}), 201
