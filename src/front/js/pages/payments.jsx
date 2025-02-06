@@ -14,9 +14,15 @@ export const Payments = () => {
         <div className="col-md-3 p-0">
           <SideBar />
         </div>
+        <div className="col-2">
+
+        </div>
         {/* Main Content */}
-        <div className="col-md-9 main-content">
+        <div className="col-md-5 main-content">
           <PayPalButton />
+        </div>
+        <div className="col-2">
+
         </div>
       </div>
     </div>

@@ -22,26 +22,31 @@ export const PayPalButton = () => {
   }
 
   const onApprove = (data, actions) => {
-    return actions.order.capture().then(function (details) {
-      alert("Transacción completada por " + details.payer.name.given_name)
-    })
+    console.log(data);
+    
+    // return actions.order.capture().then(function (details) {
+    //   alert("Transacción completada por " + details.payer.name.given_name)
+    // })
   }
 
   return (
     <PayPalScriptProvider options={initialOptions}>
+      <div className="">
       <PayPalButtons
         style={{
           layout: "horizontal",
           color: "blue",
           shape: "rect",
           label: "paypal"
+
         }}
         createOrder={(data, actions) => createOrder(data, actions)}
         onApprove={(data, actions) => onApprove(data, actions)}
       />
+      </div>
+
     </PayPalScriptProvider>
   )
-
 
 };
 
