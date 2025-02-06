@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { Context } from "../store/appContext.js";
 import { Link, useNavigate } from "react-router-dom";
 import { ForumCard } from "../component/forumCard.jsx";
+import { ImageUploader } from "../component/imageUploader.jsx"; 
 import Swal from 'sweetalert2'
 import "../../styles/colors.css";
 
@@ -16,6 +17,7 @@ export const Forums = () => {
     const [forumContentChanged, setForumContentChanged] = useState(false);
     const [key, setKey] = useState(0);
     const [image, setImage] = useState("")
+    const [isUploading, setIsUploading] = useState(false); 
 
     
     useEffect( () => {
@@ -115,19 +117,6 @@ export const Forums = () => {
         setKey(prevKey => prevKey + 1);
     };
 
-    const uploadImage = async (e) => {
-        console.log(e.target.files[0]);
-        const formData = new FormData()
-
-        formData.append('image', e.target.files[0])
-        console.log(formData.get("image"));
-
-        const response = await actions.uploadPhoto(formData)
-
-        if (!response.error) {
-            setImage(response)
-        }
-    }
         
     const forumFormChanged = forumNameChanged && forumContentChanged;
     
@@ -181,18 +170,19 @@ export const Forums = () => {
                             </div> 
                             <div className="mb-3">
                                 <label htmlFor="imageInput" className="form-label">Imagen (opcional)</label>
-                                <input
-                                    type="file"
-                                    className="form-control"
-                                    id="imageInput"
-                                    onChange={uploadImage}
+                                {/* Uso del componente ImageUploader */}
+                                <ImageUploader 
+                                onUploadComplete={(response) => setImage(response)}
+                                uploadFunction={actions.uploadPhoto}
+                                isUploading={isUploading}
+                                setIsUploading={setIsUploading}
                                 />
                             </div>
                             <div className="d-grid">
                                 <button type="button" 
                                     style={{background: 'var( --primary-color)', color: 'var(--text-color)'}}
                                     className="btn btn-primary btn-block"
-                                    disabled={!forumFormChanged}
+                                    disabled={!forumFormChanged || isUploading}
                                     onClick={sendFormForum}
                                 >
                                     Crear Foro
