@@ -35,7 +35,7 @@ export const PayPalButton = () => {
 
       // ✅ Aquí se usa actions.SendInvoices del contexto correctamente
       await actions.sendInvoices(id_order, amount, concept);
-      await actions.updateMembership()
+
 
       console.log("Factura enviada correctamente");
     } catch (error) {
