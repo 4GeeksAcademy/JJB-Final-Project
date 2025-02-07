@@ -113,7 +113,7 @@ export const Account = () => {
                     <div className="row mb-3">
                         <h2>Membresia
                             {store.profile.membership?.trim().toLowerCase() === "gratis" ?
-                            (<Link to={"/payments"}><button className="badge rounded-pill bg-primary">Mejora tu plan</button></Link>):
+                            (<Link to={"/subscription"}><button className="badge rounded-pill bg-primary">Mejora tu plan</button></Link>):
                                 (<span className="badge rounded-pill bg-warning">Plan premium+</span>)
                             }
                         </h2>

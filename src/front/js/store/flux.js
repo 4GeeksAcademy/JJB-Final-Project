@@ -739,9 +739,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			sendInvoices: async (id_order, amount, concept) => {
+			paySubscription: async (id_order, amount, concept) => {
 
-				console.log("-----------sendInvoices----------------")
+				console.log("-----------paySubscription----------------")
 				console.log(id_order, amount, concept);
 				
 				try {
@@ -750,7 +750,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return { error: "No autorizado" };
 					}
 					
-					const resp = await fetch(`${process.env.BACKEND_URL}api/invoices`, {
+					const resp = await fetch(`${process.env.BACKEND_URL}api/subscription`, {
 						method: "POST",
 						body: JSON.stringify({
 							id_order: id_order,

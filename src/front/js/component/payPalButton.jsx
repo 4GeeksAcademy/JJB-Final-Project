@@ -22,7 +22,7 @@ export const PayPalButton = () => {
     const formattedMonth = currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1);
 
     let description;
-    if (location.pathname === "/account") {
+    if (location.pathname === "/subscription") {
       description = "Suscripción Plan Premium";
     } else if (location.pathname === "/invoices") {
       description = `Mensualidad ${formattedMonth}`;
@@ -49,8 +49,8 @@ export const PayPalButton = () => {
       const concept = details.purchase_units[0].description;
       const id_order = details.id;
 
-      if (location.pathname === "/account") {
-        await actions.sendInvoices(id_order, amount, concept);
+      if (location.pathname === "/subscription") {
+        await actions.paySubscription(id_order, amount, concept);
         await actions.loadProfile()
         await actions.loadInvoices()
       } else if (location.pathname === "/invoices") {

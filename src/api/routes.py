@@ -546,7 +546,7 @@ def get_invoices():
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
     
-@api.route('/invoices', methods=['POST'])
+@api.route('/subscription', methods=['POST'])
 @jwt_required()
 def create_invoices():
     try:
