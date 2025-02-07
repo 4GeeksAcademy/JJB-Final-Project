@@ -10,6 +10,7 @@ export const AdvertisingCard = () => {
     const [editedContent, setEditedContent] = useState("");
     const [editedImage_url, setEditedImage_url] = useState("");
     const [editedPreviewImage_url, seteditedPreviewImage_url] = useState("");
+    const [isUploading, setIsUploading] = useState(false); 
 
     const handleEditClick = (id_advertising, currentTitle, currentContent, currentImage_url) => {
         setEditedIdAdvertising(id_advertising);
@@ -17,16 +18,23 @@ export const AdvertisingCard = () => {
         setEditedContent(currentContent);
         setEditedImage_url(currentImage_url);
     };
+    const undoEditClick = () => {
+        setEditedIdAdvertising("");
+        setEditedTitle("");
+        setEditedContent("");
+        setEditedImage_url("");
+    };
 
     const handleImageChange = async (e) => {
         const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                seteditedPreviewImage_url(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
+        if (!file) return;
+
+        setIsUploading(true);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            seteditedPreviewImage_url(reader.result);
+        };
+        reader.readAsDataURL(file);
         const formData = new FormData()
 
         formData.append('image', file)
@@ -36,9 +44,8 @@ export const AdvertisingCard = () => {
 
         if (response) {
             setEditedImage_url(response)
-            // await actions.updateProfile({ avatar_url: response });
         }
-        console.log(response);
+        setIsUploading(false);
 
     };
 
@@ -57,7 +64,7 @@ export const AdvertisingCard = () => {
         setEditedContent("");
         setEditedImage_url(""); 
         seteditedPreviewImage_url(""); 
-    };
+    }; 
 
     const handleDeleteClick = async (id_advertising) => {
         const result = await Swal.fire({
@@ -127,7 +134,7 @@ export const AdvertisingCard = () => {
                                                 id="editImage"
                                                 onChange={handleImageChange}
                                             />
-                                            {editedImage_url && (
+                                            {editedPreviewImage_url && (
                                                 <img
                                                     src={editedPreviewImage_url}
                                                     alt="Vista previa"
@@ -151,13 +158,29 @@ export const AdvertisingCard = () => {
                                     {item.nickname === store.profile?.nickname && (
                                         <div className="card-footer d-flex justify-content-between">
                                             {editedIdAdvertising === item.id_advertising ? (
+                                                <>
                                                 <button
                                                     className="btn btn-primary me-2"
                                                     onClick={() => handleSaveClick(item.id_advertising)}
+                                                    disabled={isUploading}
                                                 >
                                                     Guardar
                                                 </button>
+                                                <button
+                                                    className="btn btn-danger"
+                                                    onClick={() => undoEditClick()}
+                                                >
+                                                    Cancelar
+                                                </button>
+                                                </>
                                             ) : (
+                                                <>
+                                                <button
+                                                    className="btn btn-danger"
+                                                    onClick={() => handleDeleteClick(item.id_advertising)}
+                                                >
+                                                    Eliminar
+                                                </button>
                                                 <button
                                                     className="btn btn-secondary me-2"
                                                     onClick={() =>
@@ -166,13 +189,9 @@ export const AdvertisingCard = () => {
                                                 >
                                                     Editar
                                                 </button>
+                                                </>
                                             )}
-                                            <button
-                                                className="btn btn-danger"
-                                                onClick={() => handleDeleteClick(item.id_advertising)}
-                                            >
-                                                Eliminar
-                                            </button>
+     
                                         </div>
                                     )}
                                 </div>

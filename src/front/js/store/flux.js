@@ -117,6 +117,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			updateForum: async (id_forum, forumData) => {
 				console.log("-----------updateForum----------------");
+				console.log(`id_forum: ${id_forum}, forumData: ${forumData}`);
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
@@ -318,8 +319,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			sendFormForum: async (forumName, forumContent) => {
+			sendFormForum: async (forumName, forumContent, image) => {
 				console.log("-----------sendFormForum----------------")
+				console.log(`forumName: ${forumName}, forumContent: ${forumContent},image: ${image},`)
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
@@ -330,7 +332,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						method: "POST",
 						body: JSON.stringify({
 							title: forumName,
-							content: forumContent
+							content: forumContent,
+							image: image
 						}),
 						headers: {
 							"Content-Type": "application/json",
