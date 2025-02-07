@@ -574,8 +574,8 @@ def create_invoices():
 
         db.session.add(new_invoice)
 
-        if user.membership == "free":
-            user.membership = "paid"
+        if user.membership == "gratis":
+            user.membership = "Premium"
 
         db.session.commit()
 
