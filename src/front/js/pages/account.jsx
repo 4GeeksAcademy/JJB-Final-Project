@@ -101,14 +101,10 @@ export const Account = () => {
     }
 
     return (
-        <div className="container-fluid">
+        <div className="container-fluid mt-5">
             <div className="row">
-                {/* Sidebar */}
-                <div className="col-md-3 p-0">
-                    <SideBar />
-                </div>
                 {/* Main Content */}
-                <div className="col-md-9">
+                <div className="col-md-9 ">
                     <div className="row mb-3">
                         <h2>Membresia
                             {store.profile.membership?.trim().toLowerCase() === "free" ?
