@@ -4,6 +4,7 @@ import "../../styles/profile.css";
 import { Link, useNavigate } from "react-router-dom";
 import { SideBar } from "../component/sideBar.jsx";
 import { PayPalButton } from "../component/payPalButton.jsx";
+import { TermsConditions } from "../component/termsConditions.jsx";
 
 export const Payments = () => {
   const { store, actions } = useContext(Context);
@@ -19,6 +20,7 @@ export const Payments = () => {
         </div>
         {/* Main Content */}
         <div className="col-md-5 main-content">
+          <TermsConditions />
           <PayPalButton />
         </div>
         <div className="col-2">
