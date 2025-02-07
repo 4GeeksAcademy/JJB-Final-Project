@@ -101,7 +101,8 @@ def register():
                     email=email, 
                     password=current_app.bcrypt.generate_password_hash(password).decode('utf-8'), 
                     nickname=nickname,
-                    es_mayor=es_mayor
+                    es_mayor=es_mayor,
+                    paypal_acceptance=False
                 )
                 db.session.add(new_user)
                 db.session.commit()
@@ -578,7 +579,7 @@ def create_invoices():
             user.membership = "Premium"
 
         if user.paypal_acceptance == False:
-            user.paypal_acceptance == True
+            user.paypal_acceptance = True
 
         db.session.commit()
 
@@ -621,7 +622,7 @@ def update_invoices(id_invoice):
         invoices.payment_date = payment_date
 
         if user.paypal_acceptance == False:
-            user.paypal_acceptance == True
+            user.paypal_acceptance = True
 
         db.session.commit()
 
