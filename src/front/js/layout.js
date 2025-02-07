@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter, Route, Routes, useLocation, matchPath} from "react-router-dom";
+import React, {useEffect} from "react";
+import { BrowserRouter, Route, Routes, useLocation, matchPath, useNavigate} from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
@@ -25,6 +25,7 @@ import { SideBar } from "./component/sideBar.jsx";
 
 const LayoutContent = () => {
     const location = useLocation();
+    const navigate = useNavigate();
 
     const hideSidebarRoutes = [
         "/", 
@@ -40,6 +41,23 @@ const LayoutContent = () => {
         hideSidebarRoutes.includes(location.pathname) || 
         dynamicRoutes.some(route => matchPath(route, location.pathname))
     );
+
+    const isAuthenticated = () => !!sessionStorage.getItem("accessToken");
+
+    const protectedRoutes = ["/", "/register", "/forgot-password"];
+    const dynamicProtectedRoutes = ["/reset-password/:token"];
+
+    useEffect(() => {
+        if (isAuthenticated()) {
+            const isProtected = 
+                protectedRoutes.includes(location.pathname) || 
+                dynamicProtectedRoutes.some(route => matchPath(route, location.pathname));
+
+            if (isProtected) {
+                navigate("/profile"); 
+            }
+        }
+    }, [location.pathname]);
 
     return (
         <div className="d-flex flex-column min-vh-100">
