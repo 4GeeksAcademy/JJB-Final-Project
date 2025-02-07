@@ -101,7 +101,7 @@ export const Account = () => {
     }
 
     return (
-        <div className="container-fluid mt-5">
+        <div className="container-fluid mt-5 mt-md-0">
             <div className="row">
                 {/* Main Content */}
                 <div className="col-md-9 ">
@@ -122,7 +122,7 @@ export const Account = () => {
                                 src={image || store.profile.avatar_url}
                                 alt="Profile"
                             />
-                            <label className="btn p-1 rounded-circle shadow-sm edit-btn" title="Subir foto">
+                            <label className="btn p-1 rounded-circle shadow-sm edit-btn mt-2" title="Subir foto">
                                 <i className="fa-solid fa-upload"></i>
                                 <input type="file" className="d-none" onChange={uploadImage} />
                             </label>
