@@ -21,6 +21,7 @@ import { Invoices} from "./pages/invoices.jsx";
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { Subscription } from "./pages/subscription.jsx";
+import { Invoice } from "./pages/invoice.jsx";
 
 //create your first component
 const Layout = () => {
@@ -49,6 +50,7 @@ const Layout = () => {
                         <Route element={<ResetPassword />} path="/reset-password" />
                         <Route element={<Invoices />} path="/invoices" />
                         <Route element={<Subscription />} path="/subscription" />
+                        <Route element={<Invoice />} path="/invoice" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

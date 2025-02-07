@@ -6,7 +6,7 @@ import { SideBar } from "../component/sideBar.jsx";
 import { PayPalButton } from "../component/payPalButton.jsx";
 import { TermsConditions } from "../component/termsConditions.jsx";
 
-export const Subscription = () => {
+export const Invoice = () => {
   const { store, actions } = useContext(Context);
   const [checkbox, setCheckbox] = useState('');
   const [checkboxChanged, setCheckboxChanged] = useState(false);

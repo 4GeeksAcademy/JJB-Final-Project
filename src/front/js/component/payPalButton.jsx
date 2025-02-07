@@ -1,14 +1,11 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
-import { useLocation } from "react-router-dom"; // 📌 Importamos useLocation para detectar la ruta actual
+import { useLocation } from "react-router-dom";
 
-export const PayPalButton = () => {
+export const PayPalButton = ({ disabled }) => {
   const { store, actions } = useContext(Context);
-  const location = useLocation(); // 📌 Obtenemos la ruta actual
-  console.log(location);
-  
-  
+  const location = useLocation();
 
   const initialOptions = {
     "client-id": "Afxyb16-s7wljjjWVdqGTkeWmFBeevsII4kkwn1_G3zX4C59yioQxzbCoSswp8NFqcdFyTec1xGgtVGL",
@@ -16,16 +13,17 @@ export const PayPalButton = () => {
     intent: "capture",
   };
 
-  // 📌 Crear orden dinámicamente según la ruta
   const createOrder = (data, actions) => {
     const currentMonth = new Date().toLocaleString("es-ES", { month: "long" });
     const formattedMonth = currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1);
 
-    let description;
+    let description, value;
     if (location.pathname === "/subscription") {
       description = "Suscripción Plan Premium";
-    } else if (location.pathname === "/invoices") {
+      value = "8";
+    } else if (location.pathname === "/invoice") {
       description = `Mensualidad ${formattedMonth}`;
+      value = "10";
     }
 
     return actions.order.create({
@@ -33,7 +31,7 @@ export const PayPalButton = () => {
         {
           amount: {
             currency_code: "USD",
-            value: "8",
+            value: value,
           },
           description: description,
         },
@@ -41,7 +39,6 @@ export const PayPalButton = () => {
     });
   };
 
-  // 📌 Manejar la aprobación del pago
   const onApprove = async (data, paypalActions) => {
     try {
       const details = await paypalActions.order.capture();
@@ -51,12 +48,12 @@ export const PayPalButton = () => {
 
       if (location.pathname === "/subscription") {
         await actions.paySubscription(id_order, amount, concept);
-        await actions.loadProfile()
-        await actions.loadInvoices()
+        await actions.loadProfile();
+        await actions.loadInvoices();
       } else if (location.pathname === "/invoices") {
-        await actions.updateInvoices(id_order, amount, concept);
-        await actions.loadProfile()
-        await actions.loadInvoices()
+        await actions.updateInvoice(id_order, amount, concept);
+        await actions.loadProfile();
+        await actions.loadInvoices();
       }
 
       console.log("Factura enviada correctamente");
@@ -67,7 +64,7 @@ export const PayPalButton = () => {
 
   return (
     <PayPalScriptProvider options={initialOptions}>
-      <div>
+      <div style={{ pointerEvents: disabled ? "none" : "auto", opacity: disabled ? 0.5 : 1 }}>
         <PayPalButtons
           style={{
             layout: "horizontal",

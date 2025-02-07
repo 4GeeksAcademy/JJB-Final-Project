@@ -38,7 +38,7 @@ export const InvoicesTable = () => {
                                 <td>
                                     {item.payment_date ?
                                         (<button className="btn btn-primary btn-sm w-75">Detalles</button>) :
-                                        (<Link to={"/payments"}><button className="btn btn-success btn-sm w-75">Pagar</button></Link>)}
+                                        (<Link to={"/invoice"}><button className="btn btn-success btn-sm w-75">Pagar</button></Link>)}
                                 </td>
                             </tr>
                         ))}
