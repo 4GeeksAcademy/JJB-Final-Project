@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, matchPath} from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
@@ -26,9 +26,20 @@ import { SideBar } from "./component/sideBar.jsx";
 const LayoutContent = () => {
     const location = useLocation();
 
-    const hideSidebarRoutes = ["/", "/register", "/forums", "/advertising", "/forgot-password",
-        "/reset-password/:token"];
-    const showSidebar = !hideSidebarRoutes.includes(location.pathname);
+    const hideSidebarRoutes = [
+        "/", 
+        "/register", 
+        "/forums", 
+        "/advertising", 
+        "/forgot-password"
+    ];
+    
+    const dynamicRoutes = ["/forum/:forum_id", "/reset-password/:token"];
+    
+    const showSidebar = !(
+        hideSidebarRoutes.includes(location.pathname) || 
+        dynamicRoutes.some(route => matchPath(route, location.pathname))
+    );
 
     return (
         <div className="d-flex flex-column min-vh-100">
