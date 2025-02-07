@@ -64,7 +64,7 @@ export const AdvertisingCard = () => {
         setEditedContent("");
         setEditedImage_url(""); 
         seteditedPreviewImage_url(""); 
-    };
+    }; 
 
     const handleDeleteClick = async (id_advertising) => {
         const result = await Swal.fire({

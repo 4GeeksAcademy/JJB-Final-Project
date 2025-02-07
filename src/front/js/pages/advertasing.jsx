@@ -161,28 +161,6 @@ export const Advertising = () => {
                         />
                     </div>
 
-                    {/* Si ya existe una imagen, muestra la vista previa */}
-                    {/*image && image.secure_url && (
-                        <div className="mb-3">
-                            <label className="form-label">Imagen Actual:</label>
-                            <img
-                                className="img-fluid"
-                                src={image.secure_url}
-                                alt="Vista previa de la imagen"
-                                style={{ maxHeight: '200px', objectFit: 'cover' }}
-                            />
-                            <div className="mt-2">
-                                <button
-                                    type="button"
-                                    className="btn btn-secondary"
-                                    onClick={() => setImage(null)} // Esto borra la imagen actual para reemplazarla
-                                >
-                                    Cambiar Imagen
-                                </button>
-                            </div>
-                        </div>
-                    )*/}
-
                     <div className="d-grid">
                         <button
                             type="button"
