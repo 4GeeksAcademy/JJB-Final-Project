@@ -577,6 +577,9 @@ def create_invoices():
         if user.membership == "gratis":
             user.membership = "Premium"
 
+        if user.paypal_acceptance == False:
+            user.paypal_acceptance == True
+
         db.session.commit()
 
         return jsonify({"msg": "Factura creada exitosamente", "invoice": new_invoice.serialize()}), 201
@@ -601,6 +604,8 @@ def update_invoices(id_invoice):
 
 
         print(f"Datos recibidos: id_invoice={id_invoice}, amount={amount}, id_order={id_order}, concept={concept},  payment_date={payment_date}")
+
+        user = User.query.filter_by(email=email).first()
         
         if id_invoice is None or not amount or not concept or not id_order or not payment_date:
             return jsonify({"error": "Faltan datos obligatorios (id_invoice, amount, concept, status, payment_date)"}), 400
@@ -614,6 +619,9 @@ def update_invoices(id_invoice):
         invoices.amount = amount
         invoices.concept = concept
         invoices.payment_date = payment_date
+
+        if user.paypal_acceptance == False:
+            user.paypal_acceptance == True
 
         db.session.commit()
 

@@ -14,6 +14,7 @@ class User(db.Model):
     avatar_url = db.Column(db.String(255), nullable=False, default="default_avatar_url")
     membership = db.Column(db.String(20), nullable=False, default="gratis")
     es_mayor = db.Column(db.Boolean, nullable=False)
+    paypal_acceptance = db.Column(db.Boolean, nullable=False)
     is_active = db.Column(db.Boolean, nullable=False, default=True)
 
     
@@ -37,6 +38,8 @@ class User(db.Model):
             "role": self.role,
             "avatar_url": self.avatar_url,
             "membership": self.membership,
+            "es_mayor": self.es_mayor,
+            "paypal_acceptance": self.paypal_acceptance,
             "is_active": self.is_active,
         }
 
