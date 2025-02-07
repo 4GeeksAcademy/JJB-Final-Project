@@ -7,12 +7,6 @@
     margin: 0;
   }
   
-  /* Sidebar */
-  .sidebar {
-    background-color: #f8dada; /* Rosa claro */
-    padding: 20px;
-    min-height: 100vh;
-  }
   
   .profile-icon {
     background-color: #ffe6e6;
@@ -56,10 +50,6 @@
     color: #ff6f61;
   }
 
-  .sidebar-profile-image {
-    width: 80px;
-    height: 80px;
-  }
   /* Main Content */
   .main-content {
     padding: 30px;
@@ -88,11 +78,11 @@
   
 
   .profile-avatar {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-}
+      width: 200px;
+      height: 200px;
+      border-radius: 30px;
+      object-fit: cover;
+  }
 
 .profile-avatar-large {
     width: 100px;

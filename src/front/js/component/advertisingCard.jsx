@@ -176,13 +176,13 @@ export const AdvertisingCard = () => {
                                             ) : (
                                                 <>
                                                 <button
-                                                    className="btn btn-danger"
+                                                    className="btn btn-danger me-2"
                                                     onClick={() => handleDeleteClick(item.id_advertising)}
                                                 >
                                                     Eliminar
                                                 </button>
                                                 <button
-                                                    className="btn btn-secondary me-2"
+                                                    className="btn btn-secondary"
                                                     onClick={() =>
                                                         handleEditClick(item.id_advertising, item.title, item.content, item.image_url)
                                                     }

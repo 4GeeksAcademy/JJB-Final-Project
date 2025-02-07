@@ -1,0 +1,26 @@
+/* Sidebar */
+.sidebar {
+    background-color: #f8dada; /* Rosa claro */
+    padding: 20px;
+    height: 100; 
+    overflow-y: auto; 
+    top: 57px; 
+    width: 360px;
+}
+.sidebar-profile-image {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+}
+.container-fluid {
+    padding: 0;
+}
+
+.row {
+    margin: 0;
+}
+
+.text-inherit {
+    text-decoration: none !important;
+    color: inherit !important;
+}

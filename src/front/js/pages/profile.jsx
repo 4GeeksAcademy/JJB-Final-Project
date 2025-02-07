@@ -12,18 +12,13 @@ export const Profile = (props) => {
     return (
       <div className="container-fluid">
           <div className="row">    
-              {/* Sidebar */}
-              <div className="col-md-3 p-0"> 
-                  <SideBar /> 
-              </div>
-  
               {/* Main Content */}
               <div className="col-md-9 main-content">
                   <div className="row align-items-center">
                       <div className="col-md-4 d-flex justify-content-center">
                           <div className="profile-image">
                               <img
-                                  className="sidebar-profile-image"
+                                  className="profile-avatar"
                                   src={store.profile.avatar_url}
                                   alt="Profile"
                               />

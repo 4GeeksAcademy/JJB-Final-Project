@@ -12,10 +12,6 @@ export const Invoices = (props) => {
   return (
     <div className="container-fluid">
       <div className="row">
-        {/* Sidebar */}
-        <div className="col-md-3 p-0">
-          <SideBar />
-        </div>
         {/* Main Content */}
         <div className="col-md-9 main-content">
           <InvoicesTable/>
