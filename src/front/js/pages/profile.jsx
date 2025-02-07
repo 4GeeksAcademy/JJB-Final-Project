@@ -18,7 +18,7 @@ export const Profile = (props) => {
                       <div className="col-md-4 d-flex justify-content-center">
                           <div className="profile-image">
                               <img
-                                  className="sidebar-profile-image"
+                                  className="profile-avatar"
                                   src={store.profile.avatar_url}
                                   alt="Profile"
                               />
