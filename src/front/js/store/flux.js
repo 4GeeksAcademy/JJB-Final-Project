@@ -829,14 +829,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return { error: "No autorizado" };
 					}
 
-					const response = await fetch(`${process.env.BACKEND_URL}api/invoice`, {
+					const response = await fetch(`${process.env.BACKEND_URL}api/invoice/${id_invoice}`, {
 						method: "PUT",
 						headers: {
 							"Content-Type": "application/json",
 							"Authorization": `Bearer ${token}`,
 						},
 						body: JSON.stringify({
-							id_invoice: id_invoice,
 							id_order: id_order,
 							amount: amount,
 							concept: concept,

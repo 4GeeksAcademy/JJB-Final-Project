@@ -50,7 +50,7 @@ const Layout = () => {
                         <Route element={<ResetPassword />} path="/reset-password" />
                         <Route element={<Invoices />} path="/invoices" />
                         <Route element={<Subscription />} path="/subscription" />
-                        <Route element={<Invoice />} path="/invoice" />
+                        <Route element={<Invoice />} path="/invoice/:id_invoice" />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

@@ -1,11 +1,14 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
+
 
 export const PayPalButton = ({ disabled }) => {
   const { store, actions } = useContext(Context);
   const location = useLocation();
+  const { id_invoice } = useParams(); // Obtiene id_invoice desde la URL
+  const navigate = useNavigate();
 
   const initialOptions = {
     "client-id": "Afxyb16-s7wljjjWVdqGTkeWmFBeevsII4kkwn1_G3zX4C59yioQxzbCoSswp8NFqcdFyTec1xGgtVGL",
@@ -17,13 +20,15 @@ export const PayPalButton = ({ disabled }) => {
     const currentMonth = new Date().toLocaleString("es-ES", { month: "long" });
     const formattedMonth = currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1);
 
-    let description, value;
-    if (location.pathname === "/subscription") {
+    let description = "";
+    let value = "0.00";
+
+    if (location.pathname.includes("/subscription")) {
       description = "Suscripción Plan Premium";
-      value = "8";
-    } else if (location.pathname === "/invoice") {
-      description = `Mensualidad ${formattedMonth}`;
-      value = "10";
+      value = "8.00";
+    } else if (location.pathname.includes("/invoice")) {
+      description = `Mensualidad de ${formattedMonth}`;
+      value = "10.00";
     }
 
     return actions.order.create({
@@ -46,19 +51,24 @@ export const PayPalButton = ({ disabled }) => {
       const concept = details.purchase_units[0].description;
       const id_order = details.id;
 
-      if (location.pathname === "/subscription") {
+      if (location.pathname.includes("/subscription")) {
         await actions.paySubscription(id_order, amount, concept);
         await actions.loadProfile();
         await actions.loadInvoices();
-      } else if (location.pathname === "/invoices") {
+        navigate("/account")
+      } else if (location.pathname.includes("/invoice")) {
         await actions.payInvoice(id_invoice, id_order, amount, concept);
         await actions.loadProfile();
         await actions.loadInvoices();
+        navigate("/invoices")
       }
 
-      console.log("Factura enviada correctamente");
+      await actions.loadProfile();
+      await actions.loadInvoices();
+
+      console.log("Pago realizado correctamente:", details);
     } catch (error) {
-      console.error("Error al enviar la factura:", error);
+      console.error("Error al procesar el pago:", error);
     }
   };
 
@@ -66,12 +76,7 @@ export const PayPalButton = ({ disabled }) => {
     <PayPalScriptProvider options={initialOptions}>
       <div style={{ pointerEvents: disabled ? "none" : "auto", opacity: disabled ? 0.5 : 1 }}>
         <PayPalButtons
-          style={{
-            layout: "horizontal",
-            color: "blue",
-            shape: "rect",
-            label: "paypal",
-          }}
+          style={{ layout: "horizontal", color: "blue", shape: "rect", label: "paypal" }}
           createOrder={(data, actions) => createOrder(data, actions)}
           onApprove={(data, actions) => onApprove(data, actions)}
         />
