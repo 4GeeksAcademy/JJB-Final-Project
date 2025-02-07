@@ -18,3 +18,8 @@
 .row {
     margin: 0;
 }
+
+.text-inherit {
+    text-decoration: none !important;
+    color: inherit !important;
+}

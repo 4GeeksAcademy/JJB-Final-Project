@@ -19,26 +19,28 @@ export const SideBar = () => {
 
             <div className="sidebar d-none d-md-block ">
                 <ul className="menu-list flex-grow-1">
-                    <li className="d-flex align-items-center mb-3">
-                        <div className="me-2">
-                            <img className="sidebar-profile-image" src={profileImage} alt="Profile" />
-                        </div>
-                        <div className="flex-grow-1">
-                            <p className="nickname mb-0">{store.profile.nickname || "Apodo"}</p>
-                            <p className="email mb-0">{store.profile.email || "Correo"}</p>
-                        </div>
+                    <li >
+                        <Link className="d-flex align-items-center mb-3 text-inherit" to={"/profile"}>
+                            <div className="me-2">
+                                <img className="sidebar-profile-image" src={profileImage} alt="Profile" />
+                            </div>
+                            <div className="flex-grow-1">
+                                <p className="nickname mb-0">{store.profile.nickname || "Apodo"}</p>
+                                <p className="email mb-0">{store.profile.email || "Correo"}</p>
+                            </div>
+                        </Link>
                     </li>
                     <li>
-                        <Link to={"/invoices"}>Favoritos</Link>
+                        <Link className="text-inherit" to={"/invoices"}>Favoritos</Link>
                     </li>
                     <li className="mb-1"> 
-                        <Link to={"/invoices"}>Pagos</Link>
+                        <Link className="text-inherit" to={"/invoices"}>Pagos</Link>
                     </li>
                 </ul>
 
                 <ul className="menu-list">
                     <li className="mb-1"> 
-                        <Link to={"/account"}>Cuenta / Editar perfil</Link>
+                        <Link className="text-inherit" to={"/account"}>Cuenta / Editar perfil</Link>
                     </li>
                 </ul>
             </div>
@@ -47,7 +49,7 @@ export const SideBar = () => {
                 className="btn btn-secondary d-md-none position-fixed top-1 start-0 m-3"
                 data-bs-toggle="offcanvas"
                 data-bs-target="#sidebarMenu"
-                style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }}
+                style={{ fontSize: '1rem', padding: '0.5rem 1rem' }}
             >
                 ☰ Menú
             </button>
@@ -69,10 +71,10 @@ export const SideBar = () => {
                     ></button>
                 </div>
                 <div className="offcanvas-body">
-                    <ul className="menu-list list-unstyled">
-                        <li><Link to="/invoices" className="nav-link" data-bs-dismiss="offcanvas">Favoritos</Link></li>
-                        <li><Link to="/invoices" className="nav-link" data-bs-dismiss="offcanvas">Pagos</Link></li>
-                        <li><Link to="/account" className="nav-link" data-bs-dismiss="offcanvas">Cuenta / Editar perfil</Link></li>
+                    <ul className="menu-list">
+                        <li><Link to={"/invoices"} >Favoritos</Link></li>
+                        <li><Link to={"/invoices"}  >Pagos</Link></li>
+                        <li><Link to={"/account"} >Cuenta / Editar perfil</Link></li>
                     </ul>
                 </div>
             </div>
