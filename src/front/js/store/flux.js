@@ -819,9 +819,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			updateInvoices: async (id_invoice, amount, concept, status, payment_date) => {
+			payInvoice: async (id_invoice, id_order, amount, concept) => {
 				console.log("-----------updateInvoices----------------");
-				console.log("id_invoice", id_invoice, "amount", amount, "concept", concept, "status", status, "payment_date", payment_date);
+				console.log("id_invoice", id_invoice, "id_order", id_order, "amount", amount, "concept", concept);
 
 				try {
 					const token = getActions().checkAcessToken();
@@ -829,7 +829,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return { error: "No autorizado" };
 					}
 
-					const response = await fetch(`${process.env.BACKEND_URL}api/invoices`, {
+					const response = await fetch(`${process.env.BACKEND_URL}api/invoice`, {
 						method: "PUT",
 						headers: {
 							"Content-Type": "application/json",
@@ -837,10 +837,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify({
 							id_invoice: id_invoice,
+							id_order: id_order,
 							amount: amount,
 							concept: concept,
-							status: status,
-							payment_date: payment_date
 						}),
 					});
 

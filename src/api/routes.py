@@ -587,22 +587,22 @@ def create_invoices():
 
 
 
-@api.route('/invoices/<int:id_invoice>', methods=['PUT'])
+@api.route('/invoice/<int:id_invoice>', methods=['PUT'])
 @jwt_required()
 def update_invoices(id_invoice):
     try:
         email = get_jwt_identity()
         print(f"Usuario autenticado para update_invoices: {email}")  
-
+        
+        id_order = request.json.get("id_order", None)
         amount = request.json.get("amount", None)
         concept = request.json.get("concept", None)
-        status = request.json.get("status", None)
-        payment_date = request.json.get("payment_date", None)
+        payment_date = datetime.date.today(),
 
 
-        print(f"Datos recibidos: id_invoice={id_invoice}, amount={amount}, concept={concept}, status={status}, payment_date={payment_date}")
+        print(f"Datos recibidos: id_invoice={id_invoice}, amount={amount}, id_order={id_order}, concept={concept},  payment_date={payment_date}")
         
-        if id_invoice is None or not amount or not concept or not status or not payment_date:
+        if id_invoice is None or not amount or not concept or not id_order or not payment_date:
             return jsonify({"error": "Faltan datos obligatorios (id_invoice, amount, concept, status, payment_date)"}), 400
               
         invoices = Invoice.query.filter_by(id_invoice=id_invoice).first()
@@ -610,9 +610,9 @@ def update_invoices(id_invoice):
         if not invoices: 
             return jsonify({"error": "Factura no encontrada"}), 404
 
+        invoices.id_order = id_order
         invoices.amount = amount
         invoices.concept = concept
-        invoices.status = status
         invoices.payment_date = payment_date
 
         db.session.commit()
