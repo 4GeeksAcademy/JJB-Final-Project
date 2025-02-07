@@ -1,10 +1,10 @@
 import React, { useContext, useState } from "react";
-import { Context } from "../store/appContext";
-import "../../styles/account.css";
+import { Context } from "../store/appContext.js";
+import "../../styles/useraccountsettings.css";
 import { SideBar } from "../component/sideBar.jsx";
 import Swal from "sweetalert2";
 
-export const Account = () => {
+export const UserAccountSettings = () => {
     const { store, actions } = useContext(Context);
     const [image, setImage] = useState("");
     const [isEditing, setIsEditing] = useState({});
@@ -16,7 +16,7 @@ export const Account = () => {
         nickname: ""
     });
 
-  
+
     const toggleEdit = (field) => {
         setIsEditing((prev) => ({
             ...prev,

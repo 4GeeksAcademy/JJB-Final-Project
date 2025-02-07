@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes, useLocation  } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 import { BackendURL } from "./component/backendURL";
 
@@ -8,7 +8,7 @@ import { ResetPassword } from "./pages/reset-password.jsx";
 import { Register } from "./pages/register.jsx";
 import { Profile } from "./pages/profile.jsx";
 import { ForumDetail } from "./pages/1forum.jsx";
-import { Account } from "./pages/account.jsx";
+import { UserAccountSettings } from "./pages/useraccountsettings.jsx";
 
 import { Login } from "./pages/login.jsx";
 import { Forums } from "./pages/forum.jsx";
@@ -17,17 +17,17 @@ import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Single } from "./pages/single";
 import injectContext from "./store/appContext";
-import { Invoices} from "./pages/invoices.jsx";
+import { Invoices } from "./pages/invoices.jsx";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
 import { SideBar } from "./component/sideBar.jsx";
 
 const LayoutContent = () => {
-    const location = useLocation(); 
+    const location = useLocation();
 
-    const hideSidebarRoutes = ["/", "/register", "/forums", "/advertising", "/forgot-password", 
-                                "/reset-password/:token"];
+    const hideSidebarRoutes = ["/", "/register", "/forums", "/advertising", "/forgot-password",
+        "/reset-password/:token"];
     const showSidebar = !hideSidebarRoutes.includes(location.pathname);
 
     return (
@@ -38,15 +38,15 @@ const LayoutContent = () => {
                 <div className="content flex-grow-1 p-3">
                     <Routes>
                         <Route element={<Profile />} path="/profile" />
-                        <Route element={<Account />} path="/account" />
+                        <Route element={<UserAccountSettings />} path="/accountsettings" />
                         <Route element={<Forums />} path="/forums" />
                         <Route element={<Advertising />} path="/advertising" />
                         <Route element={<ForumDetail />} path="/forum/:forum_id" />
                         <Route element={<Register />} path="/register" />
-                        <Route element={<Login />} path="/" /> 
+                        <Route element={<Login />} path="/" />
                         <Route element={<Demo />} path="/demo" />
                         <Route element={<Single />} path="/single/:theid" />
-                        <Route element={<h1>Not found!</h1>} path="*"/>
+                        <Route element={<h1>Not found!</h1>} path="*" />
                         <Route element={<ResetPassword />} path="/reset-password/:token" />
                         <Route element={<ForgotPassword />} path="/forgot-password" />
                         <Route element={<Invoices />} path="/invoices" />
@@ -64,7 +64,7 @@ const Layout = () => {
     // you can set the basename on the .env file located at the root of this project, E.g: BASENAME=/react-hello-webapp/
     const basename = process.env.BASENAME || "";
 
-    if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
+    if (!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL />;
 
     return (
         <div>

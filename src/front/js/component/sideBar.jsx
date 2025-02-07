@@ -40,7 +40,7 @@ export const SideBar = () => {
 
                 <ul className="menu-list">
                     <li className="mb-1"> 
-                        <Link className="text-inherit" to={"/account"}>Cuenta / Editar perfil</Link>
+                        <Link className="text-inherit" to={"/accountsettings"}>Cuenta / Editar perfil</Link>
                     </li>
                 </ul>
             </div>
