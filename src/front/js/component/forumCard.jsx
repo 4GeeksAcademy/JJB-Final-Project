@@ -10,12 +10,18 @@ export const ForumCard = () => {
                 {store.forums.map((item, index) => (
                     <div key={index} className="col-md-4">
                         <div className="card h-100">
-                            <div className="card-body">
+                            <div className="card-body d-flex flex-column">
+                                {item.image_url && (
+                                    <img className="mb-3 card-img-top" src={item.image_url} alt={item.title} />
+                                )}
                                 <h5 className="card-title">{item.title}</h5>
-                                <p className="card-text">
-                                    {item.content}
-                                </p>
-                                <Link to={`/forum/${item.id_forum}`} className="btn btn-secondary">Entrar</Link>
+                                <p className="card-text">{item.content}</p>
+                                
+                                {/* Botón siempre al final */}
+                                <Link to={`/forum/${item.id_forum}`} 
+                                    className="btn btn-secondary mt-auto ">
+                                        Entrar
+                                </Link>
                             </div>
                             <div className="card-footer text-muted">
                                 {item.creation_date}

@@ -79,7 +79,7 @@ export const Login = () => {
             showConfirmButton: false,
             timer: 1500
           });
-        navigate("/reset-password");
+        navigate("/forgot-password");
     };
 
     const triggerResetAlert = () => {

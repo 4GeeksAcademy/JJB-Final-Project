@@ -6,19 +6,21 @@ from api.models import db, User,Forum,Comment,Advertising,Invoice
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re , datetime
-from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager, decode_token
 import os, cloudinary, cloudinary.uploader
+from flask_mail import Mail, Message
+
 
 
 api = Blueprint('api', __name__)
-
+front_url=os.environ.get("FRONT_URL")
 # Allow CORS requests to this API
 CORS(api)
 
 cloudinary.config(
     cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
     api_key=os.environ.get("CLOUDINARY_API_KEY"),
-    api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
+    api_secret=os.environ.get("CLOUDINARY_API_SECRET")
 )
 
 @api.route('/hello', methods=['POST', 'GET'])
@@ -230,12 +232,14 @@ def create_forum():
         print(data)
         title = data.get("title")
         content = data.get("content")
+        image = data.get("image", None)
+
+        print(f"Title: {title}, Content: {content}, Image: {image}")
 
         if not title or not content:
             return jsonify({"error": "Faltan datos obligatorios (title, content)"}), 400 
         
         user = User.query.filter_by(email=email).first()
-
         if not user: 
             return jsonify({"error": "Usuario no encontrado"}), 404
 
@@ -245,6 +249,9 @@ def create_forum():
             creation_date=datetime.date.today(),
             id_user=user.id_user
         )
+        if image:
+            new_forum.image_url = image
+
 
         db.session.add(new_forum)
         db.session.commit()
@@ -259,15 +266,26 @@ def create_forum():
 @jwt_required()
 def update_forum(id_foro):
     try:
+        data = request.get_json()
+        title = data.get('title', None)
+        content = data.get('content', None)
+        image = data.get('image', None)
+
+        print(f"title: {title}-content: {content}-image: {image}")
+            
         forum = Forum.query.filter_by(id_forum=id_foro).first()
         if not forum:
             return jsonify({"error": "Foro no encontrado"}), 404
 
-        data = request.get_json()
-
-        forum.title = data.get('title', forum.title)
-        forum.content = data.get('content', forum.content)
-        forum.image_url = data.get('image_url', forum.image_url)
+        if title:
+            print(f"title{title} exists")
+            forum.title = title
+        if content:
+            print(f"content{content} exists")
+            forum.content = content
+        if image:
+            print(f"image{image} exists")
+            forum.image_url = image
 
         db.session.commit()
         return jsonify(forum.serialize()), 200
@@ -470,14 +488,15 @@ def update_advertising():
     try:
         email = get_jwt_identity()
         print(f"Usuario autenticado para update_advertising: {email}")  
-
+        print(f"Request JSON: {request.json}")
+        print(f"Claves recibidas: {list(request.json.keys())}")
         id_advertising = request.json.get("id_advertising", None)
         title = request.json.get("title", None)
         content = request.json.get("content", None)
         image_url = request.json.get("image", None)
 
 
-        print(f"Datos recibidos: id_advertising={id_advertising}, title={title}, content={content}")
+        print(f"Datos recibidos: id_advertising={id_advertising}, title={title}, content={content}, image_url={image_url}")
         
         if id_advertising is None or not title or not content:
             return jsonify({"error": "Faltan datos obligatorios (id_advertising, title, content)"}), 400
@@ -489,11 +508,17 @@ def update_advertising():
 
         advertising.title = title
         advertising.content = content
-        advertising.image.url = image_url
+        advertising.image_url = image_url
 
         advertising.creation_date = datetime.date.today()
-
-        db.session.commit()
+        print(f"advertising.image_url: {advertising.image_url}")  
+        try:
+            db.session.commit()
+            print("Cambios guardados en la base de datos")
+        except Exception as db_error:
+            db.session.rollback()
+            print(f"Error al guardar en la base de datos: {db_error}")
+            return jsonify({"error": "Error al actualizar la base de datos", "message": str(db_error)}), 500
 
         return jsonify({"msg": "Publicidad actualizada exitosamente", "new_advertising": advertising.serialize()}), 200
 
@@ -631,4 +656,95 @@ def update_invoices(id_invoice):
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
     
+@api.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    try:
+        email = request.json.get("email", None)
+        user = User.query.filter_by(email=email).first()
+        print(f"email: {email}")  
+        if not user:
+            return jsonify({"error": "Usuario no encontrado"}), 404
+
+        # Generar token JWT
+        reset_token = create_access_token(identity=str(user.id_user), expires_delta=datetime.timedelta(hours=1))
+
+        # Enviar el email
+        reset_link = f"{front_url}reset-password/{reset_token}"
+        msg = Message(subject='Restablecer tu contraseña',
+                    sender='reset-password@shespace.com',
+                    recipients=[email])
+        msg.body = msg.html = f"""
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <style>
+                            .container {{
+                                font-family: Arial, sans-serif;
+                                max-width: 600px;
+                                margin: auto;
+                                padding: 20px;
+                                border: 1px solid #ddd;
+                                border-radius: 8px;
+                                background-color: #f9f9f9;
+                                text-align: center;
+                            }}
+                            .button {{
+                                display: inline-block;
+                                padding: 10px 20px;
+                                margin-top: 20px;
+                                font-size: 16px;
+                                color: white;
+                                background-color: #007bff;
+                                text-decoration: none;
+                                border-radius: 5px;
+                            }}
+                            .footer {{
+                                margin-top: 20px;
+                                font-size: 12px;
+                                color: #555;
+                            }}
+                        </style>
+                    </head>
+                    <body>
+                        <div class="container">
+                            <h2>Restablecimiento de Contraseña</h2>
+                            <p>Para restablecer tu contraseña, haz clic en el siguiente botón:</p>
+                            <a href="{reset_link}" class="button">Restablecer Contraseña</a>
+                            <p class="footer">Si no solicitaste este cambio, ignora este correo.</p>
+                        </div>
+                    </body>
+                    </html>
+                    """
+        current_app.mail.send(msg)
+        
+        return jsonify({"msg": "Correo de reseteo enviado"}), 200
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+@api.route('/reset-password', methods=['POST'])
+@jwt_required() 
+def reset_password():
+    try:
+        user_id = get_jwt_identity()  
+        
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({"error": "Usuario no encontrado"}), 404
+
+        data = request.get_json()
+        new_password = data.get('new_password')
+
+        if not new_password or len(new_password) < 6:
+            return jsonify({"error": "La contraseña debe tener al menos 6 caracteres" if new_password else "Contraseña requerida"}), 400
+
+        crypt_password = current_app.bcrypt.generate_password_hash(new_password).decode('utf-8')
+        user.password = crypt_password
+        db.session.commit()
+
+        return jsonify({"msg": "Contraseña actualizada con éxito"}), 200
+    except Exception as e:
+        return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+
+
+
 

@@ -117,6 +117,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			updateForum: async (id_forum, forumData) => {
 				console.log("-----------updateForum----------------");
+				console.log(`id_forum: ${id_forum}, forumData: ${forumData}`);
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
@@ -318,8 +319,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			sendFormForum: async (forumName, forumContent) => {
+			sendFormForum: async (forumName, forumContent, image) => {
 				console.log("-----------sendFormForum----------------")
+				console.log(`forumName: ${forumName}, forumContent: ${forumContent},image: ${image},`)
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
@@ -330,7 +332,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 						method: "POST",
 						body: JSON.stringify({
 							title: forumName,
-							content: forumContent
+							content: forumContent,
+							image: image
 						}),
 						headers: {
 							"Content-Type": "application/json",
@@ -631,10 +634,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			updateAdvertising: async (id_advertising, title, content) => {
+			updateAdvertising: async (formData) => {
 				console.log("-----------updateAdvertising----------------");
-				console.log("id_advertising", id_advertising, "title", title, "content", content);
-
+				console.log("updateAdvertising - formData:", formData);
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
@@ -647,11 +649,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json",
 							"Authorization": `Bearer ${token}`,
 						},
-						body: JSON.stringify({
-							id_advertising: id_advertising,
-							title: title,
-							content: content,
-						}),
+						body: JSON.stringify(formData)
 					});
 
 					const data = await response.json();
@@ -896,7 +894,61 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.error("Error al actualizar la publicidad:", error);
 					return { error: error.message };
 				}
-			},	
+			},
+			forgotPassword: async (email) => {
+				console.log("-----------forgotPassword----------------");
+				console.log("forgotPassword email", email);
+				try {
+		
+					const response = await fetch(process.env.BACKEND_URL + "api/forgot-password", {
+						method: "POST",
+						body: JSON.stringify({email}),
+						headers: {
+							"Content-Type": "application/json",
+						}
+					})
+					
+					if (!response.ok) {
+						const data = await response.json();
+						console.log(" forgotPassword data", data);
+						return { error: data.error || "Error desconocido" };
+					}
+
+					const data = await response.json()
+					console.log(" forgotPassword data", data)
+					return data;
+				} catch (error) {
+					console.error("Error al mandar solicitur de contrasena:", error);
+					return { error: error.message };
+				}
+			},
+			resetPassword: async (token, password) => {
+				console.log("-----------resetPassword----------------");
+				try {
+		
+					const response = await fetch(process.env.BACKEND_URL + "api/reset-password", {
+						method: "POST",
+						body: JSON.stringify({new_password: password}),
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${token}`
+						}
+					})
+					
+					if (!response.ok) {
+						const data = await response.json();
+						console.log("resetPassword data", data);
+						return { error: data.error || "Error desconocido" };
+					}
+
+					const data = await response.json()
+					console.log(" resetPassword data", data)
+					return data;
+				} catch (error) {
+					console.error("Error al mandar resetear la contrasena:", error);
+					return { error: error.message };
+				}
+			},
 			
 		}
 
@@ -904,5 +956,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 	};
 };
+
+
+
 
 export default getState;

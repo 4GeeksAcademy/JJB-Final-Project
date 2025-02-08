@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
-import { Context } from "../store/appContext";
-import "../../styles/account.css";
+import { Context } from "../store/appContext.js";
+import "../../styles/useraccountsettings.css";
 import { SideBar } from "../component/sideBar.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-export const Account = () => {
+export const UserAccountSettings = () => {
     const { store, actions } = useContext(Context);
     const [image, setImage] = useState("");
     const [isEditing, setIsEditing] = useState({});
@@ -17,7 +17,7 @@ export const Account = () => {
         nickname: ""
     });
 
-  
+
     const toggleEdit = (field) => {
         setIsEditing((prev) => ({
             ...prev,
@@ -102,14 +102,10 @@ export const Account = () => {
     }
 
     return (
-        <div className="container-fluid">
+        <div className="container-fluid mt-5 mt-md-0">
             <div className="row">
-                {/* Sidebar */}
-                <div className="col-md-3 p-0">
-                    <SideBar />
-                </div>
                 {/* Main Content */}
-                <div className="col-md-9">
+                <div className="col-md-9 ">
                     <div className="row mb-3">
                         <h2>Membresia
                             {store.profile.membership?.trim().toLowerCase() === "gratis" ?
@@ -127,7 +123,7 @@ export const Account = () => {
                                 src={image || store.profile.avatar_url}
                                 alt="Profile"
                             />
-                            <label className="btn p-1 rounded-circle shadow-sm edit-btn" title="Subir foto">
+                            <label className="btn p-1 rounded-circle shadow-sm edit-btn mt-2" title="Subir foto">
                                 <i className="fa-solid fa-upload"></i>
                                 <input type="file" className="d-none" onChange={uploadImage} />
                             </label>

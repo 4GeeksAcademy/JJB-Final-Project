@@ -8,20 +8,63 @@ export const AdvertisingCard = () => {
     const [editedIdAdvertising, setEditedIdAdvertising] = useState(null);
     const [editedTitle, setEditedTitle] = useState("");
     const [editedContent, setEditedContent] = useState("");
+    const [editedImage_url, setEditedImage_url] = useState("");
+    const [editedPreviewImage_url, seteditedPreviewImage_url] = useState("");
+    const [isUploading, setIsUploading] = useState(false); 
 
-    const handleEditClick = (id_advertising, currentTitle, currentContent) => {
+    const handleEditClick = (id_advertising, currentTitle, currentContent, currentImage_url) => {
         setEditedIdAdvertising(id_advertising);
         setEditedTitle(currentTitle);
         setEditedContent(currentContent);
+        setEditedImage_url(currentImage_url);
+    };
+    const undoEditClick = () => {
+        setEditedIdAdvertising("");
+        setEditedTitle("");
+        setEditedContent("");
+        setEditedImage_url("");
+    };
+
+    const handleImageChange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        setIsUploading(true);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            seteditedPreviewImage_url(reader.result);
+        };
+        reader.readAsDataURL(file);
+        const formData = new FormData()
+
+        formData.append('image', file)
+        console.log(formData.get("image"));
+
+        const response = await actions.uploadPhoto(formData)
+
+        if (response) {
+            setEditedImage_url(response)
+        }
+        setIsUploading(false);
+
     };
 
     const handleSaveClick = async (id_advertising) => {
-        const resp = await actions.updateAdvertising(id_advertising, editedTitle, editedContent);
+        const formData = {
+            id_advertising: id_advertising,
+            title: editedTitle,
+            content: editedContent,
+            image: editedImage_url
+        }
+        console.log("handleSaveClick - formData:", formData);
+        const resp = await actions.updateAdvertising(formData);  // Enviar FormData
         handleResponse(resp);
         setEditedIdAdvertising(null);
         setEditedTitle("");
         setEditedContent("");
-    };
+        setEditedImage_url(""); 
+        seteditedPreviewImage_url(""); 
+    }; 
 
     const handleDeleteClick = async (id_advertising) => {
         const result = await Swal.fire({
@@ -71,7 +114,6 @@ export const AdvertisingCard = () => {
                                 {editedIdAdvertising === item.id_advertising ? (
                                     <>
                                         <input
-                                
                                             type="text"
                                             className="form-control mb-2"
                                             value={editedTitle}
@@ -79,15 +121,32 @@ export const AdvertisingCard = () => {
                                             placeholder="Editar título"
                                         />
                                         <textarea
-                                            className="form-control"
+                                            className="form-control mb-2"
                                             value={editedContent}
                                             onChange={(e) => setEditedContent(e.target.value)}
                                             placeholder="Editar contenido"
                                         />
+                                        <div className="mb-2">
+                                            <label htmlFor="editImage" className="form-label">Editar Imagen</label>
+                                            <input
+                                                type="file"
+                                                className="form-control"
+                                                id="editImage"
+                                                onChange={handleImageChange}
+                                            />
+                                            {editedPreviewImage_url && (
+                                                <img
+                                                    src={editedPreviewImage_url}
+                                                    alt="Vista previa"
+                                                    className="img-fluid mt-2"
+                                                    style={{ maxHeight: "150px", objectFit: "cover" }}
+                                                />
+                                            )}
+                                        </div>
                                     </>
                                 ) : (
                                     <>
-                                        <img src={item.image_url} alt="" />
+                                        <img className="advertising-image img-fluid" src={item.image_url} alt={item.title} />
                                         <h5 className="card-title">{item.title}</h5>
                                         <p className="card-text">{item.content}</p>
                                     </>
@@ -99,28 +158,40 @@ export const AdvertisingCard = () => {
                                     {item.nickname === store.profile?.nickname && (
                                         <div className="card-footer d-flex justify-content-between">
                                             {editedIdAdvertising === item.id_advertising ? (
+                                                <>
                                                 <button
                                                     className="btn btn-primary me-2"
                                                     onClick={() => handleSaveClick(item.id_advertising)}
+                                                    disabled={isUploading}
                                                 >
                                                     Guardar
                                                 </button>
-                                            ) : (
                                                 <button
-                                                    className="btn btn-secondary me-2"
+                                                    className="btn btn-danger"
+                                                    onClick={() => undoEditClick()}
+                                                >
+                                                    Cancelar
+                                                </button>
+                                                </>
+                                            ) : (
+                                                <>
+                                                <button
+                                                    className="btn btn-danger me-2"
+                                                    onClick={() => handleDeleteClick(item.id_advertising)}
+                                                >
+                                                    Eliminar
+                                                </button>
+                                                <button
+                                                    className="btn btn-secondary"
                                                     onClick={() =>
-                                                        handleEditClick(item.id_advertising, item.title, item.content)
+                                                        handleEditClick(item.id_advertising, item.title, item.content, item.image_url)
                                                     }
                                                 >
                                                     Editar
                                                 </button>
+                                                </>
                                             )}
-                                            <button
-                                                className="btn btn-danger"
-                                                onClick={() => handleDeleteClick(item.id_advertising)}
-                                            >
-                                                Eliminar
-                                            </button>
+     
                                         </div>
                                     )}
                                 </div>
