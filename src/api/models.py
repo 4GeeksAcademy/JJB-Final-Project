@@ -12,8 +12,9 @@ class User(db.Model):
     birthdate = db.Column(db.Date, nullable=True)
     role = db.Column(db.String(50), nullable=False, default="usuario")
     avatar_url = db.Column(db.String(255), nullable=False, default="default_avatar_url")
-    membership = db.Column(db.String(20), nullable=False, default="free")
+    membership = db.Column(db.String(20), nullable=False, default="gratis")
     es_mayor = db.Column(db.Boolean, nullable=False)
+    paypal_acceptance = db.Column(db.Boolean, nullable=False)
     is_active = db.Column(db.Boolean, nullable=False, default=True)
 
     
@@ -37,6 +38,8 @@ class User(db.Model):
             "role": self.role,
             "avatar_url": self.avatar_url,
             "membership": self.membership,
+            "es_mayor": self.es_mayor,
+            "paypal_acceptance": self.paypal_acceptance,
             "is_active": self.is_active,
         }
 
@@ -152,9 +155,9 @@ class Favorite(db.Model):
 
 class Invoice(db.Model):
     id_invoice = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
-    amount = db.Column(db.Integer, nullable=True)
+    id_order = db.Column(db.String(255), nullable=True)
+    amount = db.Column(db.Float, nullable=True)
     concept = db.Column(db.String(255), nullable=True)  
-    status = db.Column(db.String(50), nullable=False)  
     payment_date = db.Column(db.Date, nullable=True)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)  
 
@@ -164,9 +167,9 @@ class Invoice(db.Model):
     def serialize(self):
         return {
             "id_invoice": self.id_invoice,
+            "id_order": self.id_order,
             "amount": self.amount,
             "concept": self.concept,
-            "status": self.status,
             "payment_date": self.payment_date.isoformat() if self.payment_date else None,
             "id_user": self.id_user,
         }

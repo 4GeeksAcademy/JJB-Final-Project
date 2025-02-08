@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/forum.css";
+import { Link } from "react-router-dom";
 
 export const InvoicesTable = () => {
     const { store, actions } = useContext(Context);
@@ -9,19 +10,15 @@ export const InvoicesTable = () => {
         actions.loadInvoices();
     }, []);
 
-    console.log(store.Invoices);
-    
-
     return (
         <div className="container mt-4">
             <div className="table-responsive">
                 <table className="table table-bordered text-center">
                     <thead className="table-danger">
                         <tr>
-                            <th>Factura</th>
-                            <th className="d-none d-md-table-cell">Monto</th> 
+                            <th>N° Orden</th>
+                            <th className="d-none d-md-table-cell">Monto</th>
                             <th>Concepto</th>
-                            <th className="d-none d-md-table-cell">Status</th> 
                             <th className="d-none d-md-table-cell">Fecha de Pago</th>
                             <th>Acción</th>
                         </tr>
@@ -29,18 +26,18 @@ export const InvoicesTable = () => {
                     <tbody>
                         {store.invoices?.map((item, index) => (
                             <tr key={index}>
-                                <td>{item.id_invoice}</td>
-                                <td className="d-none d-md-table-cell">{item.amount}</td>
+                                <td>{item.id_order|| "Pendiente de N° Orden"}</td>
+                                <td className="d-none d-md-table-cell">${item.amount}</td>
                                 <td>{item.concept}</td>
-                                <td className="d-none d-md-table-cell">{item.status}</td>
-                                <td className="d-none d-md-table-cell">{item.payment_date || "N/A"}</td>
+                                <td className="d-none d-md-table-cell">{item.payment_date || "Pendiente de pago"}</td>
                                 <td>
-                                    <button
-                                        className={`btn btn-${item.payment_date ? "secondary" : "danger"} btn-sm`}
-                                        disabled={!!item.payment_date}
-                                    >
-                                        Pagar
-                                    </button>
+                                    {item.payment_date ? (
+                                        <button className="btn btn-primary btn-sm w-75">Detalles</button>
+                                    ) : (
+                                        <Link to={`/invoice/${item.id_invoice}`}>
+                                            <button className="btn btn-success btn-sm w-75">Pagar</button>
+                                        </Link>
+                                    )}
                                 </td>
                             </tr>
                         ))}

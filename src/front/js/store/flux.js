@@ -737,20 +737,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			sendInvoices: async (amount, concept, status) => {
-				console.log("-----------sendInvoices----------------")
+			paySubscription: async (id_order, amount, concept) => {
+
+				console.log("-----------paySubscription----------------")
+				console.log(id_order, amount, concept);
+				
 				try {
 					const token = getActions().checkAcessToken();
 					if (token === null) {
 						return { error: "No autorizado" };
 					}
-					console.log("id_user", getStore().profile.id_user);
-					const resp = await fetch(`${process.env.BACKEND_URL}api/invoices`, {
+					
+					const resp = await fetch(`${process.env.BACKEND_URL}api/subscription`, {
 						method: "POST",
 						body: JSON.stringify({
+							id_order: id_order,
 							amount: amount,
 							concept: concept,
-							status: status
 						}),
 						headers: {
 							"Content-Type": "application/json",
@@ -814,9 +817,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			updateInvoices: async (id_invoice, amount, concept, status, payment_date) => {
+			payInvoice: async (id_invoice, id_order, amount, concept) => {
 				console.log("-----------updateInvoices----------------");
-				console.log("id_invoice", id_invoice, "amount", amount, "concept", concept, "status", status, "payment_date", payment_date);
+				console.log("id_invoice", id_invoice, "id_order", id_order, "amount", amount, "concept", concept);
 
 				try {
 					const token = getActions().checkAcessToken();
@@ -824,18 +827,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 						return { error: "No autorizado" };
 					}
 
-					const response = await fetch(`${process.env.BACKEND_URL}api/invoices`, {
+					const response = await fetch(`${process.env.BACKEND_URL}api/invoice/${id_invoice}`, {
 						method: "PUT",
 						headers: {
 							"Content-Type": "application/json",
 							"Authorization": `Bearer ${token}`,
 						},
 						body: JSON.stringify({
-							id_invoice: id_invoice,
+							id_order: id_order,
 							amount: amount,
 							concept: concept,
-							status: status,
-							payment_date: payment_date
 						}),
 					});
 

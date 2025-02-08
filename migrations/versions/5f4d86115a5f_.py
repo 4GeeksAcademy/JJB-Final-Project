@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: c7e82470870e
+Revision ID: 5f4d86115a5f
 Revises: 
-Create Date: 2025-02-05 15:39:05.900467
+Create Date: 2025-02-08 00:29:18.134706
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'c7e82470870e'
+revision = '5f4d86115a5f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -30,6 +30,7 @@ def upgrade():
     sa.Column('avatar_url', sa.String(length=255), nullable=False),
     sa.Column('membership', sa.String(length=20), nullable=False),
     sa.Column('es_mayor', sa.Boolean(), nullable=False),
+    sa.Column('paypal_acceptance', sa.Boolean(), nullable=False),
     sa.Column('is_active', sa.Boolean(), nullable=False),
     sa.PrimaryKeyConstraint('id_user'),
     sa.UniqueConstraint('email'),
@@ -58,9 +59,9 @@ def upgrade():
     )
     op.create_table('invoice',
     sa.Column('id_invoice', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('amount', sa.Integer(), nullable=True),
+    sa.Column('id_order', sa.String(length=255), nullable=True),
+    sa.Column('amount', sa.Float(), nullable=True),
     sa.Column('concept', sa.String(length=255), nullable=True),
-    sa.Column('status', sa.String(length=50), nullable=False),
     sa.Column('payment_date', sa.Date(), nullable=True),
     sa.Column('id_user', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['id_user'], ['user.id_user'], ),

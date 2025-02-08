@@ -23,7 +23,6 @@ cloudinary.config(
     api_secret=os.environ.get("CLOUDINARY_API_SECRET")
 )
 
-
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
 
@@ -104,7 +103,8 @@ def register():
                     email=email, 
                     password=current_app.bcrypt.generate_password_hash(password).decode('utf-8'), 
                     nickname=nickname,
-                    es_mayor=es_mayor
+                    es_mayor=es_mayor,
+                    paypal_acceptance=False
                 )
                 db.session.add(new_user)
                 db.session.commit()
@@ -572,57 +572,68 @@ def get_invoices():
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
     
-@api.route('/invoices', methods=['POST'])
+@api.route('/subscription', methods=['POST'])
 @jwt_required()
 def create_invoices():
     try:
         email = get_jwt_identity()
-        print(f"Usuario autenticado para create_invoices: {email}")  
         data = request.get_json()
-        print(data)
+        id_order = data.get("id_order")
         amount = data.get("amount")
         concept = data.get("concept")
-        status = data.get("status")
 
-        if not amount or not concept:
-            return jsonify({"error": "Faltan datos obligatorios (amount, concept, status)"}), 400
-        
+        if not id_order or not amount or not concept:
+            return jsonify({"error": "Faltan datos obligatorios (id_order, amount, concept)"}), 400
+
         user = User.query.filter_by(email=email).first()
         if not user: 
             return jsonify({"error": "Usuario no encontrado"}), 404
 
+        # Crear nueva factura
         new_invoice = Invoice(
+            id_order=id_order,
             amount=amount,
             concept=concept,
-            status=False,
+            payment_date=datetime.date.today(),
             id_user=user.id_user,
         )
 
         db.session.add(new_invoice)
+
+        if user.membership == "gratis":
+            user.membership = "Premium"
+
+        if user.paypal_acceptance == False:
+            user.paypal_acceptance = True
+
         db.session.commit()
 
-        return jsonify({"msg": "Factura creada exitosamente", "advertising": new_invoice.serialize()}), 201
+        return jsonify({"msg": "Factura creada exitosamente", "invoice": new_invoice.serialize()}), 201
 
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 
-@api.route('/invoices/<int:id_invoice>', methods=['PUT'])
+
+
+@api.route('/invoice/<int:id_invoice>', methods=['PUT'])
 @jwt_required()
 def update_invoices(id_invoice):
     try:
         email = get_jwt_identity()
         print(f"Usuario autenticado para update_invoices: {email}")  
-
+        
+        id_order = request.json.get("id_order", None)
         amount = request.json.get("amount", None)
         concept = request.json.get("concept", None)
-        status = request.json.get("status", None)
-        payment_date = request.json.get("payment_date", None)
+        payment_date = datetime.date.today(),
 
 
-        print(f"Datos recibidos: id_invoice={id_invoice}, amount={amount}, concept={concept}, status={status}, payment_date={payment_date}")
+        print(f"Datos recibidos: id_invoice={id_invoice}, amount={amount}, id_order={id_order}, concept={concept},  payment_date={payment_date}")
+
+        user = User.query.filter_by(email=email).first()
         
-        if id_invoice is None or not amount or not concept or not status or not payment_date:
+        if id_invoice is None or not amount or not concept or not id_order or not payment_date:
             return jsonify({"error": "Faltan datos obligatorios (id_invoice, amount, concept, status, payment_date)"}), 400
               
         invoices = Invoice.query.filter_by(id_invoice=id_invoice).first()
@@ -630,10 +641,13 @@ def update_invoices(id_invoice):
         if not invoices: 
             return jsonify({"error": "Factura no encontrada"}), 404
 
+        invoices.id_order = id_order
         invoices.amount = amount
         invoices.concept = concept
-        invoices.status = status
         invoices.payment_date = payment_date
+
+        if user.paypal_acceptance == False:
+            user.paypal_acceptance = True
 
         db.session.commit()
 
