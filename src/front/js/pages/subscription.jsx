@@ -20,10 +20,6 @@ export const Subscription = () => {
   return (
     <div className="container-fluid">
       <div className="row">
-        {/* Sidebar */}
-        <div className="col-md-3 p-0">
-          <SideBar />
-        </div>
         <div className="col-2">
 
         </div>

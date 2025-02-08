@@ -55,7 +55,7 @@ export const PayPalButton = ({ disabled }) => {
         await actions.paySubscription(id_order, amount, concept);
         await actions.loadProfile();
         await actions.loadInvoices();
-        navigate("/account")
+        navigate("/accountsettings")
       } else if (location.pathname.includes("/invoice")) {
         await actions.payInvoice(id_invoice, id_order, amount, concept);
         await actions.loadProfile();
