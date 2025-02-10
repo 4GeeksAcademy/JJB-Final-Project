@@ -788,6 +788,30 @@ def get_favorites():
         return jsonify({"error": "Error interno del servidor"}), 500
 
     
+@api.route('/favorites', methods=['POST'])
+def toggle_favorite():
+    data = request.json
+    id_user = data.get('id_user')
+    id_forum = data.get('id_forum')  # Puede ser un foro o publicidad
+    id_advertising = data.get('id_advertising')
+
+    if not id_user or (not id_forum and not id_advertising):
+        return jsonify({"error": "Datos incompletos"}), 400
+
+    # Buscar si ya existe este favorito
+    favorite = Favorite.query.filter_by(
+        id_user=id_user, id_forum=id_forum, id_advertising=id_advertising
+    ).first()
+
+    if favorite:
+        db.session.delete(favorite)  # Eliminar si ya está en favoritos
+        db.session.commit()
+        return jsonify({"message": "Eliminado de favoritos"}), 200
+    else:
+        new_favorite = Favorite(id_user=id_user, id_forum=id_forum, id_advertising=id_advertising)
+        db.session.add(new_favorite)
+        db.session.commit()
+        return jsonify({"message": "Añadido a favoritos"}), 201
 
 
 

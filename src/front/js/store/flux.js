@@ -2,8 +2,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
 			message: null,
-			userToken: "",
 			profile: {},
+			userToken: "",  // Aquí se guardará el token
 			forums: [],
 			advertising: [],
 			forumDetails: {},
@@ -949,6 +949,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return { error: error.message };
 				}
 			},
+
+			
+			
 			
 		}
 

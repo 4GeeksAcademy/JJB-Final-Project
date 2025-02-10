@@ -72,7 +72,7 @@ export const SideBar = () => {
                 </div>
                 <div className="offcanvas-body">
                     <ul className="menu-list">
-                        <li><Link to={"/invoices"} >Favoritos</Link></li>
+                        <li><Link to={"/favorites"} >Favoritos</Link></li>
                         <li><Link to={"/invoices"}  >Pagos</Link></li>
                         <li><Link to={"/account"} >Cuenta / Editar perfil</Link></li>
                     </ul>

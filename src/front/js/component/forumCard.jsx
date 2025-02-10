@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "../../styles/forum.css";
+import FavoriteButton from "./FavoriteButton.jsx";  // Importamos el botón
+
 export const ForumCard = () => {
     const { store, actions } = useContext(Context);
     return (
@@ -16,6 +18,13 @@ export const ForumCard = () => {
                                 )}
                                 <h5 className="card-title">{item.title}</h5>
                                 <p className="card-text">{item.content}</p>
+                                <FavoriteButton 
+                idUser={id_User} 
+                idForum={forum.id_forum} 
+                idAdvertising={null} 
+                isFavorite={forum.isFavorite} 
+            />
+
                                 
                                 {/* Botón siempre al final */}
                                 <Link to={`/forum/${item.id_forum}`} 

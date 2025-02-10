@@ -8,6 +8,8 @@ import "../../styles/colors.css";
 import "../../styles/1forum.css";
 import { Modal } from "../component/modal.jsx";
 
+
+
 export const ForumDetail = () => {
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
