@@ -31,7 +31,7 @@ export const SideBar = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link className="text-inherit" to={"/invoices"}>Favoritos</Link>
+                        <Link className="text-inherit" to={"/favorites"}>Favoritos</Link>
                     </li>
                     <li className="mb-1"> 
                         <Link className="text-inherit" to={"/invoices"}>Pagos</Link>

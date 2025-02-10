@@ -9,6 +9,8 @@ import { Register } from "./pages/register.jsx";
 import { Profile } from "./pages/profile.jsx";
 import { ForumDetail } from "./pages/1forum.jsx";
 import { UserAccountSettings } from "./pages/useraccountsettings.jsx";
+import { Favorites } from "./pages/favorites.jsx";
+
  
 import { Login } from "./pages/login.jsx";
 import { Forums } from "./pages/forum.jsx";
@@ -83,6 +85,8 @@ const LayoutContent = () => {
                         <Route element={<Invoices />} path="/invoices" />
                         <Route element={<Subscription />} path="/subscription" />
                         <Route element={<Invoice />} path="/invoice/:id_invoice" />
+                        <Route element={<Favorites/>} path="/favorites" />
+
                     </Routes>
                 </div>
             </div>
