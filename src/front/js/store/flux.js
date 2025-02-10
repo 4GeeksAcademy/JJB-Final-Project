@@ -3,11 +3,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 		store: {
 			message: null,
 			profile: {},
-			userToken: "",  // Aquí se guardará el token
 			forums: [],
 			advertising: [],
 			forumDetails: {},
-			invoices: []
+			invoices: [],
+			favorites: [],
 		},
 
 		actions: {
@@ -950,6 +950,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
+			onToggleFavorite: async () => {
+				try {
+					// Realizar POST para agregar o eliminar el favorito
+					const response = await fetch(process.env.BACKEND_URL + "api/favorites", {
+						method: "POST", // Solo usaremos POST
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							id_forum: forum.id_forum, // El id del foro
+							id_user: user.id // El id de la usuaria
+						})
+					});
+			
+					if (response.ok) {
+						// Alternar estado del favorito
+						setIsFavorite(!isFavorite); // Si es favorito, eliminarlo, si no es favorito, agregarlo
+					} else {
+						console.error("Error al actualizar favorito:", await response.text());
+					}
+				} catch (error) {
+					console.error("Error al actualizar favorito:", error);
+				}
+			}
 			
 			
 			
@@ -957,7 +979,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 
 
-	};
+	}
 };
 
 

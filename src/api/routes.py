@@ -792,11 +792,23 @@ def get_favorites():
 def toggle_favorite():
     data = request.json
     id_user = data.get('id_user')
-    id_forum = data.get('id_forum')  # Puede ser un foro o publicidad
+    id_forum = data.get('id_forum')
     id_advertising = data.get('id_advertising')
 
     if not id_user or (not id_forum and not id_advertising):
         return jsonify({"error": "Datos incompletos"}), 400
+
+    # Validar si el foro existe en la base de datos
+    if id_forum:
+        forum_exists = Forum.query.get(id_forum)
+        if not forum_exists:
+            return jsonify({"error": f"El foro con ID {id_forum} no existe"}), 404
+
+    # Validar si la publicidad existe en la base de datos
+    if id_advertising:
+        advertising_exists = Advertising.query.get(id_advertising)
+        if not advertising_exists:
+            return jsonify({"error": f"La publicidad con ID {id_advertising} no existe"}), 404
 
     # Buscar si ya existe este favorito
     favorite = Favorite.query.filter_by(

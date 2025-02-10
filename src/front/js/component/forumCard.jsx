@@ -2,9 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "../../styles/forum.css";
-import FavoriteButton from "./FavoriteButton.jsx";  // Importamos el botón
+import FavoriteButton from "../component/FavoriteButton.jsx";
 
-export const ForumCard = () => {
+
+
+export const ForumCard = ({ forum, user }) => {
     const { store, actions } = useContext(Context);
     return (
         <div className="container my-5">
@@ -18,11 +20,11 @@ export const ForumCard = () => {
                                 )}
                                 <h5 className="card-title">{item.title}</h5>
                                 <p className="card-text">{item.content}</p>
-                                <FavoriteButton 
-                idUser={id_User} 
-                idForum={forum.id_forum} 
-                idAdvertising={null} 
-                isFavorite={forum.isFavorite} 
+                               
+                                <FavoriteButton
+                id_User={user.id_user}    // ID de la usuaria autenticada
+                id_Forum={forum.id_forum} // ID del foro
+                id_Advertising={null}     // Si es para publicidad, pasas el ID de la publicidad
             />
 
                                 
