@@ -20,6 +20,7 @@ import injectContext from "./store/appContext";
 import { Invoices } from "./pages/invoices.jsx";
 import { Subscription } from "./pages/subscription.jsx";
 import { Invoice } from "./pages/invoice.jsx";
+import { NotFound } from "./pages/notfound.jsx";
  
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
@@ -34,7 +35,7 @@ const LayoutContent = () => {
         "/register",
         "/forums",
         "/advertising",
-        "/forgot-password"
+        "/forgot-password",
     ];
    
     const dynamicRoutes = ["/forum/:forum_id", "/reset-password/:token"];
@@ -75,7 +76,7 @@ const LayoutContent = () => {
                         <Route element={<ForumDetail />} path="/forum/:forum_id" />
                         <Route element={<Register />} path="/register" />
                         <Route element={<Login />} path="/" />
-                        <Route element={<h1>Not found!</h1>} path="*" />
+                        <Route element={<NotFound />} path="*" />
                         <Route element={<ResetPassword />} path="/reset-password/:token" />
                         <Route element={<ForgotPassword />} path="/forgot-password" />
                         <Route element={<Invoices />} path="/invoices" />
