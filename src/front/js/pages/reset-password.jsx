@@ -53,8 +53,11 @@ export const ResetPassword = () => {
             <div className="fluid-container">
                 <div className="row justify-content-center gap-3 mt-5">
                     <div className="col-md-4 border rounded shadow-sm px-3 px-lg-4 py-5">
-                        <h1 className="text-end display-4 fw-bold mb-3">Introduce</h1>
-                        <p className="mb-4 text-end fs-3">tu nueva contraseña</p>
+                        <div className="text-md-end text-center p-md-5 mt-1">
+                            <h1 className="display-4 fw-bold mb-3">Introduce</h1>
+                            <p className="mb-4 fs-3">tu nueva contraseña</p>
+                        </div>
+
                     </div>
                     <div className="col-md-4 border rounded shadow-sm py-4 px-3 px-lg-4 ">
                         <form onSubmit={handleSubmit}>
