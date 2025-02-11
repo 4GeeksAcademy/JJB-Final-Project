@@ -36,6 +36,7 @@ def cargar_datos():
 
     # Insertar usuarios
     for user in datos_json["users"]:
+        user["password"] = current_app.bcrypt.generate_password_hash(user["password"]).decode("utf-8")
         db.session.add(User(**user))
 
     # Insertar foros
@@ -48,7 +49,7 @@ def cargar_datos():
             db.session.add(Comment(**comment))
 
     # Insertar anuncios
-    for ad in data["advertisings"]:
+    for ad in datos_json["advertisings"]:
         db.session.add(Advertising(**ad))
 
     # Confirmar y guardar cambios
