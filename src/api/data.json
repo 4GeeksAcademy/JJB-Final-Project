@@ -1,0 +1,297 @@
+{
+    "users": [
+        {
+            "name": "Tono",
+            "lastname": "Díaz",
+            "avatar_url": "../../img/default.png",
+            "birthdate": "1990-05-15",
+            "email": "tono@correo.com",
+            "es_mayor": true,
+            "is_active": true,
+            "nickname": "tonos",
+            "paypal_acceptance": true,
+            "role": "usuario"
+        },
+        {
+            "name": "María",
+            "lastname": "López",
+            "avatar_url": "../../img/default.png",
+            "birthdate": "1985-10-20",
+            "email": "maria@correo.com",
+            "es_mayor": true,
+            "is_active": false,
+            "nickname": "marial",
+            "paypal_acceptance": false,
+            "role": "usuario"
+        },
+        {
+            "name": "Carlos",
+            "lastname": "Gómez",
+            "avatar_url": "../../img/default.png",
+            "birthdate": "1998-07-08",
+            "email": "carlos@correo.com",
+            "es_mayor": true,
+            "is_active": true,
+            "nickname": "carlitos",
+            "paypal_acceptance": true,
+            "role": "usuario"
+        },
+        {
+            "name": "Ana",
+            "lastname": "Martínez",
+            "avatar_url": "../../img/default.png",
+            "birthdate": "2001-02-25",
+            "email": "ana@correo.com",
+            "es_mayor": true,
+            "is_active": true,
+            "nickname": "anita",
+            "paypal_acceptance": false,
+            "role": "usuario"
+        },
+        {
+            "name": "Luis",
+            "lastname": "Fernández",
+            "avatar_url": "../../img/default.png",
+            "birthdate": "1993-11-12",
+            "email": "luis@correo.com",
+            "es_mayor": true,
+            "is_active": false,
+            "nickname": "luisito",
+            "paypal_acceptance": true,
+            "role": "usuario"
+        },
+        {
+            "name": "Sofía",
+            "lastname": "Ramírez",
+            "avatar_url": "../../img/default.png",
+            "birthdate": "1995-06-30",
+            "email": "sofia@correo.com",
+            "es_mayor": true,
+            "is_active": true,
+            "nickname": "sofier",
+            "paypal_acceptance": true,
+            "role": "usuario"
+        },
+        {
+            "name": "Javier",
+            "lastname": "Mendoza",
+            "avatar_url": "../../img/default.png",
+            "birthdate": "1988-09-17",
+            "email": "javier@correo.com",
+            "es_mayor": true,
+            "is_active": false,
+            "nickname": "javi",
+            "paypal_acceptance": false,
+            "role": "usuario"
+        }
+    ],
+    "forums": [
+        {
+            "id_forum": 1,
+            "title": "Recetas de cocina mexicana",
+            "content": "Me gustaría hablar de recetas de cocina",
+            "creation_date": "2025-02-11",
+            "id_user": 1,
+            "nickname": "tonos",
+            "image_url": "",
+            "comments": [
+                {
+                    "id_comment": 1,
+                    "id_forum": 1,
+                    "id_user": 2,
+                    "nickname": "marial",
+                    "creation_date": "2025-02-11",
+                    "modification_date": null,
+                    "parent_id": null,
+                    "children": []
+                },
+                {
+                    "id_comment": 2,
+                    "id_forum": 1,
+                    "id_user": 3,
+                    "nickname": "carlitos",
+                    "creation_date": "2025-02-11",
+                    "modification_date": "2025-02-12",
+                    "parent_id": 1,
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id_forum": 2,
+            "title": "Tecnología y avances",
+            "content": "Hablemos sobre las nuevas tendencias tecnológicas",
+            "creation_date": "2025-02-10",
+            "id_user": 2,
+            "nickname": "marial",
+            "image_url": "",
+            "comments": [
+                {
+                    "id_comment": 3,
+                    "id_forum": 2,
+                    "id_user": 4,
+                    "nickname": "anita",
+                    "creation_date": "2025-02-10",
+                    "modification_date": null,
+                    "parent_id": null,
+                    "children": []
+                },
+                {
+                    "id_comment": 4,
+                    "id_forum": 2,
+                    "id_user": 1,
+                    "nickname": "tonos",
+                    "creation_date": "2025-02-11",
+                    "modification_date": null,
+                    "parent_id": 3,
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id_forum": 3,
+            "title": "Películas y series recomendadas",
+            "content": "¿Qué series y películas recomiendan?",
+            "creation_date": "2025-02-09",
+            "id_user": 3,
+            "nickname": "carlitos",
+            "image_url": "",
+            "comments": [
+                {
+                    "id_comment": 5,
+                    "id_forum": 3,
+                    "id_user": 5,
+                    "nickname": "luisito",
+                    "creation_date": "2025-02-09",
+                    "modification_date": null,
+                    "parent_id": null,
+                    "children": []
+                },
+                {
+                    "id_comment": 6,
+                    "id_forum": 3,
+                    "id_user": 6,
+                    "nickname": "sofier",
+                    "creation_date": "2025-02-10",
+                    "modification_date": null,
+                    "parent_id": 5,
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id_forum": 4,
+            "title": "Deportes y entrenamientos",
+            "content": "Consejos para mejorar en el deporte",
+            "creation_date": "2025-02-08",
+            "id_user": 4,
+            "nickname": "anita",
+            "image_url": "",
+            "comments": [
+                {
+                    "id_comment": 7,
+                    "id_forum": 4,
+                    "id_user": 7,
+                    "nickname": "javi",
+                    "creation_date": "2025-02-08",
+                    "modification_date": "2025-02-09",
+                    "parent_id": null,
+                    "children": []
+                },
+                {
+                    "id_comment": 8,
+                    "id_forum": 4,
+                    "id_user": 3,
+                    "nickname": "carlitos",
+                    "creation_date": "2025-02-09",
+                    "modification_date": null,
+                    "parent_id": 7,
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id_forum": 5,
+            "title": "Libros y literatura",
+            "content": "Hablemos de nuestros libros favoritos",
+            "creation_date": "2025-02-07",
+            "id_user": 5,
+            "nickname": "luisito",
+            "image_url": "",
+            "comments": [
+                {
+                    "id_comment": 9,
+                    "id_forum": 5,
+                    "id_user": 6,
+                    "nickname": "sofier",
+                    "creation_date": "2025-02-07",
+                    "modification_date": null,
+                    "parent_id": null,
+                    "children": []
+                },
+                {
+                    "id_comment": 10,
+                    "id_forum": 5,
+                    "id_user": 1,
+                    "nickname": "tonos",
+                    "creation_date": "2025-02-08",
+                    "modification_date": "2025-02-09",
+                    "parent_id": 9,
+                    "children": []
+                }
+            ]
+        }
+    ],
+    "advertisings": [
+        {
+            "id_advertising": 1,
+            "title": "Se vende pollo frito",
+            "content": "Rico pollo frito en su jugo, crujiente y delicioso.",
+            "creation_date": "Tue, 11 Feb 2025 00:00:00 GMT",
+            "id_user": 1,
+            "nickname": "tonos",
+            "image_url": "https://example.com/images/pollo_frito.jpg",
+            "active": true
+        },
+        {
+            "id_advertising": 2,
+            "title": "Pasteles artesanales",
+            "content": "Pasteles caseros con ingredientes naturales, perfectos para cualquier ocasión.",
+            "creation_date": "Wed, 12 Feb 2025 00:00:00 GMT",
+            "id_user": 3,
+            "nickname": "carlitos",
+            "image_url": "https://example.com/images/pasteles_artesanales.jpg",
+            "active": true
+        },
+        {
+            "id_advertising": 3,
+            "title": "Venta de ropa deportiva",
+            "content": "Ropa deportiva de alta calidad para cualquier disciplina.",
+            "creation_date": "Thu, 13 Feb 2025 00:00:00 GMT",
+            "id_user": 6,
+            "nickname": "sofier",
+            "image_url": "https://example.com/images/ropa_deportiva.jpg",
+            "active": true
+        },
+        {
+            "id_advertising": 4,
+            "title": "Guitarras personalizadas",
+            "content": "Guitarras hechas a mano con diseños únicos.",
+            "creation_date": "Fri, 14 Feb 2025 00:00:00 GMT",
+            "id_user": 5,
+            "nickname": "luisito",
+            "image_url": "https://example.com/images/guitarras_personalizadas.jpg",
+            "active": true
+        },
+        {
+            "id_advertising": 5,
+            "title": "Clases de yoga",
+            "content": "Aprende yoga con instructores certificados desde la comodidad de tu hogar.",
+            "creation_date": "Sat, 15 Feb 2025 00:00:00 GMT",
+            "id_user": 2,
+            "nickname": "marial",
+            "image_url": "https://example.com/images/clases_de_yoga.jpg",
+            "active": true
+        }
+    ]
+}
