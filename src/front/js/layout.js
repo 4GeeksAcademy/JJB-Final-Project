@@ -75,8 +75,6 @@ const LayoutContent = () => {
                         <Route element={<ForumDetail />} path="/forum/:forum_id" />
                         <Route element={<Register />} path="/register" />
                         <Route element={<Login />} path="/" />
-                        <Route element={<Demo />} path="/demo" />
-                        <Route element={<Single />} path="/single/:theid" />
                         <Route element={<h1>Not found!</h1>} path="*" />
                         <Route element={<ResetPassword />} path="/reset-password/:token" />
                         <Route element={<ForgotPassword />} path="/forgot-password" />
