@@ -9,6 +9,8 @@ import re , datetime
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required, JWTManager, decode_token
 import os, cloudinary, cloudinary.uploader
 from flask_mail import Mail, Message
+import json
+
 
 
 
@@ -22,6 +24,43 @@ cloudinary.config(
     api_key=os.environ.get("CLOUDINARY_API_KEY"),
     api_secret=os.environ.get("CLOUDINARY_API_SECRET")
 )
+
+# Obtener la ruta absoluta del archivo data.json
+base_dir = os.path.dirname(os.path.abspath(__file__))  # Directorio de routes.py
+json_path = os.path.join(base_dir, "data.json")  # Construir la ruta correcta
+
+# Cargar datos en la base de datos
+def cargar_datos():
+    with open(json_path, "r", encoding="utf-8") as file:
+        datos_json = json.load(file)
+
+    # Insertar usuarios
+    for user in datos_json["users"]:
+        db.session.add(User(**user))
+
+    # Insertar foros
+    for forum in datos_json["forums"]:
+        comments = forum.pop("comments")  # Extraer los comentarios antes de insertar
+        db.session.add(Forum(**forum))
+
+        # Insertar comentarios asociados
+        for comment in comments:
+            db.session.add(Comment(**comment))
+
+    # Insertar anuncios
+    for ad in data["advertisings"]:
+        db.session.add(Advertising(**ad))
+
+    # Confirmar y guardar cambios
+    db.session.commit()
+
+    print("✅ Datos insertados correctamente en la base de datos.")
+    db.session.close()
+
+@api.route('/cargar', methods=['GET'])
+def cargar_en_bd():
+    cargar_datos()
+    return jsonify({"mensaje": "Datos cargados en la base de datos"}), 201
 
 @api.route('/hello', methods=['POST', 'GET'])
 def handle_hello():
