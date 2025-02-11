@@ -789,14 +789,20 @@ def get_favorites():
 
     
 @api.route('/favorites', methods=['POST'])
+@jwt_required()
 def toggle_favorite():
     data = request.json
-    id_user = data.get('id_user')
+    email = get_jwt_identity()
     id_forum = data.get('id_forum')
     id_advertising = data.get('id_advertising')
 
-    if not id_user or (not id_forum and not id_advertising):
-        return jsonify({"error": "Datos incompletos"}), 400
+    user = User.query.filter_by(email = email).first()
+    if user is None:
+            return jsonify({"msg": "Email o password incorrectos"}), 404
+
+    if not id_forum:
+        if not id_advertising:
+            return jsonify({"error": "Datos incompletos"}), 400
 
     # Validar si el foro existe en la base de datos
     if id_forum:
@@ -812,7 +818,7 @@ def toggle_favorite():
 
     # Buscar si ya existe este favorito
     favorite = Favorite.query.filter_by(
-        id_user=id_user, id_forum=id_forum, id_advertising=id_advertising
+        id_user=user.id_user, id_forum=id_forum, id_advertising=id_advertising
     ).first()
 
     if favorite:
@@ -820,10 +826,21 @@ def toggle_favorite():
         db.session.commit()
         return jsonify({"message": "Eliminado de favoritos"}), 200
     else:
-        new_favorite = Favorite(id_user=id_user, id_forum=id_forum, id_advertising=id_advertising)
+        new_favorite = Favorite(id_user=user.id_user, id_forum=id_forum, id_advertising=id_advertising)
         db.session.add(new_favorite)
         db.session.commit()
-        return jsonify({"message": "Añadido a favoritos"}), 201
+        db.session.refresh(new_favorite)
+        if new_favorite.forum:
+            return jsonify({"message": "Añadido a favoritos", "favorite": {
+                        "type": "forum",
+                        "data": new_favorite.forum.serialize()
+                    }}), 201
+        else :
+            return jsonify({"message": "Añadido a favoritos", "favorite": {
+                        "type": "advertising",
+                        "data": new_favorite.advertising.serialize()
+                    }}), 201 
+
 
 
 

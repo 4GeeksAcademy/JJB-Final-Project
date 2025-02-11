@@ -1,38 +1,40 @@
-import React, { useState, useContext } from "react";
+import React, { useState,useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/commentCard.css";
 
-export const FavoriteButton = ({ id_User, id_Forum, id_Advertising }) => {
+export const FavoriteButton = ({id_forum, id_advertising }) => {
     const { store, actions } = useContext(Context);
+    const [isFavorite, setIsFavorite] = useState(null) 
+    console.log(id_forum);
     
-    // Verificar si este foro está en favoritos
-    const isFavorite = store.favorites.includes(id_Forum);  
+    const handleClick = async ()=>{
+        const result = await actions.onToggleFavorite(id_forum, id_advertising)
 
-    const handleClick = async () => {
-        try {
-            const response = await fetch(`${process.env.BACKEND_URL}api/favorites`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    id_user: id_User,
-                    id_forum: id_Forum,
-                    id_advertising: id_Advertising
-                })
-            });
+    }
+      
 
-            if (response.ok) {
-                // Cambiar el estado local
-                if (isFavorite) {
-                    actions.removeFavorite(id_Forum); // Eliminar si ya está en favoritos
-                } else {
-                    actions.addFavorite(id_Forum); // Agregar si no está
-                }
+    useEffect(() => {
+        if(id_forum){
+            const result = store.favorites.some(item => item.data?.id_forum == id_forum)
+            console.log(result);
+            
+            if (result){
+                setIsFavorite(result)
+            } else{
+
+                setIsFavorite(false)
             }
-        } catch (error) {
-            console.error("Error al cambiar el estado de favorito:", error);
         }
-    };
-
+        if(id_advertising){
+            const result = store.favorites.some(item => item.data?.id_advertising == id_advertising)
+            if (result){
+                setIsFavorite(result)
+            } else{
+                
+                setIsFavorite(false)
+            }
+        }
+    }, [id_forum, id_advertising, store.favorites])
     return (
         <button 
             onClick={handleClick} 

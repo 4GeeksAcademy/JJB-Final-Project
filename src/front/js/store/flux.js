@@ -950,21 +950,67 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			},
 
-			onToggleFavorite: async () => {
+			getUserFavorites: async () => {
+				try {
+					const token = getActions().checkAcessToken();
+					if (token === null) {
+						return { error_access_token: "No autorizado" };
+					}
+					const resp = await fetch(`${process.env.BACKEND_URL}api/favorites`, {
+						method: "GET",
+						headers: {
+							"Authorization": `Bearer ${token}`,
+						}
+					});
+					const data = await resp.json();
+					console.log(data);
+					if (resp.ok) {
+						
+						setStore({ favorites: data });
+						return data;
+					}
+					return false
+				} catch (error) {
+					console.error("Error en fetch:", error);
+					return { error: error.message };
+				}
+			},
+
+
+			onToggleFavorite: async (id_forum, id_advertising ) => {
+				const store = getStore()
+				console.log(id_forum);
+				
 				try {
 					// Realizar POST para agregar o eliminar el favorito
 					const response = await fetch(process.env.BACKEND_URL + "api/favorites", {
 						method: "POST", // Solo usaremos POST
-						headers: { "Content-Type": "application/json" },
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": `Bearer ${sessionStorage.getItem("accessToken")}`
+						},
 						body: JSON.stringify({
-							id_forum: forum.id_forum, // El id del foro
-							id_user: user.id // El id de la usuaria
+							id_forum: id_forum || null,  // El id del foro
+							id_advertising : id_advertising || null
 						})
 					});
 			
 					if (response.ok) {
-						// Alternar estado del favorito
-						setIsFavorite(!isFavorite); // Si es favorito, eliminarlo, si no es favorito, agregarlo
+						const data = await response.json()
+						if (response.status == 201){
+							setStore({favorites: [...store.favorites, data.favorite]})
+							return true
+						}
+						if (response.status == 200){
+							if (id_forum){
+								setStore({favorites: store.favorites.filter(item => item.data.id_forum != id_forum)})
+								return true
+							}
+							if (id_advertising){
+								setStore({favorites: store.favorites.filter(item => item.data.id_advertising != id_advertising)})
+								return true
+							}
+						}
 					} else {
 						console.error("Error al actualizar favorito:", await response.text());
 					}

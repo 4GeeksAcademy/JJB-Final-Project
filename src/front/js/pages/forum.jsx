@@ -99,7 +99,18 @@ export const Forums = () => {
     
     return (
         <>
-            {store.forums.length > 0 ? <ForumCard key={key}/> : <h1> No se encontraron Forums </h1>}
+        
+            {store.forums.length > 0 ? 
+            <div className="container my-5">
+            <div className="row g-4">
+        
+           { store.forums.map((item, index) => {
+                return(
+                    <ForumCard key={index} forum={item}/>
+                )
+            })}
+            </div></div>
+             : <h1> No se encontraron Forums </h1>}
             <div className="container">
                 <div className="row">
                     <div className="col d-flex justify-content-center" >
