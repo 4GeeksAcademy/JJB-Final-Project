@@ -1,0 +1,294 @@
+{
+    "users": [
+        {
+            "name": "jessica",
+            "lastname": "Díaz",
+            "avatar_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739245483/perfil1_zdjkhp.jpg",
+            "birthdate": "1990-05-15",
+            "email": "tono@correo.com",
+            "es_mayor": true,
+            "is_active": true,
+            "nickname": "jess",
+            "paypal_acceptance": true,
+            "role": "usuario",
+            "password": "123456"
+        },
+        {
+            "name": "María",
+            "lastname": "López",
+            "avatar_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739243178/fotoPerfil2_phmsfy.jpg",
+            "birthdate": "1985-10-20",
+            "email": "maria@correo.com",
+            "es_mayor": true,
+            "is_active": false,
+            "nickname": "marial",
+            "paypal_acceptance": false,
+            "role": "usuario",
+            "password": "123456"
+        },
+        {
+            "name": "Carla",
+            "lastname": "Gómez",
+            "avatar_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739245926/perfil6_xkrngo.webp",
+            "birthdate": "1998-07-08",
+            "email": "carlos@correo.com",
+            "es_mayor": true,
+            "is_active": true,
+            "nickname": "Carlita",
+            "paypal_acceptance": true,
+            "role": "usuario",
+            "password": "123456"
+        },
+        {
+            "name": "Ana",
+            "lastname": "Martínez",
+            "avatar_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739245484/perfil2_qphbdf.jpg",
+            "birthdate": "2001-02-25",
+            "email": "ana@correo.com",
+            "es_mayor": true,
+            "is_active": true,
+            "nickname": "anita",
+            "paypal_acceptance": false,
+            "role": "usuario",
+            "password": "123456"
+        },
+        {
+            "name": "Luisa",
+            "lastname": "Fernández",
+            "avatar_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739243177/Felix2_iwhgix.jpg",
+            "birthdate": "1993-11-12",
+            "email": "luis@correo.com",
+            "es_mayor": true,
+            "is_active": false,
+            "nickname": "luisita",
+            "paypal_acceptance": true,
+            "role": "usuario",
+            "password": "123456"
+        },
+        {
+            "name": "Sofía",
+            "lastname": "Ramírez",
+            "avatar_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739245926/perfil5_wstqke.png",
+            "birthdate": "1995-06-30",
+            "email": "sofia@correo.com",
+            "es_mayor": true,
+            "is_active": true,
+            "nickname": "sofier",
+            "paypal_acceptance": true,
+            "role": "usuario",
+            "password": "123456"
+        },
+        {
+            "name": "Javier",
+            "lastname": "Mendoza",
+            "avatar_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739245926/perfil5_wstqke.png",
+            "birthdate": "1988-09-17",
+            "email": "javier@correo.com",
+            "es_mayor": true,
+            "is_active": false,
+            "nickname": "javi",
+            "paypal_acceptance": false,
+            "role": "usuario",
+            "password": "123456"
+        }
+    ],
+    "forums": [
+        {
+            "id_forum": 1,
+            "title": "Recetas de cocina mexicana",
+            "content": "Me gustaría hablar de recetas de cocina",
+            "creation_date": "2025-02-11",
+            "id_user": 1,
+            "image_url": "",
+            "comments": [
+                {
+                    "id_comment": 1,
+                    "id_forum": 1,
+                    "id_user": 2,
+                    "content": "que interesante!",
+                    "creation_date": "2025-02-11",
+                    "modification_date": null,
+                    "parent_id": null,
+                    "children": []
+                },
+                {
+                    "id_comment": 2,
+                    "id_forum": 1,
+                    "id_user": 3,
+                    "content": "me gusta cocinar!",
+                    "creation_date": "2025-02-11",
+                    "modification_date": "2025-02-12",
+                    "parent_id": 1,
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id_forum": 2,
+            "title": "Tecnología y avances",
+            "content": "Hablemos sobre las nuevas tendencias tecnológicas",
+            "creation_date": "2025-02-10",
+            "id_user": 2,
+            "image_url": "",
+            "comments": [
+                {
+                    "id_comment": 3,
+                    "id_forum": 2,
+                    "id_user": 4,
+                    "content": "me gusta la tenologia!",
+                    "creation_date": "2025-02-10",
+                    "modification_date": null,
+                    "parent_id": null,
+                    "children": []
+                },
+                {
+                    "id_comment": 4,
+                    "id_forum": 2,
+                    "id_user": 1,
+                    "content": "a mi tambien la tenologia!",
+                    "creation_date": "2025-02-11",
+                    "modification_date": null,
+                    "parent_id": 3,
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id_forum": 3,
+            "title": "Películas y series recomendadas",
+            "content": "¿Qué series y películas recomiendan?",
+            "creation_date": "2025-02-09",
+            "id_user": 3,
+            "image_url": "",
+            "comments": [
+                {
+                    "id_comment": 5,
+                    "id_forum": 3,
+                    "id_user": 5,
+                    "content": "la de mufasa esta padre, disney regreso",
+                    "creation_date": "2025-02-09",
+                    "modification_date": null,
+                    "parent_id": null,
+                    "children": []
+                },
+                {
+                    "id_comment": 6,
+                    "id_forum": 3,
+                    "id_user": 6,
+                    "content": "la abogado su sonju es buenisisma",
+                    "creation_date": "2025-02-10",
+                    "modification_date": null,
+                    "parent_id": 5,
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id_forum": 4,
+            "title": "Deportes y entrenamientos",
+            "content": "Consejos para mejorar en el deporte",
+            "creation_date": "2025-02-08",
+            "id_user": 4,
+            "image_url": "",
+            "comments": [
+                {
+                    "id_comment": 7,
+                    "id_forum": 4,
+                    "id_user": 7,
+                    "content": "el medio no me gusto",
+                    "creation_date": "2025-02-08",
+                    "modification_date": "2025-02-09",
+                    "parent_id": null,
+                    "children": []
+                },
+                {
+                    "id_comment": 8,
+                    "id_forum": 4,
+                    "id_user": 3,
+                    "content": "estuvo mejor el de mickey jackson",
+                    "creation_date": "2025-02-09",
+                    "modification_date": null,
+                    "parent_id": 7,
+                    "children": []
+                }
+            ]
+        },
+        {
+            "id_forum": 5,
+            "title": "Libros y literatura",
+            "content": "Hablemos de nuestros libros favoritos",
+            "creation_date": "2025-02-07",
+            "id_user": 5,
+            "image_url": "",
+            "comments": [
+                {
+                    "id_comment": 9,
+                    "id_forum": 5,
+                    "id_user": 6,
+                    "creation_date": "2025-02-07",
+                    "modification_date": null,
+                    "content": "me gustan los libros de harry potter",
+                    "parent_id": null,
+                    "children": []
+                },
+                {
+                    "id_comment": 10,
+                    "id_forum": 5,
+                    "id_user": 1,
+                    "creation_date": "2025-02-08",
+                    "content": "me gustan los libros de crepusculo, diferentes a las pelis",
+                    "modification_date": "2025-02-09",
+                    "parent_id": 9,
+                    "children": []
+                }
+            ]
+        }
+    ],
+    "advertisings": [
+        {
+            "id_advertising": 1,
+            "title": "Se vende pollo frito",
+            "content": "Rico pollo frito en su jugo, crujiente y delicioso.",
+            "creation_date": "Tue, 11 Feb 2025 00:00:00 GMT",
+            "id_user": 1,
+            "image_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739243178/Felix4_uo0mzq.jpg",
+            "active": true
+        },
+        {
+            "id_advertising": 2,
+            "title": "Pasteles artesanales",
+            "content": "Pasteles caseros con ingredientes naturales, perfectos para cualquier ocasión.",
+            "creation_date": "Wed, 12 Feb 2025 00:00:00 GMT",
+            "id_user": 3,
+            "image_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739246341/pastel_s4r5d9.webp",
+            "active": true
+        },
+        {
+            "id_advertising": 3,
+            "title": "Venta de ropa deportiva",
+            "content": "Ropa deportiva de alta calidad para cualquier disciplina.",
+            "creation_date": "Thu, 13 Feb 2025 00:00:00 GMT",
+            "id_user": 6,
+            "image_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739246341/ropadeportiva_uifkic.jpg",
+            "active": true
+        },
+        {
+            "id_advertising": 4,
+            "title": "Guitarras personalizadas",
+            "content": "Guitarras hechas a mano con diseños únicos.",
+            "creation_date": "Fri, 14 Feb 2025 00:00:00 GMT",
+            "id_user": 5,
+            "image_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739246340/guitarra_z3olvn.jpg",
+            "active": true
+        },
+        {
+            "id_advertising": 5,
+            "title": "Clases de yoga",
+            "content": "Aprende yoga con instructores certificados desde la comodidad de tu hogar.",
+            "creation_date": "Sat, 15 Feb 2025 00:00:00 GMT",
+            "id_user": 2,
+            "image_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739246342/yoga_jmwhcr.webp",
+            "active": true
+        }
+    ]
+}
