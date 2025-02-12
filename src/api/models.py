@@ -97,6 +97,7 @@ class Comment(db.Model):
 
         return {
             "id_comment": self.id_comment,
+            "avatar_url": self.user.avatar_url if self.user else None,
             "content": self.content,
             "creation_date": str(self.creation_date),
             "modification_date": str(self.modification_date) if self.modification_date else None,
