@@ -22,15 +22,6 @@
     font-weight: bold;
   }
   
-  .nickname {
-    font-size: 18px;
-    font-weight: bold;
-  }
-  
-  .email {
-    font-size: 14px;
-    color: #6c757d; /* Gris */
-  }
   
   .menu-list {
     list-style: none;
@@ -50,44 +41,32 @@
     color: #ff6f61;
   }
 
-  /* Main Content */
-  .main-content {
-    padding: 30px;
-  }
   
-  .profile-image {
-    width: 200px;
-    height: 200px;
-    background-color: #ffe6e6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 30px;
-    margin: 0 auto;
-  }
-  
-  .profile-info h6 {
+
+  h3 {
     font-weight: bold;
-    margin-bottom: 5px;
   }
   
-  .profile-info p {
-    margin: 0;
+  p {
     color: #6c757d; /* Gris */
+    font-size:larger;
   }
   
 
   .profile-avatar {
-      width: 200px;
-      height: 200px;
-      border-radius: 30px;
+      width: 315px;
+      height: 315px;
+      border-radius: 10px;
       object-fit: cover;
+      border-style: solid;
+      border-width: 5px;
+      border-color: #EAA1C8
   }
 
-.profile-avatar-large {
-    width: 100px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #ddd;
-}
+  .border-container{
+    border-width: 20px;
+    border-style: groove;
+    border-color: #EAA1C8;
+    border-radius: 10px;
+  }
+
