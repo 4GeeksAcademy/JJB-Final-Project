@@ -1,0 +1,86 @@
+/* Estilos generales para la tabla */
+.container {
+    width: 137%;
+    margin-top: 50px;
+    border-collapse: collapse;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--background-color);
+  }
+  
+  /* Estilo para los encabezados */
+  .table thead {
+    background-color: var(--primary-color); /* Color de fondo para los encabezados */
+    color: white;
+    font-weight: bold;
+  }
+  
+  .table th, .table td {
+    padding: 20px 20px;
+    border: 1px solid var(--border-color); /* Rosa tenue para los bordes */
+    text-align: center;
+  }
+  
+  /* Estilo para las filas */
+  .table tbody tr {
+    background-color: #ffffff;
+    transition: background-color 0.3s ease;
+  }
+  
+  .table tbody tr:hover {
+    background-color: var(--card-bg-color); /* Fondo suave en hover */
+  }
+  
+  /* Estilo para las celdas de la tabla */
+  .table td {
+    color: var(--text-color); /* Púrpura profundo para el texto */
+  }
+  
+  /* Estilo para los botones */
+  .table .btn {
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .table .btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+  }
+  
+  .table .btn-primary:hover {
+    background-color: var(--button-hover);
+  }
+  
+  .table .btn-success {
+    background-color: var(--accent-color); /* Azul turquesa para "Pagar" */
+    color: white;
+  }
+  
+  .table .btn-success:hover {
+    background-color: var(--button-hover);
+  }
+  
+  /* Responsividad: ocultar algunas columnas en pantallas pequeñas */
+  .d-none.d-md-table-cell {
+    display: none;
+  }
+  
+  @media (min-width: 768px) {
+    .d-none.d-md-table-cell {
+      display: table-cell;
+    }
+    /* Asegura que la tabla tiene un tamaño mínimo */
+.table-responsive {
+    min-height: 500px; /* Ajusta según sea necesario */
+    overflow-y: auto;
+  }
+  
+  /* Aumenta la altura de las filas */
+  .table th, .table td {
+    padding: 20px 20px; /* Aumenta el padding para más altura */
+  }
+  
+  }
+  

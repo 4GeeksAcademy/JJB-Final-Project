@@ -1,7 +1,13 @@
 /* Sidebar */
 .sidebar {
+<<<<<<< HEAD
     background-color: var(--card-bg-color);
     padding: 20px;
+=======
+    /* background-color: #f8dada; Rosa claro */
+    background-color: var(--card-bg-color);
+    padding: 0;
+>>>>>>> 69658efabe595b09de4e41fdb6adb466afd1088f
     height: 100; 
     overflow-y: auto; 
     top: 57px; 
@@ -26,3 +32,21 @@
     text-decoration: none !important;
     color: inherit !important;
 }
+.sidebar li, .sidebar-responsive li {
+    color: var(--text-color) !important;
+    font-size: x-large !important;
+}
+
+.sidebar li:hover, .sidebar-responsive li:hover {
+    background-color: var(--card-bg-hover-color) !important;
+
+}
+
+.menu-list li a:hover {
+    color: var(--accent-color); /* Cambia el color del texto */
+}
+
+.menu-list li a {
+    padding: 0 20px ;
+}
+
