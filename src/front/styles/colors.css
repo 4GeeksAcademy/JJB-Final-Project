@@ -8,9 +8,13 @@
   --background-color: #FCEFF9; /* Rosa pastel claro como fondo */
   --text-color: #4A235A;  /* Púrpura profundo para contraste sin ser negro */
   --card-bg-color: #FFE3F1;  /* Un rosa suave para tarjetas */
+  --card-bg-hover-color: #fabfdd;
   --button-hover: #459A9C;  /* Un turquesa más oscuro para interacción */
   --border-color: #EAA1C8; /* Un rosa tenue para bordes elegantes */
 }
+/* * {
+  border: 1px dotted red
+} */
 
 body {
   background-color: var(--background-color);
@@ -31,9 +35,9 @@ body {
 
 }
 
-button, .btn {
+button, .btn, .btn-lg{
   background-color: var(--primary-color);
-  color: white;
+  color: white !important;
   padding: 12px 18px;
   font-weight: bold;
   border: none;
