@@ -1,11 +1,14 @@
 /* Sidebar */
 .sidebar {
-    background-color: #f8dada; /* Rosa claro */
-    padding: 20px;
+    /* background-color: #f8dada; Rosa claro */
+    background-color: var(--card-bg-color);
+    padding: 0;
     height: 100; 
     overflow-y: auto; 
     top: 57px; 
     width: 360px;
+    border-right: solid 5px;
+    border-color: var(--border-color);
 }
 .sidebar-profile-image {
     width: 80px;
@@ -24,3 +27,21 @@
     text-decoration: none !important;
     color: inherit !important;
 }
+li {
+    color: var(--text-color) !important;
+    font-size: x-large !important;
+}
+
+li:hover {
+    background-color: var(--card-bg-hover-color) !important;
+
+}
+
+.menu-list li a:hover {
+    color: var(--accent-color); /* Cambia el color del texto */
+}
+
+.menu-list li a {
+    padding: 0 20px ;
+}
+
