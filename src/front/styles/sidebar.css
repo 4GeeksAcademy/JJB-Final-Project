@@ -27,12 +27,12 @@
     text-decoration: none !important;
     color: inherit !important;
 }
-li {
+.sidebar li, .sidebar-responsive li {
     color: var(--text-color) !important;
     font-size: x-large !important;
 }
 
-li:hover {
+.sidebar li:hover, .sidebar-responsive li:hover {
     background-color: var(--card-bg-hover-color) !important;
 
 }

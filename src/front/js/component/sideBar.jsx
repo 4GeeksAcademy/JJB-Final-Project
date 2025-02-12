@@ -56,7 +56,7 @@ export const SideBar = () => {
 
 
             <div 
-                className="offcanvas offcanvas-start d-md-none" 
+                className="offcanvas offcanvas-start d-md-none sidebar-responsive" 
                 tabIndex="-1" 
                 id="sidebarMenu"
                 aria-labelledby="sidebarMenuLabel"
