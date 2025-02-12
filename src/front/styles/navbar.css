@@ -3,11 +3,12 @@ nav {
 }
 
 .navbar {
-    color: var(--text-color); 
+    color: white; 
   }
 
   .navbar-brand {
-    color: var(--text-color); 
+    color: white;
+    font-size: xx-large; 
   }
 
   .navbar-brand:hover{
@@ -15,7 +16,8 @@ nav {
   }
 
   .navbar .nav-link {
-    color: var(--text-color);
+    color: white;
+    font-size: x-large;
   }
   
   .navbar .nav-link:hover {
@@ -24,8 +26,8 @@ nav {
   
   .navbar .nav-link.btn {
     background-color: var(--primary-color);;
-    color: var(--text-color);
-    padding: 2px;
+    color: white;
+    padding: 5px;
     margin-top: 5px;
   }
 

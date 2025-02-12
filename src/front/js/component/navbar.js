@@ -94,6 +94,8 @@ export const Navbar = () => {
 							<li className="nav-item">
 								<Link className={`nav-link  ${location.pathname === '/advertising' ? 'active' : ''}`} to={"/advertising"}>Publicidad</Link>
 							</li>
+
+							
 							<li className="nav-item">
 								<Link className="nav-link btn rounded" to={"/"} onClick={handleLogOut}>Cerrar sesion</Link>
 							</li>
