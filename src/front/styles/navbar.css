@@ -62,6 +62,10 @@ nav {
 
 footer{
   background-color: var(--secondary-color);
+
+}
+
+footer p{
   color: white;
   font-weight: bold;
 }
