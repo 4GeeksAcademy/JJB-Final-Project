@@ -1,11 +1,13 @@
 /* Sidebar */
 .sidebar {
-    background-color: #f8dada; /* Rosa claro */
+    background-color: var(--card-bg-color);
     padding: 20px;
     height: 100; 
     overflow-y: auto; 
     top: 57px; 
     width: 360px;
+    border-right: solid 5px;
+    border-color: var(--border-color);
 }
 .sidebar-profile-image {
     width: 80px;

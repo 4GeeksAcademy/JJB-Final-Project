@@ -17,7 +17,7 @@ export const SideBar = () => {
     return (
         <>
 
-            <div className="sidebar d-none d-md-block ">
+            <div className="sidebar d-none d-md-block">
                 <ul className="menu-list flex-grow-1">
                     <li >
                         <Link className="d-flex align-items-center mb-3 text-inherit" to={"/profile"}>
