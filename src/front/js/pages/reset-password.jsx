@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
-import { Link, useParams,useNavigate } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export const ResetPassword = () => {
@@ -50,59 +50,54 @@ export const ResetPassword = () => {
 
     return (
         <>
-            <div className="container">
-                <div className="row m-5 border p-md-5">
-                    <div className="col-12 col-md-6 d-flex justify-content-md-end justify-content-center mb-3">
-                        <div className="card p-md-3" style={{ width: "18rem" }}>
-                            <div className="card-body">
-                                <h1 className="text-end">Introduce</h1>
-                                <p className="mb-4 text-end fs-3">tu nueva contraseña</p>
-                            </div>
+            <div className="fluid-container">
+                <div className="row justify-content-center gap-3 mt-5">
+                    <div className="col-md-4 border rounded shadow-sm px-3 px-lg-4 py-5">
+                        <div className="text-md-end text-center p-md-5 mt-1">
+                            <h1 className="display-4 fw-bold mb-3">Introduce</h1>
+                            <p className="mb-4 fs-3">tu nueva contraseña</p>
                         </div>
+
                     </div>
-                    <div className="col-12 col-md-6 d-flex justify-content-md-start justify-content-center">
-                        <div className="card p-md-3 border rounded" style={{ width: "18rem" }}>
-                            <div className="card-body">
-                                <form onSubmit={handleSubmit}>
-                                    <div className="mb-3">
-                                        <label htmlFor="password" className="form-label">Nueva Contraseña:</label>
-                                        <input
-                                            type="password"
-                                            className="form-control"
-                                            id="password"
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="mb-3">
-                                        <label htmlFor="confirmPassword" className="form-label">Confirmar Contraseña:</label>
-                                        <input
-                                            type="password"
-                                            className="form-control"
-                                            id="confirmPassword"
-                                            value={confirmPassword}
-                                            onChange={(e) => setConfirmPassword(e.target.value)}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="d-grid">
-                                        <button
-                                            className="btn btn-primary"
-                                            type="submit"
-                                            disabled={!password || !confirmPassword}
-                                        >
-                                            Enviar Contraseña
-                                        </button>
-                                    </div>
-                                </form>
+                    <div className="col-md-4 border rounded shadow-sm py-4 px-3 px-lg-4 ">
+                        <form onSubmit={handleSubmit}>
+                            <div className="mb-3 fs-5">
+                                <label htmlFor="password" className="form-label">Nueva Contraseña:</label>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    id="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
                             </div>
-                            <div className="card-footer">
-                                <Link to="/">Regresar</Link>
+                            <div className="mb-3 fs-5">
+                                <label htmlFor="confirmPassword" className="form-label">Confirmar Contraseña:</label>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    id="confirmPassword"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    required
+                                />
                             </div>
-                        </div>
+                            <div className="d-grid">
+                                <button
+                                    className="btn "
+                                    type="submit"
+                                    disabled={!password || !confirmPassword}
+                                >
+                                    Enviar Contraseña
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
+            </div>
+            <div className="text-center mt-5">
+                <Link to="/" className="btn-link">Regresar</Link>
             </div>
         </>
 
