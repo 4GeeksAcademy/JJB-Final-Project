@@ -1,13 +1,8 @@
 /* Sidebar */
 .sidebar {
-<<<<<<< HEAD
-    background-color: var(--card-bg-color);
-    padding: 20px;
-=======
     /* background-color: #f8dada; Rosa claro */
     background-color: var(--card-bg-color);
     padding: 0;
->>>>>>> 69658efabe595b09de4e41fdb6adb466afd1088f
     height: 100; 
     overflow-y: auto; 
     top: 57px; 
