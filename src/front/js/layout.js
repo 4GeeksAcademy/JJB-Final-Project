@@ -67,7 +67,7 @@ const LayoutContent = () => {
             <Navbar />
             <div className="d-flex flex-grow-1">
                 {showSidebar && <SideBar />}
-                <div className="content flex-grow-1 p-3">
+                <div className="content flex-grow-1">
                     <Routes>
                         <Route element={<Profile />} path="/profile" />
                         <Route element={<UserAccountSettings />} path="/accountsettings" />

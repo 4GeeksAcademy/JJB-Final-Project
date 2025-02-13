@@ -117,14 +117,14 @@ export const Register = () => {
                                 </label>
                             </div>
 
-                            <button className="w-100 btn btn-lg " type="button" disabled={!emailPasswordNicknameChanged}
+                            <button className="w-100 btn btn-lg" type="button" disabled={!emailPasswordNicknameChanged}
                                 onClick={sendForm}>Registrarse</button>
                         </form>
                     </div>
                 </div>
             </div>
-            <div className="text-center mt-5">
-                <Link to="/" className="btn-link">Regresar</Link>
+            <div className="text-center mt-5 mb-5">
+                <Link to="/" className="btn-link mb-5">Regresar</Link>
             </div>
         </>
 
