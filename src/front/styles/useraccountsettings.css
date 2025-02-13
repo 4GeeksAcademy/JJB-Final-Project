@@ -3,10 +3,13 @@
  } */
 
  .profile {
-   width: 200px;
-   height: 200px;
-   border-radius: 30px;
+   width: 315px;
+   height: 315px;
+   border-radius: 10px;
    object-fit: cover;
+   border-style: solid;
+   border-width: 5px;
+   border-color: #EAA1C8
 }
 
 .edit-btn {
