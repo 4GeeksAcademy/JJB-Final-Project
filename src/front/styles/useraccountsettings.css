@@ -2,6 +2,10 @@
     border: 1px dotted black;
  } */
 
+ .row {
+   margin: 0;
+ }
+
  .profile {
    width: 315px;
    height: 315px;
@@ -33,3 +37,28 @@ input[type="text"] {
    padding: 5px 10px;
    width: 95%;
 }
+
+.border-container {
+   border-width: 20px;
+   border-style: groove;
+   border-color: #EAA1C8;
+   border-radius: 10px;
+ }
+
+ h6 {
+   font-weight: bold;
+   font-size: larger;
+ }
+
+
+@media (max-width: 768px) {
+   .border-container {
+     border-width: 10px;
+   }
+ }
+
+ @media (max-width: 480px) {
+   .border-container {
+     border-width: 5px;
+   }
+ }

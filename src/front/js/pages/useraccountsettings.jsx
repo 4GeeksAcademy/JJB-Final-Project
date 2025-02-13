@@ -103,8 +103,8 @@ export const UserAccountSettings = () => {
 
     return (
 
-        <div className="d-flex align-items-center justify-content-center vh-75 mb-5">
-            <div className="container bg-white border-container">
+        <div className="d-flex align-items-center justify-content-center h-100 p-md-5 p-3 mt-3 mt-md-0">
+            <div className="container-fluid bg-white border-container">
                 {/* ************************************************ MEMBRESIA ROW************************************************************* */}
                 <div className="row px-0 py-4 text-center">
                     <div className="col-md-12 d-flex justify-content-end align-items-center">
@@ -158,11 +158,8 @@ export const UserAccountSettings = () => {
                                         ) : (
                                             <p>{store.profile.name || "N/A"}</p>
                                         )}
-
                                     </div>
-
                                 </div>
-
                                 {/* Columna del botón - más pequeña */}
                                 <div className="col-3 d-flex justify-content-end">
                                     {isEditing.name ? (
