@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint, current_app
-from api.models import db, User,Forum,Comment,Advertising,Invoice
+from api.models import db, User,Forum,Comment,Advertising,Invoice,Favorite
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 import re , datetime
@@ -784,6 +784,102 @@ def reset_password():
         return jsonify({"msg": "Contraseña actualizada con éxito"}), 200
     except Exception as e:
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
+    
+
+
+@api.route('/favorites', methods=['GET'])
+@jwt_required()
+def get_favorites():
+    try:
+        email = get_jwt_identity()
+        print(f"Usuario autenticado para favoritos: {email}")
+
+        # Obtener el ID del usuario basado en el email
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            return jsonify({"error": "Usuario no encontrado"}), 404
+
+        user_id = user.id_user
+
+        # Obtener los favoritos del usuario
+        favorites = Favorite.query.filter_by(id_user=user_id).all()
+        favorite_items = []
+
+        for fav in favorites:
+            if fav.id_forum:
+                forum = Forum.query.get(fav.id_forum)
+                if forum:
+                    favorite_items.append({
+                        "type": "forum",
+                        "data": forum.serialize()
+                    })
+            elif fav.id_advertising:
+                ad = Advertising.query.get(fav.id_advertising)
+                if ad:
+                    favorite_items.append({
+                        "type": "advertising",
+                        "data": ad.serialize()
+                    })
+
+        return jsonify(favorite_items), 200
+
+    except Exception as e:
+        print(f"Error en GET /favorites: {str(e)}")
+        return jsonify({"error": "Error interno del servidor"}), 500
+
+    
+@api.route('/favorites', methods=['POST'])
+@jwt_required()
+def toggle_favorite():
+    data = request.json
+    email = get_jwt_identity()
+    id_forum = data.get('id_forum')
+    id_advertising = data.get('id_advertising')
+
+    user = User.query.filter_by(email = email).first()
+    if user is None:
+            return jsonify({"msg": "Email o password incorrectos"}), 404
+
+    if not id_forum:
+        if not id_advertising:
+            return jsonify({"error": "Datos incompletos"}), 400
+
+    # Validar si el foro existe en la base de datos
+    if id_forum:
+        forum_exists = Forum.query.get(id_forum)
+        if not forum_exists:
+            return jsonify({"error": f"El foro con ID {id_forum} no existe"}), 404
+
+    # Validar si la publicidad existe en la base de datos
+    if id_advertising:
+        advertising_exists = Advertising.query.get(id_advertising)
+        if not advertising_exists:
+            return jsonify({"error": f"La publicidad con ID {id_advertising} no existe"}), 404
+
+    # Buscar si ya existe este favorito
+    favorite = Favorite.query.filter_by(
+        id_user=user.id_user, id_forum=id_forum, id_advertising=id_advertising
+    ).first()
+
+    if favorite:
+        db.session.delete(favorite)  # Eliminar si ya está en favoritos
+        db.session.commit()
+        return jsonify({"message": "Eliminado de favoritos"}), 200
+    else:
+        new_favorite = Favorite(id_user=user.id_user, id_forum=id_forum, id_advertising=id_advertising)
+        db.session.add(new_favorite)
+        db.session.commit()
+        db.session.refresh(new_favorite)
+        if new_favorite.forum:
+            return jsonify({"message": "Añadido a favoritos", "favorite": {
+                        "type": "forum",
+                        "data": new_favorite.forum.serialize()
+                    }}), 201
+        else :
+            return jsonify({"message": "Añadido a favoritos", "favorite": {
+                        "type": "advertising",
+                        "data": new_favorite.advertising.serialize()
+                    }}), 201 
 
 
 

@@ -53,7 +53,7 @@ class Forum(db.Model):
     user = db.relationship("User")
 
     comments = db.relationship('Comment', backref='forum', lazy=True, cascade="all, delete-orphan", order_by="Comment.id_comment.asc()")
-    favorites = db.relationship('Favorite', backref='forum', lazy=True, cascade="all, delete-orphan")
+    favorites = db.relationship('Favorite', back_populates='forum', lazy=True, cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'<Forum {self.title}>'
@@ -120,7 +120,7 @@ class Advertising(db.Model):
     active = db.Column(db.Boolean, nullable=False, default=True)
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)  
 
-    favorites = db.relationship('Favorite', backref='advertising', lazy=True, cascade="all, delete-orphan")
+    favorites = db.relationship('Favorite', back_populates='advertising', lazy=True, cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'<Advertising {self.title}>'
@@ -143,6 +143,8 @@ class Favorite(db.Model):
     id_advertising = db.Column(db.Integer, db.ForeignKey('advertising.id_advertising'), nullable=True)  
     id_user = db.Column(db.Integer, db.ForeignKey('user.id_user'), nullable=False)  
 
+    forum = db.relationship("Forum") 
+    advertising = db.relationship("Advertising") 
     def __repr__(self):
         return f'<Favorite {self.id_favorite}>'
 

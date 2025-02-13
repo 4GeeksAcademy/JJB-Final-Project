@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import Swal from "sweetalert2";
 import "../../styles/forum.css";
+import FavoriteButton from "./FavoriteButton.jsx";
 
 export const AdvertisingCard = () => {
     const { store, actions } = useContext(Context);
@@ -149,6 +150,10 @@ export const AdvertisingCard = () => {
                                         <img className="advertising-image img-fluid" src={item.image_url} alt={item.title} />
                                         <h5 className="card-title">{item.title}</h5>
                                         <p className="card-text">{item.content}</p>
+                                         <FavoriteButton
+                                                        id_forum={null} // ID del foro
+                                                        id_advertising={item.id_advertising}     // Si es para publicidad, pasas el ID de la publicidad
+                                                    />
                                     </>
                                 )}
                             </div>
