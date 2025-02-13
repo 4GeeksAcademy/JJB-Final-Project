@@ -6,8 +6,8 @@ export const Profile = () => {
     const { store } = useContext(Context);
 
     return (
-        <div className="d-flex align-items-center justify-content-center vh-100">
-            <div className="container bg-white border-container">
+        <div className="d-flex align-items-center justify-content-center h-100 p-md-5 p-3 mt-3 mt-md-0">
+            <div className="container-fluid bg-white border-container">
                 <div className="row px-0 py-4 text-center">
                     {/* Imagen */}
                     <div className="col-md-12 d-flex justify-content-center align-items-center">
@@ -22,8 +22,6 @@ export const Profile = () => {
                 </div>
 
                 <div className="row px-0 py-4  text-center">
-
-
                     {/* Información Personal */}
                     <div className="col-md-6 d-flex flex-column justify-content-center">
                         <h3>Nombre completo</h3>

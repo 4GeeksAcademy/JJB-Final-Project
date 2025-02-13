@@ -1,6 +1,6 @@
   /* Estilos generales */
 .container-fluid {
-    padding: 0;
+    /* padding: 0; */
   }
   
   .row {
@@ -63,10 +63,22 @@
       border-color: #EAA1C8
   }
 
-  .border-container{
+  .border-container {
     border-width: 20px;
     border-style: groove;
     border-color: #EAA1C8;
     border-radius: 10px;
   }
 
+
+  @media (max-width: 768px) {
+      .border-container {
+          border-width: 10px; 
+      }
+  }
+
+  @media (max-width: 480px) {
+      .border-container {
+          border-width: 5px;
+      }
+  }
