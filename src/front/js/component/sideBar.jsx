@@ -17,15 +17,15 @@ export const SideBar = () => {
     return (
         <>
 
-            <div className="sidebar d-none d-md-block ">
+            <div className="sidebar d-none d-md-block">
                 <ul className="menu-list flex-grow-1">
-                    <li >
+                    <li className="">
                         <Link className="d-flex align-items-center mb-3 text-inherit" to={"/profile"}>
                             <div className="me-2">
                                 <img className="sidebar-profile-image" src={profileImage} alt="Profile" />
                             </div>
                             <div className="flex-grow-1">
-                                <p className="nickname mb-0">{store.profile.nickname || "Apodo"}</p>
+                                <p className="nickname mb-0 ">{store.profile.nickname || "Apodo"}</p>
                                 <p className="email mb-0">{store.profile.email || "Correo"}</p>
                             </div>
                         </Link>
@@ -56,13 +56,14 @@ export const SideBar = () => {
 
 
             <div 
-                className="offcanvas offcanvas-start d-md-none" 
+                className="offcanvas offcanvas-start d-md-none sidebar-responsive" 
                 tabIndex="-1" 
                 id="sidebarMenu"
                 aria-labelledby="sidebarMenuLabel"
+                style={{ backgroundColor: "var(--card-bg-color)" }}
             >
-                <div className="offcanvas-header">
-                    <h5 className="offcanvas-title" id="sidebarMenuLabel">Menú</h5>
+                <div className="offcanvas-header" >
+                    <h5 className="offcanvas-title fs-1" id="sidebarMenuLabel">Menú</h5>
                     <button 
                         type="button" 
                         className="btn-close" 
@@ -71,10 +72,10 @@ export const SideBar = () => {
                     ></button>
                 </div>
                 <div className="offcanvas-body">
-                    <ul className="menu-list">
-                        <li><Link to={"/favorites"} >Favoritos</Link></li>
-                        <li><Link to={"/invoices"}  >Pagos</Link></li>
-                        <li><Link to={"/account"} >Cuenta / Editar perfil</Link></li>
+                    <ul className="menu-list ">
+                        <li><Link className="text-inherit" to={"/invoices"} >Favoritos</Link></li>
+                        <li><Link className="text-inherit" to={"/invoices"}  >Pagos</Link></li>
+                        <li><Link className="text-inherit" to={"/accountsettings"} >Cuenta / Editar perfil</Link></li>
                     </ul>
                 </div>
             </div>

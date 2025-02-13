@@ -68,7 +68,11 @@ export const CommentCard = ({ forum, toggleModal }) => {
         return comments.map((comment) => (
             <div key={comment.id_comment} className="card mb-3">
                 <div className="card-header d-flex">
-                    <h5 className="card-title flex-grow-1">{comment.nickname}</h5>
+                    <div className="card-title flex-grow-1 d-flex align-items-center">
+                        <img src={comment.avatar_url} className="comment-url"/>
+                        <h5 className="ms-2">{comment.nickname}</h5>
+                    </div>
+
                     {comment.nickname === store.profile.nickname && (
                         <>
                             {editingIndex === comment.id_comment ? (

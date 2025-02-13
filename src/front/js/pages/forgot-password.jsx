@@ -39,56 +39,55 @@ export const ForgotPassword = () => {
                 showConfirmButton: false,
                 timer: 3500
             });
-            
+
         }
     }
 
     return (
         <>
-            <div className="container">
-                <div className="row m-5 border p-md-5">
-                    <div className="col-12 col-md-6 d-flex justify-content-md-end justify-content-center mb-3">
-                        <div className="card p-md-3" style={{ width: "18rem" }}>
-                            <div className="card-body">
-                                <h1 className="text-end">Recupera</h1>
-                                <p className="mb-4 text-end fs-3">tu contraseña</p>
-                            </div>
+            
+            <div className="fluid-container">
+                <div className="row justify-content-center gap-3 mt-5">
+                    <div className="col-md-4 border rounded shadow-sm px-3 px-lg-4 ">
+                        <div className="text-md-end text-center p-md-5 mt-1">
+                            <h1 className="display-4 fw-bold mb-3">Recupera</h1>
+                            <p className="mb-4 fs-3">tu contraseña</p>
                         </div>
                     </div>
-                    <div className="col-12 col-md-6 d-flex justify-content-md-start justify-content-center">
-                        <div className="card p-md-3 border rounded" style={{ width: "18rem" }}>
-                            <div className="card-body">
-                                <form>
-                                    <div className="mb-1">
-                                        <label htmlFor="email" className="form-label">Correo:</label>
-                                        <input
-                                            type="email"
-                                            className="form-control"
-                                            id="email"
-                                            placeholder="nombre@ejemplo.com"
-                                            onChange={EmailChanged}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="d-grid">
-                                        <button
-                                            className="btn btn-primary"
-                                            type="button"
-                                            disabled={!emailChanged}
-                                            onClick={sendForm}
-                                        >
-                                            Recuperar contraseña
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                            <div className="card-footer">
-                                <Link to="/">Regresar</Link>
-                            </div>
+                    <div className="col-md-4 border rounded shadow-sm py-4 px-3 px-lg-4 ">
+                        <div className="d-flex justify-content-center">
+                            <form>
+                                <div className="mb-3 fs-5">
+                                    <label htmlFor="email" className="form-label">Ingresa tu Correo:</label>
+                                    <input
+                                        type="email"
+                                        className="form-control"
+                                        id="email"
+                                        placeholder="nombre@ejemplo.com"
+                                        onChange={EmailChanged}
+                                        required
+                                    />
+                                </div>
+                                <div className="d-grid">
+                                    <button
+                                        className="btn"
+                                        type="button"
+                                        disabled={!emailChanged}
+                                        onClick={sendForm}
+                                    >
+                                        Recuperar contraseña
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
+            <div className="text-center mt-5">
+                <Link to="/" className="btn-link">Regresar</Link>
+            </div>
+
+
         </>
 
     );

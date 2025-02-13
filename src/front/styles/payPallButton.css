@@ -1,0 +1,16 @@
+
+
+  .paypal-btn-container {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    height: 100%; 
+
+  
+  .paypal-btn {
+    
+    font-size: 1.5rem;
+    padding: 12px 24px;
+    width: 80%; 
+  }
+}
