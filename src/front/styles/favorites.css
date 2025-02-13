@@ -1,50 +1,52 @@
+
+
+/* 🔹 Contenedor principal de favoritos */
 .favorites-container {
+    justify-content: flex-start;
     padding: 20px;
-    max-width: 1200px;
     margin: auto;
     background-color: var(--background-color);
+    max-width: 70%; 
 }
 
-.section-title {
-    font-size: 2rem;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
-    color: var(--primary-color);
-    border-bottom: 3px solid var(--border-color);
-    padding-bottom: 10px;
+/* Ajuste responsivo */
+@media (min-width: 768px) {
+    .favorites-container {
+        max-width: 750px; /* Para tabletas */
+    }
 }
 
-.favorite-ad-card {
-    background-color: var(--card-bg-color);
-    border: 2px solid var(--border-color);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+@media (min-width: 1024px) {
+    .favorites-container {
+        max-width: 900px; /* Para pantallas más grandes */
+    }
 }
 
-.favorite-ad-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
-    background-color: var(--card-bg-hover-color);
+@media (min-width: 1200px) {
+    .favorites-container {
+        max-width: 1100px; /* Para pantallas grandes */
+    }
 }
 
-.advertising-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
+
+/* Responsivo para imágenes en móviles */
+@media (max-width: 768px) {
+    .advertising-image {
+        height: 150px; /* Hace que las imágenes sean más pequeñas en pantallas pequeñas */
+    }
 }
 
+/* 🔹 Pie de tarjeta */
 .card-footer {
     background: var(--secondary-color);
     color: white;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     text-align: center;
-    padding: 8px;
+    padding: 7px;
     border-top: 2px solid var(--border-color);
 }
 
+/* 🔹 Botón de favoritos */
 .favorite-button {
     background-color: var(--primary-color);
     color: white;
@@ -53,8 +55,12 @@
     border-radius: 8px;
     transition: background 0.3s ease-in-out;
     cursor: pointer;
+    width: 100%;
+    text-align: center;
 }
 
 .favorite-button:hover {
     background-color: var(--button-hover);
 }
+
+
