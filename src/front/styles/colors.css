@@ -1,28 +1,26 @@
 :root {
-  /* 🎨 Colores primarios (NO modificables) */
-  --primary-color: #8C277B; 
-  --secondary-color: #BF56AE; 
-
-  /* 🌟 Colores de acento y fondo */
+  /* :arte: Colores primarios (NO modificables) */
+  --primary-color: #8C277B;
+  --secondary-color: #BF56AE;
+  /* :estrella2: Colores de acento y fondo */
   --accent-color: #52C6C8;  /* Azul turquesa para detalles llamativos */
   --background-color: #FCEFF9; /* Rosa pastel claro como fondo */
   --text-color: #4A235A;  /* Púrpura profundo para contraste sin ser negro */
   --card-bg-color: #FFE3F1;  /* Un rosa suave para tarjetas */
-  --card-bg-hover-color: #fabfdd;
+  --card-bg-hover-color: #FABFDD;
   --button-hover: #459A9C;  /* Un turquesa más oscuro para interacción */
-  --border-color: #EAA1C8; /* Un rosa tenue para bordes elegantes */
+  --border-color: #EAA1C8; /* Un rosa tenue para bordes elegantes */
 }
 /* * {
   border: 1px dotted red
 } */
-
 body {
   background-color: var(--background-color);
   color: var(--text-color);
   font-family: 'Poppins', sans-serif;
 }
-
 .card {
+  background-color: var(--card-bg-color);
   background-color: var(--card-bg-color);
   border: 2px solid var(--border-color);
   padding: 20px;
@@ -72,11 +70,9 @@ button, .btn, .btn-lg, .btn-link{
   cursor: pointer;
   transition: background 0.3s ease-in-out;
 }
-
 button:hover {
   background-color: var(--button-hover);
 }
-
 .btn-link {
   text-decoration: none;
   text-align: center;

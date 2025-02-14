@@ -1,0 +1,66 @@
+
+
+/* 🔹 Contenedor principal de favoritos */
+.favorites-container {
+    justify-content: flex-start;
+    padding: 20px;
+    margin: auto;
+    background-color: var(--background-color);
+    max-width: 70%; 
+}
+
+/* Ajuste responsivo */
+@media (min-width: 768px) {
+    .favorites-container {
+        max-width: 750px; /* Para tabletas */
+    }
+}
+
+@media (min-width: 1024px) {
+    .favorites-container {
+        max-width: 900px; /* Para pantallas más grandes */
+    }
+}
+
+@media (min-width: 1200px) {
+    .favorites-container {
+        max-width: 1100px; /* Para pantallas grandes */
+    }
+}
+
+
+/* Responsivo para imágenes en móviles */
+@media (max-width: 768px) {
+    .advertising-image {
+        height: 150px; /* Hace que las imágenes sean más pequeñas en pantallas pequeñas */
+    }
+}
+
+/* 🔹 Pie de tarjeta */
+.card-footer {
+    background: var(--secondary-color);
+    color: white;
+    font-size: 0.7rem;
+    text-align: center;
+    padding: 7px;
+    border-top: 2px solid var(--border-color);
+}
+
+/* 🔹 Botón de favoritos */
+.favorite-button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 10px 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background 0.3s ease-in-out;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+}
+
+.favorite-button:hover {
+    background-color: var(--button-hover);
+}
+
+
