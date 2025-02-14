@@ -1,13 +1,9 @@
   /* Estilos generales */
-.container-fluid {
-    padding: 0;
-  }
-  
+
   .row {
     margin: 0;
   }
-  
-  
+
   .profile-icon {
     background-color: #ffe6e6;
     width: 80px;
@@ -21,52 +17,62 @@
     color: #000;
     font-weight: bold;
   }
-  
-  
+
+
   .menu-list {
     list-style: none;
     padding: 0;
     margin-top: 20px;
   }
-  
+
   .menu-list li {
     font-size: 16px;
     padding: 10px 0;
     cursor: pointer;
     color: #000;
   }
-  
+
   .menu-list li:hover {
     background-color: #f5c6cb;
     color: #ff6f61;
   }
 
-  
-
   h3 {
     font-weight: bold;
   }
-  
+
   p {
-    color: #6c757d; /* Gris */
-    font-size:larger;
+    color: #6c757d;
+    /* Gris */
+    font-size: larger;
   }
-  
+
 
   .profile-avatar {
-      width: 315px;
-      height: 315px;
-      border-radius: 10px;
-      object-fit: cover;
-      border-style: solid;
-      border-width: 5px;
-      border-color: #EAA1C8
+    width: 315px;
+    height: 315px;
+    border-radius: 10px;
+    object-fit: cover;
+    border-style: solid;
+    border-width: 5px;
+    border-color: #EAA1C8
   }
 
-  .border-container{
+  .border-container {
     border-width: 20px;
     border-style: groove;
     border-color: #EAA1C8;
     border-radius: 10px;
   }
 
+  @media (max-width: 768px) {
+    .border-container {
+      border-width: 10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .border-container {
+      border-width: 5px;
+    }
+  }
