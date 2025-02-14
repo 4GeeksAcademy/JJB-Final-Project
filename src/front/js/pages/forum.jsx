@@ -101,7 +101,7 @@ export const Forums = () => {
         <div className="px-md-5 px-4">
 
             {store.forums.length > 0 ?
-                <div className="container my-5">
+                <div className="container-fluid my-5">
                     <div className="row g-4">
 
                         {store.forums.map((item, index) => {

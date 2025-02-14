@@ -105,17 +105,17 @@ export const Advertising = () => {
     const advertisingFormChanged = advertisingNameChanged && advertisingContentChanged && advertisingImagedChanged;
 
     return (
-        <div className="px-md-5 px-4">
-            {store.advertising.length > 0 ? <AdvertisingCard key={key} /> : <div class="w-100 d-flex justify-content-center mt-5 flex-grow-1">
-             <div class="alert alert-warning p-4 rounded shadow-sm col-md-8 col-lg-6 w-100 text-center" role="alert">
+        <>
+            {store.advertising.length > 0 ? <AdvertisingCard key={key} /> : <div class="container text-center mt-5 flex-grow-1">
+             <div class="alert alert-warning p-4 rounded shadow-sm" role="alert">
                  <h4 class="alert-heading">No se encontro publcidad</h4>
                  <p>Parece que aún no hay publicidad disponible. ¡Anímate a crear la primera!</p>
              </div>
          </div>}
-            <div className="container w-75">
+            <div className="container">
                 <div className="row">
-                    <div className="col-12 d-flex justify-content-center" >
-                        <div className="btn col-12 col-md-6 col-lg-4"
+                    <div className="col d-flex justify-content-center" >
+                        <div className="btn"
                             style={{ background: 'var( --primary-color)', color: 'var(--text-color)' }}
                             onClick={toggleModal}
                         >
@@ -178,7 +178,7 @@ export const Advertising = () => {
                     </div>
                 </form>
             </Modal>
-        </div>
+        </>
 
     );
 };
