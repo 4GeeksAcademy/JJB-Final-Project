@@ -16,23 +16,24 @@ export const Invoices = () => {
   }, []);
 
   return (
-    <div className="container-fluid">
-      <div className="row justify-content-center">
-        <div className="col-md-9 main-content">
-          {loading ? (
-            <p className="text-center">Cargando...</p>
-          ) : store.invoices.length > 0 ? (
-            <InvoicesTable />
-          ) : (
-            <div className="container text-center mt-5 flex-grow-1">
-              <div className="alert alert-warning p-4 rounded shadow-sm" role="alert">
-                <h4 className="alert-heading">No se encontraron facturas</h4>
-                <p>Parece que aún no hay facturas disponibles.</p>
-              </div>
-            </div>
-          )}
+<div className="container-fluid">
+  <div className="row justify-content-center">
+    <div className="col-md-9 col-12 main-content">
+      {loading ? (
+        <p className="text-center">Cargando...</p>
+      ) : store.invoices.length > 0 ? (
+        <InvoicesTable />
+      ) : (
+        <div className="text-center mt-5 flex-grow-1 w-100">
+          <div className="alert alert-warning p-4 rounded shadow-sm w-100" role="alert">
+            <h4 className="alert-heading">No se encontraron facturas</h4>
+            <p>Parece que aún no hay facturas disponibles.</p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
+  </div>
+</div>
+
   );
 };
