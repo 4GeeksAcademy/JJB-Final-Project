@@ -119,7 +119,7 @@ export const Forums = () => {
             }
             <div className="container w-75">
                 <div className="row">
-                    <div className="col-12 d-flex justify-content-center">
+                    <div className="col-12 d-flex justify-content-center mb-5">
                         <button
                             className="btn col-12 col-md-6 col-lg-4"
                             style={{ background: 'var(--primary-color)', color: 'var(--text-color)' }}
