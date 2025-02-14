@@ -110,7 +110,12 @@ export const Forums = () => {
                 )
             })}
             </div></div>
-             : <h1> No se encontraron Forums </h1>}
+             :     <div class="container text-center mt-5 flex-grow-1">
+             <div class="alert alert-warning p-4 rounded shadow-sm" role="alert">
+                 <h4 class="alert-heading">No se encontraron foros</h4>
+                 <p>Parece que aún no hay foros disponibles. ¡Anímate a crear el primero!</p>
+             </div>
+         </div>}
             <div className="container">
                 <div className="row">
                     <div className="col d-flex justify-content-center" >

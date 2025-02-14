@@ -106,7 +106,12 @@ export const Advertising = () => {
 
     return (
         <>
-            {store.advertising.length > 0 ? <AdvertisingCard key={key} /> : <h1> No se encontro publicidad </h1>}
+            {store.advertising.length > 0 ? <AdvertisingCard key={key} /> : <div class="container text-center mt-5 flex-grow-1">
+             <div class="alert alert-warning p-4 rounded shadow-sm" role="alert">
+                 <h4 class="alert-heading">No se encontro publcidad</h4>
+                 <p>Parece que aún no hay publicidad disponible. ¡Anímate a crear la primera!</p>
+             </div>
+         </div>}
             <div className="container">
                 <div className="row">
                     <div className="col d-flex justify-content-center" >
