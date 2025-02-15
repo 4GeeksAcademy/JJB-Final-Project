@@ -73,7 +73,7 @@ export const SideBar = () => {
                 </div>
                 <div className="offcanvas-body">
                     <ul className="menu-list ">
-                        <li><Link className="text-inherit" to={"/invoices"} >Favoritos</Link></li>
+                        <li><Link className="text-inherit" to={"/favorites"} >Favoritos</Link></li>
                         <li><Link className="text-inherit" to={"/invoices"}  >Pagos</Link></li>
                         <li><Link className="text-inherit" to={"/accountsettings"} >Cuenta / Editar perfil</Link></li>
                     </ul>
