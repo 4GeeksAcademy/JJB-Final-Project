@@ -249,7 +249,7 @@
             "id_advertising": 1,
             "title": "Se vende pollo frito",
             "content": "Rico pollo frito en su jugo, crujiente y delicioso.",
-            "creation_date": "Tue, 11 Feb 2025 00:00:00 GMT",
+            "creation_date": "2025-02-11",
             "id_user": 1,
             "image_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739243178/Felix4_uo0mzq.jpg",
             "active": true
@@ -258,7 +258,7 @@
             "id_advertising": 2,
             "title": "Pasteles artesanales",
             "content": "Pasteles caseros con ingredientes naturales, perfectos para cualquier ocasión.",
-            "creation_date": "Wed, 12 Feb 2025 00:00:00 GMT",
+            "creation_date": "2025-02-11",
             "id_user": 3,
             "image_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739246341/pastel_s4r5d9.webp",
             "active": true
@@ -267,7 +267,7 @@
             "id_advertising": 3,
             "title": "Venta de ropa deportiva",
             "content": "Ropa deportiva de alta calidad para cualquier disciplina.",
-            "creation_date": "Thu, 13 Feb 2025 00:00:00 GMT",
+            "creation_date": "2025-02-13",
             "id_user": 6,
             "image_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739246341/ropadeportiva_uifkic.jpg",
             "active": true
@@ -276,7 +276,7 @@
             "id_advertising": 4,
             "title": "Guitarras personalizadas",
             "content": "Guitarras hechas a mano con diseños únicos.",
-            "creation_date": "Fri, 14 Feb 2025 00:00:00 GMT",
+            "creation_date": "2025-02-14",
             "id_user": 5,
             "image_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739246340/guitarra_z3olvn.jpg",
             "active": true
@@ -285,7 +285,7 @@
             "id_advertising": 5,
             "title": "Clases de yoga",
             "content": "Aprende yoga con instructores certificados desde la comodidad de tu hogar.",
-            "creation_date": "Sat, 15 Feb 2025 00:00:00 GMT",
+            "creation_date": "2025-02-15",
             "id_user": 2,
             "image_url": "https://res.cloudinary.com/drkiaah01/image/upload/v1739246342/yoga_jmwhcr.webp",
             "active": true
