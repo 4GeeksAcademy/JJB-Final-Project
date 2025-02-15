@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/profile.css";
+import defaultProfile from "../../img/profiledefault.png";
 
 export const Profile = () => {
     const { store } = useContext(Context);
@@ -13,7 +14,7 @@ export const Profile = () => {
                     <div className="col-md-12 d-flex justify-content-center align-items-center">
                         <img
                             className="profile-avatar"
-                            src={store.profile.avatar_url}
+                            src={store.profile.avatar_url !== "default_avatar_url" ? store.profile.avatar_url : defaultProfile}
                             alt="Profile"
                         />
                     </div>
