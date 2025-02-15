@@ -102,7 +102,6 @@
             "image_url": "",
             "comments": [
                 {
-                    "id_comment": 1,
                     "id_forum": 1,
                     "id_user": 2,
                     "content": "que interesante!",
@@ -112,7 +111,6 @@
                     "children": []
                 },
                 {
-                    "id_comment": 2,
                     "id_forum": 1,
                     "id_user": 3,
                     "content": "me gusta cocinar!",
@@ -132,7 +130,6 @@
             "image_url": "",
             "comments": [
                 {
-                    "id_comment": 3,
                     "id_forum": 2,
                     "id_user": 4,
                     "content": "me gusta la tenologia!",
@@ -142,7 +139,6 @@
                     "children": []
                 },
                 {
-                    "id_comment": 4,
                     "id_forum": 2,
                     "id_user": 1,
                     "content": "a mi tambien la tenologia!",
@@ -162,7 +158,6 @@
             "image_url": "",
             "comments": [
                 {
-                    "id_comment": 5,
                     "id_forum": 3,
                     "id_user": 5,
                     "content": "la de mufasa esta padre, disney regreso",
@@ -172,7 +167,6 @@
                     "children": []
                 },
                 {
-                    "id_comment": 6,
                     "id_forum": 3,
                     "id_user": 6,
                     "content": "la abogado su sonju es buenisisma",
@@ -192,7 +186,6 @@
             "image_url": "",
             "comments": [
                 {
-                    "id_comment": 7,
                     "id_forum": 4,
                     "id_user": 7,
                     "content": "el medio no me gusto",
@@ -202,7 +195,6 @@
                     "children": []
                 },
                 {
-                    "id_comment": 8,
                     "id_forum": 4,
                     "id_user": 3,
                     "content": "estuvo mejor el de mickey jackson",
@@ -222,7 +214,6 @@
             "image_url": "",
             "comments": [
                 {
-                    "id_comment": 9,
                     "id_forum": 5,
                     "id_user": 6,
                     "creation_date": "2025-02-07",
@@ -232,7 +223,6 @@
                     "children": []
                 },
                 {
-                    "id_comment": 10,
                     "id_forum": 5,
                     "id_user": 1,
                     "creation_date": "2025-02-08",
