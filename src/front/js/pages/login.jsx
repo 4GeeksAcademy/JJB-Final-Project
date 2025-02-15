@@ -42,7 +42,7 @@ export const Login = () => {
                 showConfirmButton: false,
                 timer: 2000
             });
-            navigate("/profile");
+            navigate("/advertising");
 
         } else {
             console.error("FRONT Error al iniciar sesión:", response.error);

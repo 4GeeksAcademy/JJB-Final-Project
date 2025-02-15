@@ -4,10 +4,11 @@ import "../../styles/useraccountsettings.css";
 import { SideBar } from "../component/sideBar.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import defaultProfile from "../../img/profiledefault.png";
 
 export const UserAccountSettings = () => {
     const { store, actions } = useContext(Context);
-    const [image, setImage] = useState("");
+    const [image, setImage] = useState(store.profile.avatar_url !== "default_avatar_url" ? store.profile.avatar_url : defaultProfile);
     const [isEditing, setIsEditing] = useState({});
     const [formData, setFormData] = useState({
         image_url: "",

@@ -3,7 +3,7 @@ import { Context } from "../store/appContext.js";
 import { Link, useNavigate } from "react-router-dom";
 import { AdvertisingCard } from "../component/advertisingCard.jsx";
 import { Modal } from "../component/modal.jsx";
-import { ImageUploader } from "../component/imageUploader.jsx"; 
+import { ImageUploader } from "../component/imageUploader.jsx";
 import Swal from 'sweetalert2'
 import "../../styles/colors.css";
 import "../../styles/advertasing.css";
@@ -19,7 +19,7 @@ export const Advertising = () => {
     const [advertisingContentChanged, setAdvertisingContentChanged] = useState(false);
     const [advertisingImagedChanged, setAdvertisingImagedChanged] = useState(false);
     const [image, setImage] = useState("")
-    const [isUploading, setIsUploading] = useState(false); 
+    const [isUploading, setIsUploading] = useState(false);
 
     const [key, setKey] = useState(0);
 
@@ -107,20 +107,22 @@ export const Advertising = () => {
     return (
         <>
             {store.advertising.length > 0 ? <AdvertisingCard key={key} /> : <div class="container text-center mt-5 flex-grow-1">
-             <div class="alert alert-warning p-4 rounded shadow-sm" role="alert">
-                 <h4 class="alert-heading">No se encontro publcidad</h4>
-                 <p>Parece que aún no hay publicidad disponible. ¡Anímate a crear la primera!</p>
-             </div>
-         </div>}
+                <div class="alert alert-warning p-4 rounded shadow-sm" role="alert">
+                    <h4 class="alert-heading">No se encontro publicidad</h4>
+                    <p>Parece que aún no hay publicidad disponible. ¡Anímate a crear la primera!</p>
+                </div>
+            </div>}
             <div className="container">
                 <div className="row">
                     <div className="col d-flex justify-content-center" >
-                        <div className="btn"
-                            style={{ background: 'var( --primary-color)', color: 'var(--text-color)' }}
-                            onClick={toggleModal}
-                        >
-                            Crear Publicidad
-                        </div>
+                        {store.profile.membership === "Premium" && (
+                            <div className="btn mb-5"
+                                style={{ background: 'var( --primary-color)', color: 'var(--text-color)' }}
+                                onClick={toggleModal}
+                            >
+                                Crear Publicidad
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -158,14 +160,13 @@ export const Advertising = () => {
                         <label htmlFor="imageInput" className="form-label">Imagen</label>
 
                         {/* Input para cargar imagen */}
-                        <ImageUploader 
+                        <ImageUploader
                             onUploadComplete={(response) => AdvertisingImagedChanged(response)}
                             uploadFunction={actions.uploadPhoto}
                             isUploading={isUploading}
                             setIsUploading={setIsUploading}
                         />
                     </div>
-
                     <div className="d-grid">
                         <button
                             type="button"

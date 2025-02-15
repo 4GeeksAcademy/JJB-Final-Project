@@ -360,43 +360,59 @@ def create_comment():
         data = request.get_json()
         print(data)
         
+        # Obtener los datos del comentario
         content = request.json.get("content", None)
         id_forum = request.json.get("id_forum", None)
         parent_id = request.json.get("parent_id", None)
 
-        if not content or not id_forum:
-            return jsonify({"error": "Faltan datos obligatorios (content, id_forum)"}), 400
-        
+        # Verificación de campos obligatorios
+        if not content:
+            return jsonify({"error": "El campo 'content' es obligatorio"}), 400
+        if not id_forum:
+            return jsonify({"error": "El campo 'id_forum' es obligatorio"}), 400
+
+        # Verificación del comentario padre si se proporciona
         if parent_id:
             parent_comment = Comment.query.get(parent_id) 
             if not parent_comment:
                 return jsonify({"error": "El comentario padre no existe"}), 400
 
-        print("if not content or not id_forum")
-        
+        print("Campos obligatorios verificados")
+
+        # Buscar al usuario por el email (obtenido del JWT)
         user = User.query.filter_by(email=email).first()
         if not user: 
             return jsonify({"error": "Usuario no encontrado"}), 404
 
-        print(f"user: {user}")  
+        print(f"Usuario encontrado: {user}")  
 
+        # Crear el nuevo comentario
         new_comment = Comment(
-            content = content,
+            content=content,
             creation_date=datetime.date.today(),
-            id_forum = id_forum,
-            id_user = user.id_user,
-            parent_id = parent_id
+            id_forum=id_forum,
+            id_user=user.id_user,
+            parent_id=parent_id
         )
 
-        print(f"new_comment: {new_comment}") 
+        # Depuración: imprimir los datos del nuevo comentario
+        print(f"Content: {new_comment.content}")
+        print(f"Creation Date: {new_comment.creation_date}")
+        print(f"ID Forum: {new_comment.id_forum}")
+        print(f"ID User: {new_comment.id_user}")
+        print(f"Parent ID: {new_comment.parent_id}")
+        
+        # Agregar el comentario a la base de datos
         db.session.add(new_comment)
-
-        print("Antes de hacer commit") 
+        print("Antes de hacer commit")
+        
+        # Hacer commit a la base de datos
         db.session.commit()
 
-        return jsonify({"msg": "comentario creado exitosamente", "new_comment": new_comment.serialize()}), 201
+        return jsonify({"msg": "Comentario creado exitosamente", "new_comment": new_comment.serialize()}), 201
 
     except Exception as e:
+        print(f"Error: {str(e)}")  # Para más detalles en los logs de error
         return jsonify({"error": "Error interno del servidor", "message": str(e)}), 500
 
 @api.route('/comment', methods=['PUT'])

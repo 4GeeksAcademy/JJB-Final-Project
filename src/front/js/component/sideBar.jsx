@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
 import "../../styles/sidebar.css";
+import defaultProfile from "../../img/profiledefault.png";
 
 export const SideBar = () => {
     const { store } = useContext(Context);
@@ -16,13 +17,13 @@ export const SideBar = () => {
 
     return (
         <>
-
+              
             <div className="sidebar d-none d-md-block">
                 <ul className="menu-list flex-grow-1">
                     <li className="">
                         <Link className="d-flex align-items-center mb-3 text-inherit" to={"/profile"}>
                             <div className="me-2">
-                                <img className="sidebar-profile-image" src={profileImage} alt="Profile" />
+                                <img className="sidebar-profile-image" src={store.profile.avatar_url !== "default_avatar_url" ? store.profile.avatar_url : defaultProfile} alt="Profile" />
                             </div>
                             <div className="flex-grow-1">
                                 <p className="nickname mb-0 ">{store.profile.nickname || "Apodo"}</p>
