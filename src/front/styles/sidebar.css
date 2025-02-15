@@ -29,7 +29,7 @@
 }
 .sidebar li, .sidebar-responsive li {
     color: var(--text-color) !important;
-    font-size: x-large !important;
+    font-size: larger !important;
 }
 
 .sidebar li:hover, .sidebar-responsive li:hover {
@@ -45,7 +45,10 @@
     padding: 0 20px ;
 }
 
+.nickname {
+    color: var(--text-color);
+}
 
-.nickname, .email  {
-    font-size:large;
+.email {
+    font-size: medium !important;
 }

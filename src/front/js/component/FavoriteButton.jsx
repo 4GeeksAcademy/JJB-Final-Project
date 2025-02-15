@@ -1,6 +1,6 @@
 import React, { useState,useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
-import "../../styles/commentCard.css";
+import "../../styles/favoritebutton.css";
 
 export const FavoriteButton = ({id_forum, id_advertising }) => {
     const { store, actions } = useContext(Context);
@@ -37,8 +37,9 @@ export const FavoriteButton = ({id_forum, id_advertising }) => {
     }, [id_forum, id_advertising, store.favorites])
     return (
         <button 
-            onClick={handleClick} 
-            style={{ border: "none", background: "none", cursor: "pointer" }}>
+            onClick={handleClick}
+            className="fav-btn"
+            >
             {isFavorite ? "❤️" : "🤍"} 
         </button>
     );

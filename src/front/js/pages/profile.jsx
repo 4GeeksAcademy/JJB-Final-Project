@@ -22,8 +22,6 @@ export const Profile = () => {
                 </div>
 
                 <div className="row px-0 py-4  text-center">
-
-
                     {/* Información Personal */}
                     <div className="col-md-6 d-flex flex-column justify-content-center">
                         <h3>Nombre completo</h3>
