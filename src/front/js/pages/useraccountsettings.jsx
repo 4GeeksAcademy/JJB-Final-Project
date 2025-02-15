@@ -8,7 +8,7 @@ import defaultProfile from "../../img/profiledefault.png";
 
 export const UserAccountSettings = () => {
     const { store, actions } = useContext(Context);
-    const [image, setImage] = useState(defaultProfile);
+    const [image, setImage] = useState(store.profile.avatar_url !== "default_avatar_url" ? store.profile.avatar_url : defaultProfile);
     const [isEditing, setIsEditing] = useState({});
     const [formData, setFormData] = useState({
         image_url: "",

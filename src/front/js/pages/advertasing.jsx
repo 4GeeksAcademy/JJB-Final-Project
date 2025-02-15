@@ -115,12 +115,14 @@ export const Advertising = () => {
             <div className="container">
                 <div className="row">
                     <div className="col d-flex justify-content-center" >
-                        <div className="btn"
-                            style={{ background: 'var( --primary-color)', color: 'var(--text-color)' }}
-                            onClick={toggleModal}
-                        >
-                            Crear Publicidad
-                        </div>
+                        {store.profile.membership === "Premium" && (
+                            <div className="btn mb-5"
+                                style={{ background: 'var( --primary-color)', color: 'var(--text-color)' }}
+                                onClick={toggleModal}
+                            >
+                                Crear Publicidad
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -165,7 +167,6 @@ export const Advertising = () => {
                             setIsUploading={setIsUploading}
                         />
                     </div>
-
                     <div className="d-grid">
                         <button
                             type="button"
