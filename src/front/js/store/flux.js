@@ -41,8 +41,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json"
 						}
 					});
+					if (response.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await response.json();
 					console.log(data);
+					
 					setStore({ profile: data });
 					return data.profile;
 				} catch (error) {
@@ -67,6 +72,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(UserData)
 					});
+					if (resp.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 			
 					const data = await resp.json();
 			
@@ -102,6 +111,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json"
 						}
 					});
+					if (resp.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await resp.json();
 					console.log(data);
 					if (!resp.ok) {
@@ -132,6 +145,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(forumData)
 					});
+					if (resp.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 
 					const data = await resp.json();
 
@@ -170,6 +187,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Authorization": `Bearer ${token}`
 						}
 					});
+					if (resp.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 
 					const data = await resp.json();
 
@@ -208,6 +229,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json"
 						}
 					});
+					if (resp.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await resp.json();
 					console.log(data);
 					if (!resp.ok) {
@@ -342,6 +367,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json"
 						}
 					});
+					if (resp.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await resp.json();
 					if (!resp.ok) {
 						return { error: `${data.error}` };
@@ -377,6 +406,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json"
 						}
 					});
+					if (resp.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await resp.json();
 					if (!resp.ok) {
 						return { error: `${data.error}` };
@@ -404,6 +437,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json"
 						}
 					});
+					if (response.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await response.json();
 					if (!response.ok) { return { error: `${data.error}` }; }
 					setStore({ forumDetails: data });
@@ -433,6 +470,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							content: content,
 						}),
 					});
+					if (response.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await response.json();
 					if (!response.ok) { return { error: `${data.error}` }; }
 					return data;
@@ -461,6 +502,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							parent_id: replyTo,
 						}),
 					});
+					if (response.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await response.json();
 					if (!response.ok) { return { error: `${data.error}` }; }
 					return data;
@@ -489,6 +534,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							parent_id: replyTo,
 						}),
 					});
+					if (response.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await response.json();
 					if (!response.ok) { return { error: `${data.error}` }; }
 					return data;
@@ -518,6 +567,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							content: content,
 						}),
 					});
+					if (response.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await response.json();
 					console.log("data", data)
 
@@ -566,6 +619,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							comment_index: id_comment
 						}),
 					});
+					if (response.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await response.json();
 					console.log("data", data)
 
@@ -610,6 +667,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							id_advertising: id_advertising,
 						}),
 					});
+					if (response.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await response.json();
 					console.log("data", data);
 
@@ -651,6 +712,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 						},
 						body: JSON.stringify(formData)
 					});
+					if (response.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 
 					const data = await response.json();
 					console.log("data", data);
@@ -698,6 +763,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json"
 						}
 					});
+					if (response.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await response.json();
 					console.log("loadProfile",data);
 					setStore({ profile: data });
@@ -724,6 +793,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json"
 						}
 					});
+					if (resp.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await resp.json();
 					console.log(data);
 					if (!resp.ok) {
@@ -762,6 +835,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "application/json"
 						}
 					});
+					if (resp.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await resp.json();
 					if (!resp.ok) {
 						return { error: `${data.error}` };
@@ -793,6 +870,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							id_invoice: id_invoice,
 						}),
 					});
+					if (response.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await response.json();
 					console.log("data", data);
 
@@ -839,6 +920,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							concept: concept,
 						}),
 					});
+					if (response.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 
 					const data = await response.json();
 					console.log("data", data);
@@ -884,6 +969,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Content-Type": "multipart/formdata"
 						}
 					})
+					if (response.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 			
 					const data = await response.json()
 
@@ -962,6 +1051,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 							"Authorization": `Bearer ${token}`,
 						}
 					});
+
+					if (resp.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 					const data = await resp.json();
 					console.log(data);
 					if (resp.ok) {
@@ -994,6 +1088,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 							id_advertising : id_advertising || null
 						})
 					});
+					if (response.status === 401) {
+						sessionStorage.removeItem("accessToken");
+						window.location.href = "/"; // Redirige a la página principal
+					}
 			
 					if (response.ok) {
 						const data = await response.json()

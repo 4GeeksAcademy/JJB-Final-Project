@@ -1,0 +1,9 @@
+.fav-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.fav-btn:active {
+    background-color: var(--button-hover);
+}
